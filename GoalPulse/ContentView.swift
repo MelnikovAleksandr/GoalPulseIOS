@@ -6,10 +6,17 @@
 //
 
 import SwiftUI
+import Swinject
 
 struct ContentView: View {
     
-    @State private var navigationManager: NavigationManager = NavigationManagerImpl.shared
+    @State private var navigationManager: NavigationManager
+    
+    init() {
+        _navigationManager = State(
+            initialValue: DIContainer.shared.resolve(NavigationManager.self)
+        )
+    }
     
     var body: some View {
         NavigationStack(path: $navigationManager.path) {

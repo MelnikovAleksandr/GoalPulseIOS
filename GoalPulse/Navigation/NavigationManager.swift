@@ -26,9 +26,6 @@ protocol NavigationManager {
 @Observable
 class NavigationManagerImpl: NavigationManager {
     
-    static let shared = NavigationManagerImpl()
-    private init() {}
-    
     var path = NavigationPath()
     
     func toStandlings() {

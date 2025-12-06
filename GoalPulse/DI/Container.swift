@@ -7,6 +7,7 @@
 
 import Foundation
 import Swinject
+import Utils
 
 final class DIContainer {
     static let shared = DIContainer()
@@ -14,20 +15,14 @@ final class DIContainer {
 
     private init() {
         container = Container()
-        DependencyMap.registerDependencies(in: container)
+        UtilsDependencyMap.registerDependencies(in: container)
+        
         validateDependencies()
     }
 
     private func validateDependencies() {
-        let dependencies: [() -> Any?] = [
-            { self.container.resolve(NavigationManager.self) }
-        ]
-
-        for resolve in dependencies {
-            guard resolve() != nil else {
-                fatalError("One or more dependencies are not registered in the container.")
-            }
-        }
+        UtilsDependencyMap.validate(in: container)
+        
         print("All dependencies are successfully registered.")
     }
 }
@@ -45,13 +40,5 @@ extension DIContainer {
             fatalError("Failed to resolve dependency: \(type) with argument: \(argument)")
         }
         return dependency
-    }
-}
-
-struct DependencyMap {
-    static func registerDependencies(in container: Container) {
-        container.register(NavigationManager.self) { _ in
-            NavigationManagerImpl()
-        }
     }
 }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-protocol NavigationManager {
+public protocol NavigationManager {
     
     var path: NavigationPath { get set }
     
@@ -24,29 +24,31 @@ protocol NavigationManager {
 }
 
 @Observable
-class NavigationManagerImpl: NavigationManager {
+public class NavigationManagerImpl: NavigationManager {
     
-    var path = NavigationPath()
+    public init() {}
     
-    func toStandlings() {
+    public var path = NavigationPath()
+    
+    public func toStandlings() {
         path.append(Routes.standlings)
     }
     
-    func toTeamDetails() {
+    public func toTeamDetails() {
         path.append(Routes.team)
     }
     
-    func toPlayerDetails() {
+    public func toPlayerDetails() {
         path.append(Routes.player)
     }
     
-    func pop() {
+    public func pop() {
         if !path.isEmpty {
             path.removeLast()
         }
     }
     
-    func popToRoot() {
+    public func popToRoot() {
         path = NavigationPath()
     }
 }

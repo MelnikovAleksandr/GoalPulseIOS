@@ -7,6 +7,8 @@
 
 import SwiftUI
 import Swinject
+import Utils
+import Presentation
 
 struct ContentView: View {
     
@@ -37,62 +39,3 @@ struct ContentView: View {
 #Preview {
     ContentView()
 }
-
-struct CompetitonsPage: View {
-    @Binding var navigationManager: NavigationManager
-    var body: some View {
-        VStack {
-            Text("CompetitonsPage")
-            Button("Go to Standlings") {
-                navigationManager.toStandlings()
-            }
-        }
-    }
-}
-
-struct StandlingsPage: View {
-    @Binding var navigationManager: NavigationManager
-    var body: some View {
-        VStack {
-            Text("StandlingsPage")
-            Button("Go to Team") {
-                navigationManager.toTeamDetails()
-            }
-            Button("Go to Player") {
-                navigationManager.toPlayerDetails()
-            }
-            Button("Go back") {
-                navigationManager.pop()
-            }
-        }
-    }
-}
-
-struct TeamPage: View {
-    @Binding var navigationManager: NavigationManager
-    var body: some View {
-        VStack {
-            Text("TeamPage")
-            Button("Go to Player") {
-                navigationManager.toPlayerDetails()
-            }
-            Button("Go back") {
-                navigationManager.pop()
-            }
-        }
-    }
-}
-
-struct PlayerPage: View {
-    @Binding var navigationManager: NavigationManager
-    var body: some View {
-        VStack {
-            Text("PlayerPage")
-            Button("Go back") {
-                navigationManager.pop()
-            }
-        }
-    }
-}
-
-

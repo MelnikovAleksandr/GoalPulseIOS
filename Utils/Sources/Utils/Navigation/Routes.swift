@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Routes {
+public enum Routes {
     case standlings
     case team
     case player

@@ -8,10 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		2CA62DE42EE4631A002EC693 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = 2CA62DE32EE4631A002EC693 /* Swinject */; };
+		2CA62E0C2EE4A8CF002EC693 /* Utils in Frameworks */ = {isa = PBXBuildFile; productRef = 2CA62E0B2EE4A8CF002EC693 /* Utils */; };
+		2CA62E102EE4B226002EC693 /* Presentation in Frameworks */ = {isa = PBXBuildFile; productRef = 2CA62E0F2EE4B226002EC693 /* Presentation */; };
+		2CA62E2D2EE4C473002EC693 /* Domain in Frameworks */ = {isa = PBXBuildFile; productRef = 2CA62E2C2EE4C473002EC693 /* Domain */; };
+		2CA62E2F2EE4C477002EC693 /* Data in Frameworks */ = {isa = PBXBuildFile; productRef = 2CA62E2E2EE4C477002EC693 /* Data */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2CA62DCD2EE452C1002EC693 /* GoalPulse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoalPulse.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2CA62E062EE4A6C1002EC693 /* Utils */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Utils; sourceTree = "<group>"; };
+		2CA62E072EE4A6CB002EC693 /* Data */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Data; sourceTree = "<group>"; };
+		2CA62E082EE4A6D1002EC693 /* Domain */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Domain; sourceTree = "<group>"; };
+		2CA62E0E2EE4B1EC002EC693 /* Presentation */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Presentation; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -27,6 +35,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CA62E0C2EE4A8CF002EC693 /* Utils in Frameworks */,
+				2CA62E102EE4B226002EC693 /* Presentation in Frameworks */,
+				2CA62E2F2EE4C477002EC693 /* Data in Frameworks */,
+				2CA62E2D2EE4C473002EC693 /* Domain in Frameworks */,
 				2CA62DE42EE4631A002EC693 /* Swinject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -37,7 +49,12 @@
 		2CA62DC42EE452C1002EC693 = {
 			isa = PBXGroup;
 			children = (
+				2CA62E062EE4A6C1002EC693 /* Utils */,
+				2CA62E0E2EE4B1EC002EC693 /* Presentation */,
+				2CA62E082EE4A6D1002EC693 /* Domain */,
+				2CA62E072EE4A6CB002EC693 /* Data */,
 				2CA62DCF2EE452C1002EC693 /* GoalPulse */,
+				2CA62E0A2EE4A8CF002EC693 /* Frameworks */,
 				2CA62DCE2EE452C1002EC693 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -48,6 +65,13 @@
 				2CA62DCD2EE452C1002EC693 /* GoalPulse.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		2CA62E0A2EE4A8CF002EC693 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,6 +95,10 @@
 			name = GoalPulse;
 			packageProductDependencies = (
 				2CA62DE32EE4631A002EC693 /* Swinject */,
+				2CA62E0B2EE4A8CF002EC693 /* Utils */,
+				2CA62E0F2EE4B226002EC693 /* Presentation */,
+				2CA62E2C2EE4C473002EC693 /* Domain */,
+				2CA62E2E2EE4C477002EC693 /* Data */,
 			);
 			productName = GoalPulse;
 			productReference = 2CA62DCD2EE452C1002EC693 /* GoalPulse.app */;
@@ -356,6 +384,22 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2CA62DE22EE4631A002EC693 /* XCRemoteSwiftPackageReference "Swinject" */;
 			productName = Swinject;
+		};
+		2CA62E0B2EE4A8CF002EC693 /* Utils */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Utils;
+		};
+		2CA62E0F2EE4B226002EC693 /* Presentation */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Presentation;
+		};
+		2CA62E2C2EE4C473002EC693 /* Domain */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Domain;
+		};
+		2CA62E2E2EE4C477002EC693 /* Data */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Data;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

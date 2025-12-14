@@ -8,37 +8,64 @@
 import Foundation
 import Swinject
 import Utils
+import Data
+import Domain
+import Presentation
 
-final class DIContainer {
-    static let shared = DIContainer()
-    let container: Container
+class Resolver {
+    
+    static let shared = Resolver()
+    
+    private var container = Container()
 
-    private init() {
-        container = Container()
-        UtilsDependencyMap.registerDependencies(in: container)
-        
-        validateDependencies()
+    @MainActor func injectModules() {
+        injectUtils()
+        injectDataSources()
+        injectViewModels()
     }
 
-    private func validateDependencies() {
-        UtilsDependencyMap.validate(in: container)
-        
-        print("All dependencies are successfully registered.")
-    }
-}
-
-extension DIContainer {
     func resolve<T>(_ type: T.Type) -> T {
-        guard let dependency = container.resolve(type) else {
-            fatalError("Failed to resolve dependency: \(type)")
-        }
-        return dependency
-    }
-
-    func resolve<T, Arg>(_ type: T.Type, argument: Arg) -> T {
-        guard let dependency = container.resolve(type, argument: argument) else {
-            fatalError("Failed to resolve dependency: \(type) with argument: \(argument)")
-        }
-        return dependency
+        container.resolve(T.self)!
     }
 }
+
+extension Resolver {
+    private func injectUtils() {
+        container.register(NavigationManager.self) { _ in
+            NavigationManagerImpl()
+        }.inObjectScope(.container)
+    }
+}
+
+extension Resolver {
+    private func injectDataSources() {
+        container.register(FootballNetworkService.self) { _ in
+            FootballNetworkServiceImpl()
+        }.inObjectScope(.container)
+        
+        container.register(ErrorsHandler.self) { _ in
+            ErrorsHandlerImpl()
+        }.inObjectScope(.container)
+        
+        container.register(FootballRepository.self) { resolver in
+            let networkService: FootballNetworkService = resolver.resolve(FootballNetworkService.self)!
+            let errorHandler: ErrorsHandler = resolver.resolve(ErrorsHandler.self)!
+            return FootballRepositoryImpl(
+                networkService: networkService,
+                errorHandler: errorHandler
+            )
+        }.inObjectScope(.container)
+    }
+}
+
+extension Resolver {
+    
+    @MainActor
+    private func injectViewModels() {
+        container.register(CompetitionsViewModel.self) { resolver in
+            let repository = resolver.resolve(FootballRepository.self)!
+            return CompetitionsViewModel(repository: repository)
+        }
+    }
+}
+

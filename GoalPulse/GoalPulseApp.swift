@@ -6,9 +6,13 @@
 //
 
 import SwiftUI
+import Utils
 
 @main
 struct GoalPulseApp: App {
+    init() {
+        Resolver.shared.injectModules()
+    }
     var body: some Scene {
         WindowGroup {
             ContentView()

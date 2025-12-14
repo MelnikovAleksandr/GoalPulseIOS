@@ -20,11 +20,25 @@
 		2CA62E072EE4A6CB002EC693 /* Data */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Data; sourceTree = "<group>"; };
 		2CA62E082EE4A6D1002EC693 /* Domain */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Domain; sourceTree = "<group>"; };
 		2CA62E0E2EE4B1EC002EC693 /* Presentation */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Presentation; sourceTree = "<group>"; };
+		2CCDDDA02EEED55B0021C28E /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		2CCDDDA22EEED9E00021C28E /* Exceptions for "GoalPulse" folder in "GoalPulse" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 2CA62DCC2EE452C1002EC693 /* GoalPulse */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		2CA62DCF2EE452C1002EC693 /* GoalPulse */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				2CCDDDA22EEED9E00021C28E /* Exceptions for "GoalPulse" folder in "GoalPulse" target */,
+			);
 			path = GoalPulse;
 			sourceTree = "<group>";
 		};
@@ -56,6 +70,7 @@
 				2CA62DCF2EE452C1002EC693 /* GoalPulse */,
 				2CA62E0A2EE4A8CF002EC693 /* Frameworks */,
 				2CA62DCE2EE452C1002EC693 /* Products */,
+				2CCDDDA02EEED55B0021C28E /* Secrets.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -164,6 +179,7 @@
 /* Begin XCBuildConfiguration section */
 		2CA62DD62EE452C2002EC693 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2CCDDDA02EEED55B0021C28E /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -227,6 +243,7 @@
 		};
 		2CA62DD72EE452C2002EC693 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2CCDDDA02EEED55B0021C28E /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -290,6 +307,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GoalPulse/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -322,6 +340,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GoalPulse/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

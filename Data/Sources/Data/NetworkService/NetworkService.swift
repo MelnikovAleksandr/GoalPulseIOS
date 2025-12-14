@@ -19,11 +19,15 @@ public protocol FootballNetworkService: Sendable {
 
 public final class FootballNetworkServiceImpl: FootballNetworkService {
     private let baseURL = "https://api.football-data.org/v4/"
-    private let apiKey = ""
+    private let apiKey: String
     private let decoder: JSONDecoder
     private let session: Session
     
     public init() {
+        guard let key = Bundle.main.object(forInfoDictionaryKey: "FOOTBALL_DATA_API_KEY") as? String else {
+            fatalError("Could not read API Key from Info.plist")
+        }
+        self.apiKey = key
         decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         decoder.dateDecodingStrategy = .iso8601

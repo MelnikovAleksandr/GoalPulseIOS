@@ -11,12 +11,11 @@ import Observation
 
 public struct CompetitonsPage: View {
     @Binding var navigationManager: NavigationManager
-    @Binding private var viewModel: CompetitionsViewModel
-    @State private var hasLoaded = false
+    @ObservedObject private var viewModel: CompetitionsViewModel
     
     public init(navigationManager: Binding<NavigationManager>, viewModel: Binding<CompetitionsViewModel>) {
         self._navigationManager = navigationManager
-        self._viewModel = viewModel
+        self._viewModel = ObservedObject(wrappedValue: viewModel.wrappedValue)
     }
     
     public var body: some View {
@@ -64,6 +63,9 @@ public struct CompetitonsPage: View {
                             Text(competition.name)
                                 .font(.headline)
                             Text("ID: \(competition.id)")
+                                .font(.caption)
+                                .foregroundColor(.gray)
+                            Text("ID: \(competition.lastUpdated)")
                                 .font(.caption)
                                 .foregroundColor(.gray)
                         }

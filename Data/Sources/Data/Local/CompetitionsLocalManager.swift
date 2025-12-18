@@ -1,0 +1,74 @@
+//
+//  File.swift
+//  Data
+//
+//  Created by Александр Мельников on 14.12.2025.
+//
+
+import Foundation
+import RealmSwift
+import Domain
+
+@MainActor
+public protocol CompetitionsLocalManager: Sendable {
+    func saveCompetitions(_ competitionsDTO: [CompetitionDTO]) async throws
+    func getAllCompetitionsFlow() -> AsyncStream<[Competition]>
+}
+
+
+public final class CompetitionsLocalManagerImpl: CompetitionsLocalManager {
+    private var realm: Realm?
+    private var token: NotificationToken?
+    
+    public init() {
+        openRealm()
+    }
+    
+    deinit {
+        token?.invalidate()
+    }
+    
+    public func saveCompetitions(_ competitionsDTO: [CompetitionDTO]) async throws {
+        guard let realm = realm else { throw NSError(domain: "Realm not initialized", code: 0) }
+        
+        try realm.write {
+            realm.delete(realm.objects(CompetitionEntity.self))
+            
+            for dto in competitionsDTO {
+                let entity = CompetitionEntity.from(dto: dto)
+                realm.add(entity, update: .modified)
+            }
+        }
+    }
+    
+    public func getAllCompetitionsFlow() -> AsyncStream<[Competition]> {
+        return AsyncStream { continuation in
+            guard let realm = realm else {
+                continuation.yield([])
+                continuation.finish()
+                return
+            }
+            
+            let initialCompetitions = realm.objects(CompetitionEntity.self)
+            continuation.yield(initialCompetitions.map { $0.toDomain() })
+            
+            self.token = initialCompetitions.observe { changes in
+                switch changes {
+                case .initial(let results), .update(let results, _, _, _):
+                    continuation.yield(results.map { $0.toDomain() })
+                case .error(let error):
+                    print("Realm observation error: \(error)")
+                }
+            }
+        }
+    }
+    
+    private func openRealm() {
+        do {
+            let config = Realm.Configuration(schemaVersion: 1)
+            realm = try Realm(configuration: config)
+        } catch {
+            print("Realm init error: \(error)")
+        }
+    }
+}

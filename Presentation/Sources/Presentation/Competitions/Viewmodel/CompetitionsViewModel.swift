@@ -7,18 +7,23 @@
 
 import Foundation
 import Domain
+import Combine
 
 @MainActor
-@Observable
-public final class CompetitionsViewModel {
-    private let repository: FootballRepository
-    private(set) var competitions: [Competition] = []
-    private(set) var isLoading = false
-    private(set) var errorMessage: String?
+public final class CompetitionsViewModel: ObservableObject {
+    private let repository: CompetitionsRepository
+    @Published private(set) var competitions: [Competition] = []
+    @Published private(set) var isLoading = false
+    @Published private(set) var errorMessage: String?
     
-    public init(repository: FootballRepository) {
+    public init(repository: CompetitionsRepository) {
         self.repository = repository
         Task {
+            for await competitions in repository.getAllCompetitionsFromLocal() {
+                self.competitions = competitions
+            }
+        }
+        Task { 
             await loadCompetitions()
         }
     }
@@ -31,21 +36,14 @@ public final class CompetitionsViewModel {
         
         switch result {
         case .success(let competitions):
-            self.competitions = competitions
+            isLoading = false
             print("✅ Успешно загружено лиг: \(competitions.count)")
-            competitions.forEach { competition in
-                print("🏆 Лига: \(competition)")
-            }
             
         case .error(let errorType, _):
             let message = errorType?.errorMessage ?? "Неизвестная ошибка"
             self.errorMessage = message
+            isLoading = false
             print("❌ Ошибка загрузки: \(message)")
-            
-        case .loading:
-            break
         }
-        
-        isLoading = false
     }
 }

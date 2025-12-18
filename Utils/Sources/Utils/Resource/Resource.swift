@@ -10,5 +10,4 @@ import Foundation
 public enum Resource<T> {
     case success(T)
     case error(ErrorsTypesHttp?, T? = nil)
-    case loading
 }

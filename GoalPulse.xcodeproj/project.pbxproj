@@ -12,6 +12,7 @@
 		2CA62E102EE4B226002EC693 /* Presentation in Frameworks */ = {isa = PBXBuildFile; productRef = 2CA62E0F2EE4B226002EC693 /* Presentation */; };
 		2CA62E2D2EE4C473002EC693 /* Domain in Frameworks */ = {isa = PBXBuildFile; productRef = 2CA62E2C2EE4C473002EC693 /* Domain */; };
 		2CA62E2F2EE4C477002EC693 /* Data in Frameworks */ = {isa = PBXBuildFile; productRef = 2CA62E2E2EE4C477002EC693 /* Data */; };
+		2CCDDDA52EEF34050021C28E /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2CCDDDA42EEF34050021C28E /* RealmSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +50,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CCDDDA52EEF34050021C28E /* RealmSwift in Frameworks */,
 				2CA62E0C2EE4A8CF002EC693 /* Utils in Frameworks */,
 				2CA62E102EE4B226002EC693 /* Presentation in Frameworks */,
 				2CA62E2F2EE4C477002EC693 /* Data in Frameworks */,
@@ -114,6 +116,7 @@
 				2CA62E0F2EE4B226002EC693 /* Presentation */,
 				2CA62E2C2EE4C473002EC693 /* Domain */,
 				2CA62E2E2EE4C477002EC693 /* Data */,
+				2CCDDDA42EEF34050021C28E /* RealmSwift */,
 			);
 			productName = GoalPulse;
 			productReference = 2CA62DCD2EE452C1002EC693 /* GoalPulse.app */;
@@ -145,6 +148,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				2CA62DE22EE4631A002EC693 /* XCRemoteSwiftPackageReference "Swinject" */,
+				2CCDDDA32EEF34050021C28E /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 2CA62DCE2EE452C1002EC693 /* Products */;
@@ -396,6 +400,14 @@
 				minimumVersion = 2.9.1;
 			};
 		};
+		2CCDDDA32EEF34050021C28E /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.54.6;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -419,6 +431,11 @@
 		2CA62E2E2EE4C477002EC693 /* Data */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Data;
+		};
+		2CCDDDA42EEF34050021C28E /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2CCDDDA32EEF34050021C28E /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

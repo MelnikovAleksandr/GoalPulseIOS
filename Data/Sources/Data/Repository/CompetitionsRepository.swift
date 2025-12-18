@@ -10,14 +10,16 @@ import Domain
 import Utils
 import Alamofire
 
-public final class FootballRepositoryImpl: FootballRepository {
+public final class CompetitionsRepositoryImpl: CompetitionsRepository {
     
     private let networkService: FootballNetworkService
     private let errorHandler: ErrorsHandler
+    private let competitionsLocalManager: CompetitionsLocalManager
     
-    public init(networkService: FootballNetworkService, errorHandler: ErrorsHandler) {
+    public init(networkService: FootballNetworkService, errorHandler: ErrorsHandler, competitionsLocalManager: CompetitionsLocalManager) {
         self.networkService = networkService
         self.errorHandler = errorHandler
+        self.competitionsLocalManager = competitionsLocalManager
     }
     
     public func getAllCompetitionsFromRemoteToLocal() async -> Resource<[Competition]> {
@@ -28,10 +30,22 @@ public final class FootballRepositoryImpl: FootballRepository {
                 parameters: nil,
                 encoding: URLEncoding.default
             )
-            let competitions = response.competitions?.compactMap { dto in
+            guard let competitionsDTO = response.competitions else {
+                return .success([])
+            }
+            
+            try await self.competitionsLocalManager.saveCompetitions(competitionsDTO)
+            
+            let competitions = competitionsDTO.compactMap { dto in
                 convertToDomain(dto)
-            } ?? []
+            }
+            
             return .success(competitions)
         }
     }
+    
+    public func getAllCompetitionsFromLocal() -> AsyncStream<[Competition]> {
+            return competitionsLocalManager.getAllCompetitionsFlow()
+        }
+    
 }

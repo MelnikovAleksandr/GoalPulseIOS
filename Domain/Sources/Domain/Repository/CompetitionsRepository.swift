@@ -8,6 +8,8 @@
 import Foundation
 import Utils
 
-public protocol FootballRepository: Sendable {
+public protocol CompetitionsRepository: Sendable {
     func getAllCompetitionsFromRemoteToLocal() async -> Resource<[Competition]>
+    @MainActor
+    func getAllCompetitionsFromLocal() -> AsyncStream<[Competition]>
 }

@@ -13,14 +13,21 @@ class MockData {
     
     @MainActor static let navManager: NavigationManager = NavigationManagerImpl()
     
-    @MainActor static let footballRepository: FootballRepository = MockFootballRepository()
+    @MainActor static let footballRepository: CompetitionsRepository = MockFootballRepository()
     
     @MainActor static let competitionsViewModel: CompetitionsViewModel = CompetitionsViewModel(repository: footballRepository)
     
 }
 
-final class MockFootballRepository: FootballRepository {
-    func getAllCompetitionsFromRemoteToLocal() async -> Resource<[Domain.Competition]> {
-        return Resource.success([])
+final class MockFootballRepository: CompetitionsRepository {
+    func getAllCompetitionsFromLocal() -> AsyncStream<[Competition]> {
+        AsyncStream { continuation in
+            continuation.yield([])
+            continuation.finish()
+        }
+    }
+    
+    func getAllCompetitionsFromRemoteToLocal() async -> Resource<[Competition]> {
+        return .success([])
     }
 }

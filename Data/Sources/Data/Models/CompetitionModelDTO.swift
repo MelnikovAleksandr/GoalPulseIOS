@@ -19,7 +19,7 @@ struct CompetitionModelDTO: Codable {
     }
 }
 
-struct CompetitionDTO: Codable {
+public struct CompetitionDTO: Codable, Sendable {
     let id: Int?
     let area: AreaDTO?
     let name: String?

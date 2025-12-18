@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Competition: Identifiable {
+public struct Competition: Identifiable, Sendable {
    public let area: Area
    public let code: String
    public let currentSeason: CurrentSeason
@@ -35,7 +35,7 @@ public struct Competition: Identifiable {
     }
 }
 
-public struct Area {
+public struct Area: Sendable {
     let code: String
     let flag: String
     let id: Int
@@ -49,7 +49,7 @@ public struct Area {
     }
 }
 
-public struct CurrentSeason {
+public struct CurrentSeason: Sendable {
     let currentMatchDay: Int
     let startDateEndDate: String
     let endDate: String
@@ -67,7 +67,7 @@ public struct CurrentSeason {
     }
 }
 
-public struct Winner {
+public struct Winner: Sendable {
     let address: String
     let clubColors: String
     let crest: String
@@ -95,7 +95,7 @@ public struct Winner {
     }
 }
 
-public struct Season {
+public struct Season: Sendable {
     let id: Int
     let startDate: String
     let endDate: String

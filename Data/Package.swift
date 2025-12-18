@@ -17,7 +17,8 @@ let package = Package(
         .package(path: "../Utils"),
         .package(path: "../Domain"),
         .package(url: "https://github.com/Swinject/Swinject.git", from: "2.10.0"),
-        .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.10.0"))
+        .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.10.0")),
+        .package(url: "https://github.com/realm/realm-swift.git", from: "10.54.6")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -28,7 +29,8 @@ let package = Package(
                 .product(name: "Utils", package: "Utils"),
                 .product(name: "Domain", package: "Domain"),
                 .product(name: "Swinject", package: "Swinject"),
-                .product(name: "AlamofireDynamic", package: "Alamofire")
+                .product(name: "AlamofireDynamic", package: "Alamofire"),
+                .product(name: "RealmSwift", package: "realm-swift")
             ],
         ),
 

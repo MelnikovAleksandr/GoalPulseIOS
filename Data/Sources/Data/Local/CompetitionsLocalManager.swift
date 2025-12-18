@@ -42,8 +42,8 @@ public final class CompetitionsLocalManagerImpl: CompetitionsLocalManager {
     }
     
     public func getAllCompetitionsFlow() -> AsyncStream<[Competition]> {
-        return AsyncStream { continuation in
-            guard let realm = realm else {
+        return AsyncStream { [weak self] continuation in
+            guard let realm = self?.realm else {
                 continuation.yield([])
                 continuation.finish()
                 return
@@ -52,12 +52,13 @@ public final class CompetitionsLocalManagerImpl: CompetitionsLocalManager {
             let initialCompetitions = realm.objects(CompetitionEntity.self)
             continuation.yield(initialCompetitions.map { $0.toDomain() })
             
-            self.token = initialCompetitions.observe { changes in
+            self?.token = initialCompetitions.observe { changes in
                 switch changes {
                 case .initial(let results), .update(let results, _, _, _):
                     continuation.yield(results.map { $0.toDomain() })
                 case .error(let error):
                     print("Realm observation error: \(error)")
+                    continuation.finish()
                 }
             }
         }

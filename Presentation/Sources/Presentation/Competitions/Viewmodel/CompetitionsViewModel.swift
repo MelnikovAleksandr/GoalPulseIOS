@@ -15,35 +15,47 @@ public final class CompetitionsViewModel: ObservableObject {
     @Published private(set) var competitions: [Competition] = []
     @Published private(set) var isLoading = false
     @Published private(set) var errorMessage: String?
+    private var loadCompetitionsTask: Task<Void, Never>?
+    private var getAllCompetitionsFromLocalTask: Task<Void, Never>?
     
     public init(repository: CompetitionsRepository) {
         self.repository = repository
-        Task {
+        getCompetitionsFlow()
+        loadCompetitions()
+    }
+    
+    func loadCompetitions() {
+        loadCompetitionsTask?.cancel()
+        loadCompetitionsTask = Task {
+            isLoading = true
+            errorMessage = nil
+            
+            let result = await repository.getAllCompetitionsFromRemoteToLocal()
+            
+            switch result {
+            case .success(let competitions):
+                isLoading = false
+                print("✅ Успешно загружено лиг: \(competitions.count)")
+                
+            case .error(let errorType, _):
+                let message = errorType?.errorMessage ?? "Неизвестная ошибка"
+                self.errorMessage = message
+                isLoading = false
+                print("❌ Ошибка загрузки: \(message)")
+            }
+        }
+    }
+    
+    private func getCompetitionsFlow() {
+        getAllCompetitionsFromLocalTask = Task {
             for await competitions in repository.getAllCompetitionsFromLocal() {
                 self.competitions = competitions
             }
         }
-        Task { 
-            await loadCompetitions()
-        }
     }
     
-    func loadCompetitions() async {
-        isLoading = true
-        errorMessage = nil
-        
-        let result = await repository.getAllCompetitionsFromRemoteToLocal()
-        
-        switch result {
-        case .success(let competitions):
-            isLoading = false
-            print("✅ Успешно загружено лиг: \(competitions.count)")
-            
-        case .error(let errorType, _):
-            let message = errorType?.errorMessage ?? "Неизвестная ошибка"
-            self.errorMessage = message
-            isLoading = false
-            print("❌ Ошибка загрузки: \(message)")
-        }
+    deinit {
+        loadCompetitionsTask?.cancel()
+        getAllCompetitionsFromLocalTask?.cancel()
     }
 }

@@ -80,9 +80,7 @@ public struct CompetitonsPage: View {
             }
             
             Button("Загрузить данные") {
-                Task {
-                    await viewModel.loadCompetitions()
-                }
+                viewModel.loadCompetitions()
             }
             .buttonStyle(.borderedProminent)
             .padding()

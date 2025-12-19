@@ -1,5 +1,5 @@
 //
-//  SwiftUIView.swift
+//  CompetitonsPage.swift
 //  Presentation
 //
 //  Created by Александр Мельников on 06.12.2025.
@@ -44,9 +44,7 @@ public struct CompetitonsPage: View {
                         .multilineTextAlignment(.center)
                     
                     Button("Повторить") {
-                        Task {
-                            await viewModel.loadCompetitions()
-                        }
+                        viewModel.loadCompetitions()
                     }
                     .padding(.top)
                 }

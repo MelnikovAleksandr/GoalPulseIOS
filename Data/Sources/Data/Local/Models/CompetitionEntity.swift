@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  CompetitionEntity.swift
 //  Data
 //
 //  Created by Александр Мельников on 14.12.2025.

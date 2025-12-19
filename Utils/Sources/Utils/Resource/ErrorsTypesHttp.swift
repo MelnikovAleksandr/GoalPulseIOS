@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  ErrorsTypesHttp.swift
 //  Utils
 //
 //  Created by Александр Мельников on 13.12.2025.

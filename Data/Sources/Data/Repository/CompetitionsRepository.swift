@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  CompetitionsRepositoryImpl.swift
 //  Data
 //
 //  Created by Александр Мельников on 13.12.2025.

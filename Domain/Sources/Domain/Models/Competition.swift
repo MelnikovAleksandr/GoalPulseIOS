@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Competition.swift
 //  Domain
 //
 //  Created by Александр Мельников on 13.12.2025.

@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  CompetitionsViewModel.swift
 //  Presentation
 //
 //  Created by Александр Мельников on 13.12.2025.

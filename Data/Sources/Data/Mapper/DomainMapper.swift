@@ -11,7 +11,7 @@ import Domain
 extension CompetitionEntity {
     func toDomain() -> Competition {
         Competition(
-            area: area?.toDomain() ?? Area(code: "", flag: "", id: -1, name: ""),
+            area: area?.toDomain() ?? Area(code: "", flag: nil, id: -1, name: ""),
             code: code ?? "",
             currentSeason: currentSeason?.toDomain() ?? CurrentSeason(
                 currentMatchDay: 0,
@@ -33,7 +33,7 @@ extension CompetitionEntity {
                     venue: ""
                 )
             ),
-            emblem: emblem ?? "",
+            emblem: URL(string: emblem ?? ""),
             id: Int(id),
             lastUpdated: lastUpdated?.description ?? "",
             name: name ?? "",
@@ -49,7 +49,7 @@ extension AreaEntity {
     func toDomain() -> Area {
         Area(
             code: code ?? "",
-            flag: flag ?? "",
+            flag: URL(string: flag ?? ""),
             id: Int(id),
             name: name ?? ""
         )

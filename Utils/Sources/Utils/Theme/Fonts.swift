@@ -11,45 +11,58 @@ extension Font {
     public static let theme = ThemeFonts()
 }
 
+public enum FontsEnum: String, CaseIterable {
+    case Regular = "IBMPlexSans-Regular"
+    case Medium = "IBMPlexSans-Medium"
+    case SemiBold = "IBMPlexSans-SemiBold"
+    case Bold = "IBMPlexSans-Bold"
+    case Light = "IBMPlexSans-Light"
+    case Thin = "IBMPlexSans-Thin"
+    case Italic = "IBMPlexSans-Italic"
+    case MediumItalic = "IBMPlexSans-MediumItalic"
+    case SemiBoldItalic = "IBMPlexSans-SemiBoldItalic"
+    case LightItalic = "IBMPlexSans-LightItalic"
+}
+
 public struct ThemeFonts: Sendable {
     
     public func regular(_ size: CGFloat) -> Font {
-        .custom("IBMPlexSans-Regular", size: size)
+        .custom(FontsEnum.Regular.rawValue, size: size)
     }
     
     public func medium(_ size: CGFloat) -> Font {
-        .custom("IBMPlexSans-Medium", size: size)
+        .custom(FontsEnum.Medium.rawValue, size: size)
     }
     
     public func semiBold(_ size: CGFloat) -> Font {
-        .custom("IBMPlexSans-SemiBold", size: size)
+        .custom(FontsEnum.SemiBold.rawValue, size: size)
     }
     
     public func bold(_ size: CGFloat) -> Font {
-        .custom("IBMPlexSans-Bold", size: size)
+        .custom(FontsEnum.Bold.rawValue, size: size)
     }
     
     public func light(_ size: CGFloat) -> Font {
-        .custom("IBMPlexSans-Light", size: size)
+        .custom(FontsEnum.Light.rawValue, size: size)
     }
     
     public func thin(_ size: CGFloat) -> Font {
-        .custom("IBMPlexSans-Thin", size: size)
+        .custom(FontsEnum.Thin.rawValue, size: size)
     }
     
     public func italic(_ size: CGFloat) -> Font {
-        .custom("IBMPlexSans-Italic", size: size)
+        .custom(FontsEnum.Italic.rawValue, size: size)
     }
     
     public func mediumItalic(_ size: CGFloat) -> Font {
-        .custom("IBMPlexSans-MediumItalic", size: size)
+        .custom(FontsEnum.MediumItalic.rawValue, size: size)
     }
     
     public func semiBoldItalic(_ size: CGFloat) -> Font {
-        .custom("IBMPlexSans-SemiBoldItalic", size: size)
+        .custom(FontsEnum.SemiBoldItalic.rawValue, size: size)
     }
     
     public func lightItalic(_ size: CGFloat) -> Font {
-        .custom("IBMPlexSans-LightItalic", size: size)
+        .custom(FontsEnum.LightItalic.rawValue, size: size)
     }
 }

@@ -13,15 +13,15 @@ extension Color {
 
 public struct ThemeColors : Sendable {
     
-    public let background = Color("Background")
-    public let surface = Color("Surface")
-    public let primary = Color("Primary")
-    public let primaryContainer = Color("PrimaryContainer")
-    public let secondary = Color("Secondary")
-    public let onBackground = Color("OnBackground")
-    public let onSurface = Color("OnSurface")
-    public let onPrimary = Color("OnPrimary")
-    public let onPrimaryContainer = Color("OnPrimaryContainer")
-    public let onSecondary = Color("OnSecondary")
-    public let error = Color("Error")
+    public let background = Color(.onPrimary)
+    public let surface = Color(.surface)
+    public let primary = Color(.primary)
+    public let primaryContainer = Color(.primaryContainer)
+    public let secondary = Color(.secondary)
+    public let onBackground = Color(.onBackground)
+    public let onSurface = Color(.onSurface)
+    public let onPrimary = Color(.onPrimary)
+    public let onPrimaryContainer = Color(.onPrimaryContainer)
+    public let onSecondary = Color(.onSecondary)
+    public let error = Color(.error)
 }

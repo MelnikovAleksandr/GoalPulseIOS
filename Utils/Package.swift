@@ -23,7 +23,8 @@ let package = Package(
             name: "Utils",
             dependencies: [
                 .product(name: "Swinject", package: "Swinject")
-            ]
+            ],
+            resources: [.process("Resources")]
         ),
 
     ]

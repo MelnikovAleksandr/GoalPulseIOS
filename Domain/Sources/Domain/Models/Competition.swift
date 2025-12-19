@@ -8,19 +8,19 @@
 import Foundation
 
 public struct Competition: Identifiable, Sendable {
-   public let area: Area
-   public let code: String
-   public let currentSeason: CurrentSeason
-   public let emblem: String
-   public let id: Int
-   public let lastUpdated: String
-   public let name: String
-   public let numberOfAvailableSeasons: Int
-   public let plan: String
-   public let type: String
-   public let seasons: [Season]
+    public let area: Area
+    public let code: String
+    public let currentSeason: CurrentSeason
+    public let emblem: URL?
+    public let id: Int
+    public let lastUpdated: String
+    public let name: String
+    public let numberOfAvailableSeasons: Int
+    public let plan: String
+    public let type: String
+    public let seasons: [Season]
     
-    public init(area: Area, code: String, currentSeason: CurrentSeason, emblem: String, id: Int, lastUpdated: String, name: String, numberOfAvailableSeasons: Int, plan: String, type: String, seasons: [Season]) {
+    public init(area: Area, code: String, currentSeason: CurrentSeason, emblem: URL?, id: Int, lastUpdated: String, name: String, numberOfAvailableSeasons: Int, plan: String, type: String, seasons: [Season]) {
         self.area = area
         self.code = code
         self.currentSeason = currentSeason
@@ -36,12 +36,12 @@ public struct Competition: Identifiable, Sendable {
 }
 
 public struct Area: Sendable {
-    let code: String
-    let flag: String
-    let id: Int
-    let name: String
+    public let code: String
+    public let flag: URL?
+    public let id: Int
+    public let name: String
     
-    public init(code: String, flag: String, id: Int, name: String) {
+    public init(code: String, flag: URL?, id: Int, name: String) {
         self.code = code
         self.flag = flag
         self.id = id
@@ -50,12 +50,12 @@ public struct Area: Sendable {
 }
 
 public struct CurrentSeason: Sendable {
-    let currentMatchDay: Int
-    let startDateEndDate: String
-    let endDate: String
-    let id: Int
-    let startDate: String
-    let winner: Winner
+    public let currentMatchDay: Int
+    public let startDateEndDate: String
+    public let endDate: String
+    public let id: Int
+    public let startDate: String
+    public let winner: Winner
     
     public init(currentMatchDay: Int, startDateEndDate: String, endDate: String, id: Int, startDate: String, winner: Winner) {
         self.currentMatchDay = currentMatchDay
@@ -68,17 +68,17 @@ public struct CurrentSeason: Sendable {
 }
 
 public struct Winner: Sendable {
-    let address: String
-    let clubColors: String
-    let crest: String
-    let founded: Int
-    let id: Int
-    let lastUpdated: String
-    let name: String
-    let shortName: String
-    let tla: String
-    let website: String
-    let venue: String
+    public let address: String
+    public let clubColors: String
+    public let crest: String
+    public let founded: Int
+    public let id: Int
+    public let lastUpdated: String
+    public let name: String
+    public let shortName: String
+    public let tla: String
+    public let website: String
+    public let venue: String
     
     public init(address: String, clubColors: String, crest: String, founded: Int, id: Int, lastUpdated: String, name: String, shortName: String, tla: String, website: String, venue: String) {
         self.address = address
@@ -96,9 +96,9 @@ public struct Winner: Sendable {
 }
 
 public struct Season: Sendable {
-    let id: Int
-    let startDate: String
-    let endDate: String
+    public let id: Int
+    public let startDate: String
+    public let endDate: String
     
     public init(id: Int, startDate: String, endDate: String) {
         self.id = id

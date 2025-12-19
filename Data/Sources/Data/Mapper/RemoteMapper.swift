@@ -11,7 +11,7 @@ import Domain
 func convertAreaDTOToDomain(_ dto: AreaDTO?) -> Area {
     return Area(
         code: dto?.code ?? "",
-        flag: dto?.flag ?? "",
+        flag: URL(string: dto?.flag ?? ""),
         id: dto?.id ?? -1,
         name: dto?.name ?? ""
     )
@@ -49,7 +49,7 @@ func convertToDomain(_ dto: CompetitionDTO) -> Competition {
         area: convertAreaDTOToDomain(dto.area),
         code: dto.code ?? "",
         currentSeason: convertCurrentSeasonDTOToDomain(dto.currentSeason),
-        emblem: dto.emblem ?? "",
+        emblem: URL(string: dto.emblem ?? ""),
         id: dto.id ?? -1,
         lastUpdated: dto.lastUpdated?.description ?? "",
         name: dto.name ?? "",

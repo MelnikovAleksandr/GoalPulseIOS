@@ -57,16 +57,7 @@ public struct CompetitonsPage: View {
                         .font(.headline)
                     
                     List(viewModel.competitions) { competition in
-                        VStack(alignment: .leading) {
-                            Text(competition.name)
-                                .font(.headline)
-                            Text("ID: \(competition.id)")
-                                .font(.caption)
-                                .foregroundColor(.gray)
-                            Text("ID: \(competition.lastUpdated)")
-                                .font(.caption)
-                                .foregroundColor(.gray)
-                        }
+                        CompetitionItem(competition: competition)
                     }
                     .listStyle(.plain)
                     .frame(height: 300)

@@ -19,6 +19,7 @@ class Resolver {
     private var container = Container()
     
     func injectModules() {
+        FontsHelper.resigterFonts()
         injectUtils()
         injectDataSources()
         injectViewModels()

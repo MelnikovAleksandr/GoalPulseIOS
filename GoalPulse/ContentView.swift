@@ -18,7 +18,6 @@ struct ContentView: View {
     var body: some View {
         NavigationStack(path: $navigationManager.path) {
             CompetitonsPage(navigationManager: $navigationManager, viewModel: $competitionsViewModel)
-                .padding()
                 .navigationDestination(for: Routes.self) { page in
                     switch page {
                     case .standlings: StandlingsPage(navigationManager: $navigationManager)

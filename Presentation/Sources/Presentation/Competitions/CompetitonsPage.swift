@@ -12,6 +12,7 @@ import Observation
 public struct CompetitonsPage: View {
     @Binding var navigationManager: NavigationManager
     @ObservedObject private var viewModel: CompetitionsViewModel
+    @State private var isRefreshing = false
     
     public init(navigationManager: Binding<NavigationManager>, viewModel: Binding<CompetitionsViewModel>) {
         self._navigationManager = navigationManager
@@ -19,67 +20,34 @@ public struct CompetitonsPage: View {
     }
     
     public var body: some View {
-        VStack(spacing: 20) {
-            Text("CompetitionsPage")
-                .font(.title)
-                .padding()
-            
-            if viewModel.isLoading {
-                VStack {
-                    ProgressView()
-                    Text("Загрузка данных...")
-                        .font(.caption)
-                        .foregroundColor(.gray)
-                }
-                .padding()
-            }
-            
-            if let error = viewModel.errorMessage {
-                VStack {
-                    Image(systemName: "exclamationmark.triangle")
-                        .foregroundColor(.red)
-                        .font(.largeTitle)
-                    Text(error)
-                        .foregroundColor(.red)
-                        .multilineTextAlignment(.center)
-                    
-                    Button("Повторить") {
-                        viewModel.loadCompetitions()
+        ZStack {
+            if viewModel.isLoading && viewModel.competitions.isEmpty {
+                ProgressView()
+                    .scaleEffect(2)
+                    .tint(Color.theme.primary)
+            } else {
+                ScrollView {
+                    LazyVStack(spacing: 12) {
+                        ForEach(viewModel.competitions) { competition in
+                            CompetitionItem(competition: competition)
+                                .onTapGesture {
+                                    navigationManager.toStandlings()
+                                }
+                        }
                     }
-                    .padding(.top)
                 }
-                .padding()
-            }
-            
-            if !viewModel.competitions.isEmpty {
-                VStack(alignment: .leading) {
-                    Text("Загружено лиг: \(viewModel.competitions.count)")
-                        .font(.headline)
-                    
-                    List(viewModel.competitions) { competition in
-                        CompetitionItem(competition: competition)
+                .overlay {
+                    if viewModel.isLoading {
+                        ProgressView()
+                            .scaleEffect(2)
+                            .tint(Color.theme.primary)
                     }
-                    .listStyle(.plain)
-                    .frame(height: 300)
                 }
-                .padding()
-            } else if !viewModel.isLoading && viewModel.errorMessage == nil {
-                Text("Нет данных")
-                    .foregroundColor(.gray)
+                .refreshable {
+                    viewModel.loadCompetitions()
+                }
             }
-            
-            Button("Загрузить данные") {
-                viewModel.loadCompetitions()
-            }
-            .buttonStyle(.borderedProminent)
-            .padding()
-            
-            Button("Go to Standings") {
-                navigationManager.toStandlings()
-            }
-            .buttonStyle(.bordered)
         }
-        .padding()
     }
 }
 

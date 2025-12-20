@@ -13,7 +13,7 @@ extension Color {
 
 public struct ThemeColors : Sendable {
     
-    public let background = Color(.onPrimary)
+    public let background = Color(.background)
     public let surface = Color(.surface)
     public let primary = Color(.primary)
     public let primaryContainer = Color(.primaryContainer)

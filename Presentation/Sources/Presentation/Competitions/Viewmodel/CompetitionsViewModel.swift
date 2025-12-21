@@ -29,8 +29,6 @@ public final class CompetitionsViewModel: ObservableObject {
         loadCompetitionsTask = Task {
             isLoading = true
             
-            try? await Task.sleep(nanoseconds: 5_000_000_000)
-            
             errorMessage = nil
             
             let result = await repository.getAllCompetitionsFromRemoteToLocal()

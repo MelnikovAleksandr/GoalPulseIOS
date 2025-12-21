@@ -19,6 +19,7 @@ class Resolver {
     private var container = Container()
     
     func injectModules() {
+        SVGHelper.setUpDependencies()
         FontsHelper.resigterFonts()
         injectUtils()
         injectDataSources()

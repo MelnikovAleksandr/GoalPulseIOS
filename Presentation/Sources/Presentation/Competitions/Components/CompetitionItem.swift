@@ -14,19 +14,7 @@ struct CompetitionItem: View {
     
     var body: some View {
         HStack {
-            AsyncImage(url: competition.emblem) { phase in
-                if let image = phase.image {
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                } else if phase.error != nil {
-                    Image(systemName: "photo")
-                } else {
-                    ProgressView()
-                }
-            }
-            .frame(width: 100, height: 100)
-            .padding(8)
+            AsyncMultiImage(url: competition.emblem, width: 100, height: 100).padding(8)
             
             Spacer()
             
@@ -36,14 +24,9 @@ struct CompetitionItem: View {
                         .lineLimit(1)
                         .font(.theme.semiBoldItalic(18))
                         .foregroundColor(Color.theme.onBackground)
-                    AsyncSVGImage(url: competition.area.flag) { image in
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                    } placeholder: {
-                        ProgressView()
-                    }
-                    .frame(width: 24, height: 24)
+                    
+                    AsyncMultiImage(url: competition.area.flag, width: 24, height: 24)
+                    
                 }
                 Text("Start: \(competition.currentSeason.startDate)")
                     .lineLimit(1)
@@ -62,12 +45,14 @@ struct CompetitionItem: View {
         .background(
             RoundedRectangle(cornerRadius: 12)
                 .fill(Color.theme.background)
+                .opacity(0.8)
         )
         .frame(maxWidth: .infinity)
     }
 }
 
 #Preview {
-    CompetitionItem(competition: MockUIData.competition)
+    SVGHelper.setUpDependencies()
+    return CompetitionItem(competition: MockUIData.competition)
         .loadCustomFonts()
 }

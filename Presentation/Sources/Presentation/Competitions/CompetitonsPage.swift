@@ -21,6 +21,7 @@ public struct CompetitonsPage: View {
     
     public var body: some View {
         ZStack {
+            LoadingPlayerView().ignoresSafeArea(.all)
             if viewModel.isLoading && viewModel.competitions.isEmpty {
                 ProgressView()
                     .scaleEffect(2)
@@ -35,6 +36,9 @@ public struct CompetitonsPage: View {
                                 }
                         }
                     }
+                }
+                .onAppear {
+                    UIRefreshControl.appearance().tintColor = UIColor(Color.theme.primary)
                 }
                 .overlay {
                     if viewModel.isLoading {

@@ -28,15 +28,15 @@ struct CompetitionItem: View {
                     AsyncMultiImage(url: competition.area.flag, width: 24, height: 24)
                     
                 }
-                Text("Start: \(competition.currentSeason.startDate)")
+                Text("\(Locale.get("Start")) \(competition.currentSeason.startDate)")
                     .lineLimit(1)
                     .font(.theme.medium(14))
                     .foregroundColor(Color.theme.secondary)
-                Text("End: \(competition.currentSeason.endDate)")
+                Text("\(Locale.get("End")) \(competition.currentSeason.endDate)")
                     .lineLimit(1)
                     .font(.theme.medium(14))
                     .foregroundColor(Color.theme.secondary)
-                Text("Current tour: \(competition.currentSeason.currentMatchDay)")
+                Text("\(Locale.get("CurrentTour")) \(competition.currentSeason.currentMatchDay)")
                     .lineLimit(1)
                     .font(.theme.medium(14))
                     .foregroundColor(Color.theme.secondary)

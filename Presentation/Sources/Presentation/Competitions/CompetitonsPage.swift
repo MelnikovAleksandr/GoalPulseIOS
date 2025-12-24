@@ -13,6 +13,7 @@ public struct CompetitonsPage: View {
     @Binding var navigationManager: NavigationManager
     @ObservedObject private var viewModel: CompetitionsViewModel
     @State private var isRefreshing = false
+    @State var scrollOffset: CGFloat = 0.0
     
     public init(navigationManager: Binding<NavigationManager>, viewModel: Binding<CompetitionsViewModel>) {
         self._navigationManager = navigationManager
@@ -28,15 +29,29 @@ public struct CompetitonsPage: View {
                     .tint(Color.theme.primary)
             } else {
                 ScrollView {
-                    LazyVStack(spacing: 12) {
-                        ForEach(viewModel.competitions) { competition in
-                            CompetitionItem(competition: competition)
-                                .onTapGesture {
-                                    navigationManager.toStandlings()
-                                }
+                    LazyVStack(spacing: 12, pinnedViews: [.sectionHeaders]) {
+                        Section {
+                            ForEach(viewModel.competitions) { competition in
+                                CompetitionItem(competition: competition)
+                                    .onTapGesture {
+                                        navigationManager.toStandlings()
+                                    }
+                            }
+                            .scrollTransition { content, phase in
+                                content
+                                    .opacity(phase.isIdentity ? 1.0 : 0.9)
+                                    .scaleEffect(phase.isIdentity ? 1.0 : 0.9)
+                            }
+                        } header: {
+                            Header(scrollOffset: scrollOffset)
                         }
                     }
                 }
+                .onScrollGeometryChange(for: CGFloat.self, of: { geometry in
+                    geometry.contentOffset.y
+                }, action: { _, newValue in
+                    scrollOffset = newValue
+                })
                 .onAppear {
                     UIRefreshControl.appearance().tintColor = UIColor(Color.theme.primary)
                 }
@@ -52,6 +67,7 @@ public struct CompetitonsPage: View {
                 }
             }
         }
+        .snackbar(show: $viewModel.showSnackBar, bgColor: Color.theme.error, txtColor: Color.theme.surface, icon: "xmark", iconColor: Color.theme.surface, message: viewModel.errorMessage ?? "")
     }
 }
 

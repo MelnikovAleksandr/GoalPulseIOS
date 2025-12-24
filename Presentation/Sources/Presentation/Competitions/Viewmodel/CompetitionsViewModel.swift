@@ -8,6 +8,7 @@
 import Foundation
 import Domain
 import Combine
+import Utils
 
 @MainActor
 public final class CompetitionsViewModel: ObservableObject {
@@ -15,6 +16,7 @@ public final class CompetitionsViewModel: ObservableObject {
     @Published private(set) var competitions: [Competition] = []
     @Published private(set) var isLoading = false
     @Published private(set) var errorMessage: String?
+    @Published var showSnackBar: Bool = false
     private var loadCompetitionsTask: Task<Void, Never>?
     private var getAllCompetitionsFromLocalTask: Task<Void, Never>?
     
@@ -28,8 +30,8 @@ public final class CompetitionsViewModel: ObservableObject {
         loadCompetitionsTask?.cancel()
         loadCompetitionsTask = Task {
             isLoading = true
-            
             errorMessage = nil
+            showSnackBar = false
             
             let result = await repository.getAllCompetitionsFromRemoteToLocal()
             
@@ -39,9 +41,10 @@ public final class CompetitionsViewModel: ObservableObject {
                 print("✅ Успешно загружено лиг: \(competitions.count)")
                 
             case .error(let errorType, _):
-                let message = errorType?.errorMessage ?? "Неизвестная ошибка"
+                let message = errorType?.errorMessage ?? Locale.get("UnknownError")
                 self.errorMessage = message
                 isLoading = false
+                showSnackBar = true
                 print("❌ Ошибка загрузки: \(message)")
             }
         }

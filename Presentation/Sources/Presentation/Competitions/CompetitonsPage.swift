@@ -47,6 +47,7 @@ public struct CompetitonsPage: View {
                         }
                     }
                 }
+                .animation(.spring(), value: viewModel.competitions)
                 .onScrollGeometryChange(for: CGFloat.self, of: { geometry in
                     geometry.contentOffset.y
                 }, action: { _, newValue in

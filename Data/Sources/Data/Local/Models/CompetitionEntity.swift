@@ -8,47 +8,45 @@
 import Foundation
 import RealmSwift
 
-class CompetitionEntity: Object, Identifiable {
-    @Persisted(primaryKey: true) var id: Int64
+public class CompetitionEntity: Object, Identifiable {
+    @Persisted(primaryKey: true) public var id: Int
     @Persisted var name: String?
     @Persisted var code: String?
     @Persisted var emblem: String?
     @Persisted var type: String?
     @Persisted var plan: String?
-    @Persisted var numberOfAvailableSeasons: Int64
+    @Persisted var numberOfAvailableSeasons: Int
     @Persisted var lastUpdated: Date?
-    
     @Persisted var area: AreaEntity?
     @Persisted var currentSeason: CurrentSeasonEntity?
 }
 
-class AreaEntity: Object, Identifiable {
-    @Persisted(primaryKey: true) var id: Int64
+class AreaEntity: EmbeddedObject {
+    @Persisted var id: Int
     @Persisted var name: String?
     @Persisted var code: String?
     @Persisted var flag: String?
 }
 
-class WinnerEntity: Object, Identifiable {
-    @Persisted(primaryKey: true) var id: Int64
+class TeamEntity: EmbeddedObject {
+    @Persisted var id: Int
     @Persisted var name: String?
     @Persisted var shortName: String?
     @Persisted var tla: String?
     @Persisted var crest: String?
     @Persisted var address: String?
     @Persisted var website: String?
-    @Persisted var founded: Int64
+    @Persisted var founded: Int
     @Persisted var clubColors: String?
     @Persisted var venue: String?
     @Persisted var lastUpdated: Date?
 }
 
-class CurrentSeasonEntity: Object, Identifiable {
-    @Persisted(primaryKey: true) var id: Int64
+class CurrentSeasonEntity: EmbeddedObject {
+    @Persisted var id: Int
     @Persisted var startDate: String?
     @Persisted var endDate: String?
-    @Persisted var currentMatchday: Int64
-    
-    @Persisted var winner: WinnerEntity?
+    @Persisted var currentMatchday: Int
+    @Persisted var winner: TeamEntity?
 }
 

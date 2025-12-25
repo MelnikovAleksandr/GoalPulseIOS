@@ -11,36 +11,24 @@ import Domain
 extension CompetitionEntity {
     func toDomain() -> Competition {
         Competition(
-            area: area?.toDomain() ?? Area(code: "", flag: nil, id: -1, name: ""),
+            area: area?.toDomain() ?? Area(code: "", flag: nil, id: abs(UUID().hashValue), name: ""),
             code: code ?? "",
             currentSeason: currentSeason?.toDomain() ?? CurrentSeason(
                 currentMatchDay: 0,
                 startDateEndDate: "",
                 endDate: "",
-                id: -1,
+                id: abs(UUID().hashValue),
                 startDate: "",
-                winner: Winner(
-                    address: "",
-                    clubColors: "",
-                    crest: "",
-                    founded: 0,
-                    id: -1,
-                    lastUpdated: "",
-                    name: "",
-                    shortName: "",
-                    tla: "",
-                    website: "",
-                    venue: ""
-                )
+                winner: nil
             ),
             emblem: URL(string: emblem ?? ""),
-            id: Int(id),
+            id: id,
             lastUpdated: lastUpdated?.description ?? "",
             name: name ?? "",
-            numberOfAvailableSeasons: Int(numberOfAvailableSeasons),
+            numberOfAvailableSeasons: numberOfAvailableSeasons,
             plan: plan ?? "",
             type: type ?? "",
-            seasons: [] 
+            seasons: []
         )
     }
 }
@@ -50,20 +38,20 @@ extension AreaEntity {
         Area(
             code: code ?? "",
             flag: URL(string: flag ?? ""),
-            id: Int(id),
+            id: id,
             name: name ?? ""
         )
     }
 }
 
-extension WinnerEntity {
-    func toDomain() -> Winner {
-        Winner(
+extension TeamEntity {
+    func toDomain() -> Team {
+        Team(
             address: address ?? "",
             clubColors: clubColors ?? "",
             crest: crest ?? "",
-            founded: Int(founded),
-            id: Int(id),
+            founded: founded,
+            id: id,
             lastUpdated: lastUpdated?.description ?? "",
             name: name ?? "",
             shortName: shortName ?? "",
@@ -77,17 +65,17 @@ extension WinnerEntity {
 extension CurrentSeasonEntity {
     func toDomain() -> CurrentSeason {
         CurrentSeason(
-            currentMatchDay: Int(currentMatchday),
+            currentMatchDay: currentMatchday,
             startDateEndDate: "\(startDate ?? "")/\(endDate ?? "")",
             endDate: endDate ?? "",
-            id: Int(id),
+            id: id,
             startDate: startDate ?? "",
-            winner: winner?.toDomain() ?? Winner(
+            winner: winner?.toDomain() ?? Team(
                 address: "",
                 clubColors: "",
                 crest: "",
                 founded: 0,
-                id: -1,
+                id: abs(UUID().hashValue),
                 lastUpdated: "",
                 name: "",
                 shortName: "",
@@ -96,5 +84,70 @@ extension CurrentSeasonEntity {
                 venue: ""
             )
         )
+    }
+}
+
+extension StandingsEntity {
+    func toDomain() -> Standings {
+        Standings(
+            id: id,
+            area: area?.toDomain() ?? Area(code: "", flag: nil, id: abs(UUID().hashValue), name: ""),
+            competition: competition?.toDomain() ?? Competition(
+                area: area?.toDomain() ?? Area(code: "", flag: nil, id: abs(UUID().hashValue), name: ""),
+                code: "",
+                currentSeason: currentSeason?.toDomain() ?? CurrentSeason(
+                    currentMatchDay: 0,
+                    startDateEndDate: "",
+                    endDate: "",
+                    id: abs(UUID().hashValue),
+                    startDate: "",
+                    winner: nil
+                ),
+                emblem: nil,
+                id: abs(UUID().hashValue),
+                lastUpdated: "",
+                name: "",
+                numberOfAvailableSeasons: 0,
+                plan: "",
+                type: "",
+                seasons: []
+            ),
+            season: currentSeason?.toDomain() ?? CurrentSeason(
+                currentMatchDay: 0,
+                startDateEndDate: "",
+                endDate: "",
+                id: abs(UUID().hashValue),
+                startDate: "",
+                winner: nil
+            ),
+            standings: standing.compactMap { $0.toDomain() })
+    }
+}
+
+extension StandingEntity {
+    func toDomain() -> Standing {
+        Standing(
+            stage: stage ?? "",
+            type: type ?? "",
+            group: group ?? "",
+            table: table.compactMap { $0.toDomain() }
+        )
+    }
+}
+
+extension TableEntity {
+    func toDomain() -> Table {
+        Table(
+            position: position ?? 0,
+            team: team?.toDomain(),
+            playedGames: playedGames ?? 0,
+            form: form ?? "",
+            won: won ?? 0,
+            draw: draw ?? 0,
+            lost: lost ?? 0,
+            points: points ?? 0,
+            goalsFor: goalsFor ?? 0,
+            goalsAgainst: goalsAgainst ?? 0,
+            goalDifference: goalDifference ?? 0)
     }
 }

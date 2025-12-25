@@ -27,8 +27,8 @@ final class MockFootballRepository: CompetitionsRepository {
         }
     }
     
-    func getAllCompetitionsFromRemoteToLocal() async -> Resource<[Competition]> {
-        return .success([])
+    func getAllCompetitionsFromRemoteToLocal() async -> Resource<Bool> {
+        return .success(true)
     }
 }
 
@@ -48,7 +48,7 @@ class MockUIData {
             endDate: "2025-12-21",
             id: 2371,
             startDate: "2025-03-29",
-            winner: Winner(
+            winner: Team(
                 address: "",
                 clubColors: "",
                 crest: "",

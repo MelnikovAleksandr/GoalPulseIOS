@@ -13,6 +13,7 @@ public protocol ErrorsHandler: Sendable {
     func executeSafely<T>(_ block: () async throws -> Resource<T>) async -> Resource<T>
 }
 
+// TODO LOCALIZE ALL ERRORS TYPES
 public final class ErrorsHandlerImpl: ErrorsHandler {
     
     public init() {}
@@ -26,6 +27,8 @@ public final class ErrorsHandlerImpl: ErrorsHandler {
             return .error(.missingConnection(message: error.localizedDescription), nil)
         } catch let error as AFError {
             return handleAFError(error)
+        } catch let error as NSError {
+            return handleNSError(error)
         } catch {
             return .error(.unknown(message: error.localizedDescription), nil)
         }
@@ -43,6 +46,21 @@ public final class ErrorsHandlerImpl: ErrorsHandler {
             return .error(.https500(errorCode: responseCode, message: error.localizedDescription), nil)
         default:
             return .error(.unknown(message: error.localizedDescription), nil)
+        }
+    }
+    
+    private func handleNSError<T>(_ error: NSError) -> Resource<T> {
+        let responseCode = error.code
+        let errorMessage = error.userInfo[NSLocalizedDescriptionKey] as? String
+                ?? error.localizedDescription
+        
+        switch responseCode {
+        case 400...499:
+            return .error(.https400(errorCode: responseCode, message: errorMessage), nil)
+        case 500...599:
+            return .error(.https500(errorCode: responseCode, message: errorMessage), nil)
+        default:
+            return .error(.unknown(message: errorMessage), nil)
         }
     }
 }

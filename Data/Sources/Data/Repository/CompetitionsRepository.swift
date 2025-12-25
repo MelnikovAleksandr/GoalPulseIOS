@@ -22,7 +22,7 @@ public final class CompetitionsRepositoryImpl: CompetitionsRepository {
         self.competitionsLocalManager = competitionsLocalManager
     }
     
-    public func getAllCompetitionsFromRemoteToLocal() async -> Resource<[Competition]> {
+    public func getAllCompetitionsFromRemoteToLocal() async -> Resource<Bool> {
         return await errorHandler.executeSafely {
             let response: CompetitionModelDTO = try await self.networkService.performRequest(
                 "competitions/",
@@ -30,17 +30,14 @@ public final class CompetitionsRepositoryImpl: CompetitionsRepository {
                 parameters: nil,
                 encoding: URLEncoding.default
             )
-            guard let competitionsDTO = response.competitions else {
-                return .success([])
-            }
             
-            try await self.competitionsLocalManager.saveCompetitions(competitionsDTO)
-            
-            let competitions = competitionsDTO.compactMap { dto in
-                convertToDomain(dto)
-            }
-            
-            return .success(competitions)
+            let competitionsEntities = response.competitions?.compactMap { dto in
+                CompetitionEntity.from(dto: dto)
+            } ?? []
+
+            try await self.competitionsLocalManager.saveCompetitions(competitionsEntities)
+        
+            return .success(true)
         }
     }
     

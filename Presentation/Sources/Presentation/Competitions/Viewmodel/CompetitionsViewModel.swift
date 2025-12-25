@@ -36,16 +36,15 @@ public final class CompetitionsViewModel: ObservableObject {
             let result = await repository.getAllCompetitionsFromRemoteToLocal()
             
             switch result {
-            case .success(let competitions):
+            case .success(_):
                 isLoading = false
-                print("✅ Успешно загружено лиг: \(competitions.count)")
                 
             case .error(let errorType, _):
                 let message = errorType?.errorMessage ?? Locale.get("UnknownError")
                 self.errorMessage = message
                 isLoading = false
                 showSnackBar = true
-                print("❌ Ошибка загрузки: \(message)")
+                print("❌ Fetch error: \(message)")
             }
         }
     }

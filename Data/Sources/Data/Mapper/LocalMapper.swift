@@ -9,15 +9,16 @@ import Foundation
 import RealmSwift
 
 extension CompetitionEntity {
-    static func from(dto: CompetitionDTO) -> CompetitionEntity {
+    static func from(dto: CompetitionDTO?) -> CompetitionEntity? {
+        guard let dto = dto else { return nil }
         let entity = CompetitionEntity()
-        entity.id = Int64(dto.id ?? -1)
+        entity.id = dto.id ?? abs(UUID().hashValue)
         entity.name = dto.name
         entity.code = dto.code
         entity.emblem = dto.emblem
         entity.type = dto.type?.rawValue
         entity.plan = dto.plan?.rawValue
-        entity.numberOfAvailableSeasons = Int64(dto.numberOfAvailableSeasons ?? 0)
+        entity.numberOfAvailableSeasons = dto.numberOfAvailableSeasons ?? 0
         entity.lastUpdated = dto.lastUpdated
         entity.area = AreaEntity.from(dto: dto.area)
         entity.currentSeason = CurrentSeasonEntity.from(dto: dto.currentSeason)
@@ -29,7 +30,7 @@ extension AreaEntity {
     static func from(dto: AreaDTO?) -> AreaEntity? {
         guard let dto = dto else { return nil }
         let entity = AreaEntity()
-        entity.id = Int64(dto.id ?? -1)
+        entity.id = dto.id ?? abs(UUID().hashValue)
         entity.name = dto.name
         entity.code = dto.code
         entity.flag = dto.flag
@@ -37,18 +38,18 @@ extension AreaEntity {
     }
 }
 
-extension WinnerEntity {
-    static func from(dto: WinnerDTO?) -> WinnerEntity? {
+extension TeamEntity {
+    static func from(dto: TeamDTO?) -> TeamEntity? {
         guard let dto = dto else { return nil }
-        let entity = WinnerEntity()
-        entity.id = Int64(dto.id ?? -1)
+        let entity = TeamEntity()
+        entity.id = dto.id ?? abs(UUID().hashValue)
         entity.name = dto.name
         entity.shortName = dto.shortName
         entity.tla = dto.tla
         entity.crest = dto.crest
         entity.address = dto.address
         entity.website = dto.website
-        entity.founded = Int64(dto.founded ?? 0)
+        entity.founded = dto.founded ?? 0
         entity.clubColors = dto.clubColors
         entity.venue = dto.venue
         entity.lastUpdated = dto.lastUpdated
@@ -60,11 +61,56 @@ extension CurrentSeasonEntity {
     static func from(dto: CurrentSeasonDTO?) -> CurrentSeasonEntity? {
         guard let dto = dto else { return nil }
         let entity = CurrentSeasonEntity()
-        entity.id = Int64(dto.id ?? -1)
+        entity.id = dto.id ?? abs(UUID().hashValue)
         entity.startDate = dto.startDate
         entity.endDate = dto.endDate
-        entity.currentMatchday = Int64(dto.currentMatchday ?? 0)
-        entity.winner = WinnerEntity.from(dto: dto.winner)
+        entity.currentMatchday = dto.currentMatchday ?? 0
+        entity.winner = TeamEntity.from(dto: dto.winner)
+        return entity
+    }
+}
+
+extension StandingsEntity {
+    static func from(dto: StandingsDTO?) -> StandingsEntity? {
+        guard let dto = dto else { return nil }
+        let entity = StandingsEntity()
+        entity.id = dto.competition?.id ?? abs(UUID().hashValue)
+        entity.area = AreaEntity.from(dto: dto.area)
+        entity.competition = CompetitionEntity.from(dto: dto.competition)
+        entity.currentSeason = CurrentSeasonEntity.from(dto: dto.season)
+        entity.standing.append(objectsIn: dto.standings?.compactMap { StandingEntity.from(dto: $0) } ?? [])
+        return entity
+    }
+    
+}
+
+extension StandingEntity {
+    static func from(dto: StandingDTO?) -> StandingEntity? {
+        guard let dto = dto else { return nil }
+        let entity = StandingEntity()
+        entity.stage = dto.stage
+        entity.type = dto.type
+        entity.group = dto.group
+        entity.table.append(objectsIn: dto.table?.compactMap { TableEntity.from(dto: $0) } ?? [])
+        return entity
+    }
+}
+
+extension TableEntity {
+    static func from(dto: TableDTO?) -> TableEntity? {
+        guard let dto = dto else { return nil }
+        let entity = TableEntity()
+        entity.position = dto.position
+        entity.playedGames = dto.playedGames
+        entity.form = dto.form
+        entity.won = dto.won
+        entity.draw = dto.draw
+        entity.lost = dto.lost
+        entity.points = dto.points
+        entity.goalsFor = dto.goalsFor
+        entity.goalsAgainst = dto.goalsAgainst
+        entity.goalDifference = dto.goalDifference
+        entity.team = TeamEntity.from(dto: dto.team)
         return entity
     }
 }

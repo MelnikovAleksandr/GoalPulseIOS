@@ -9,7 +9,7 @@ import Foundation
 import Utils
 
 public protocol CompetitionsRepository: Sendable {
-    func getAllCompetitionsFromRemoteToLocal() async -> Resource<[Competition]>
+    func getAllCompetitionsFromRemoteToLocal() async -> Resource<Bool>
     @MainActor
     func getAllCompetitionsFromLocal() -> AsyncStream<[Competition]>
 }

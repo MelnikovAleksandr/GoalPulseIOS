@@ -11,7 +11,7 @@ import Domain
 
 @MainActor
 public protocol CompetitionsLocalManager: Sendable {
-    func saveCompetitions(_ competitionsDTO: [CompetitionDTO]) async throws
+    func saveCompetitions(_ competitions: [CompetitionEntity]) async throws
     func getAllCompetitionsFlow() -> AsyncStream<[Competition]>
 }
 
@@ -28,15 +28,14 @@ public final class CompetitionsLocalManagerImpl: CompetitionsLocalManager {
         token?.invalidate()
     }
     
-    public func saveCompetitions(_ competitionsDTO: [CompetitionDTO]) async throws {
+    public func saveCompetitions(_ competitions: [CompetitionEntity]) async throws {
         guard let realm = realm else { throw NSError(domain: "Realm not initialized", code: 0) }
         
         try realm.write {
             realm.delete(realm.objects(CompetitionEntity.self))
             
-            for dto in competitionsDTO {
-                let entity = CompetitionEntity.from(dto: dto)
-                realm.add(entity, update: .modified)
+            for comp in competitions {
+                realm.add(comp, update: .modified)
             }
         }
     }
@@ -66,7 +65,7 @@ public final class CompetitionsLocalManagerImpl: CompetitionsLocalManager {
     
     private func openRealm() {
         do {
-            let config = Realm.Configuration(schemaVersion: 1)
+            let config = Realm.Configuration(schemaVersion: 1, deleteRealmIfMigrationNeeded: true)
             realm = try Realm(configuration: config)
         } catch {
             print("Realm init error: \(error)")

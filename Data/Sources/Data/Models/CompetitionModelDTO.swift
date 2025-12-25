@@ -64,7 +64,7 @@ struct CurrentSeasonDTO: Codable {
     let startDate: String?
     let endDate: String?
     let currentMatchday: Int?
-    let winner: WinnerDTO?
+    let winner: TeamDTO?
 
     enum CodingKeys: String, CodingKey {
         case id = "id"
@@ -75,7 +75,7 @@ struct CurrentSeasonDTO: Codable {
     }
 }
 
-struct WinnerDTO: Codable {
+struct TeamDTO: Codable {
     let id: Int?
     let name: String?
     let shortName: String?

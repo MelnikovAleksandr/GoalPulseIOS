@@ -54,14 +54,35 @@ public final class FootballNetworkServiceImpl: FootballNetworkService {
             .response
         
         #if DEBUG
-        debugPrint(response)
+        if let data = response.data,
+           let json = String(data: data, encoding: .utf8) {
+            debugPrint(json)
+        }
         #endif
         
         switch response.result {
         case .success(let decodedData):
             return decodedData
         case .failure(let error):
-            throw error
+            var errorMessage = ""
+            if let data = response.data {
+                if let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                   let message = json["message"] as? String {
+                    errorMessage = message
+                }
+            }
+            if errorMessage.isEmpty {
+                throw error
+            } else {
+                throw NSError(
+                    domain: "NetworkError",
+                    code: error.responseCode ?? 0,
+                    userInfo: [
+                        NSLocalizedDescriptionKey: errorMessage,
+                        "originalAFError": error
+                    ]
+                )
+            }
         }
     }
 }

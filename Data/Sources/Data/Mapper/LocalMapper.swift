@@ -74,7 +74,7 @@ extension StandingsEntity {
     static func from(dto: StandingsDTO?) -> StandingsEntity? {
         guard let dto = dto else { return nil }
         let entity = StandingsEntity()
-        entity.id = dto.competition?.id ?? abs(UUID().hashValue)
+        entity.id = dto.competition?.code ?? UUID().uuidString
         entity.area = AreaEntity.from(dto: dto.area)
         entity.competition = CompetitionEntity.from(dto: dto.competition)
         entity.currentSeason = CurrentSeasonEntity.from(dto: dto.season)

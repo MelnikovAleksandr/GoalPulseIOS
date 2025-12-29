@@ -25,7 +25,7 @@ public final class CompetitionsRepositoryImpl: CompetitionsRepository {
     public func getAllCompetitionsFromRemoteToLocal() async -> Resource<Bool> {
         return await errorHandler.executeSafely {
             let response: CompetitionModelDTO = try await self.networkService.performRequest(
-                "competitions/",
+                EndPoints.competitions.rawValue,
                 method: .get,
                 parameters: nil,
                 encoding: URLEncoding.default

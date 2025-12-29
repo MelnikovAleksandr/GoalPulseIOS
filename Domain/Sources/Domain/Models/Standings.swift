@@ -6,13 +6,13 @@
 //
 
 public struct Standings: Identifiable, Sendable {
-    public let id: Int
+    public let id: String
     public let area: Area
     public let competition: Competition
     public let season: CurrentSeason
     public let standings: [Standing]
     
-    public init(id: Int, area: Area, competition: Competition, season: CurrentSeason, standings: [Standing]) {
+    public init(id: String, area: Area, competition: Competition, season: CurrentSeason, standings: [Standing]) {
         self.id = id
         self.area = area
         self.competition = competition

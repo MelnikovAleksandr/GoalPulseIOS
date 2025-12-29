@@ -7,8 +7,8 @@
 
 import Foundation
 
-public enum Routes {
-    case standlings
+public enum Routes: Hashable {
+    case standlings(compCode: String)
     case team
     case player
 }

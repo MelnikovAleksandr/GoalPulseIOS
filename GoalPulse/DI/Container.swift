@@ -11,6 +11,7 @@ import Utils
 import Data
 import Domain
 import Presentation
+import RealmSwift
 
 class Resolver {
     
@@ -42,6 +43,15 @@ extension Resolver {
 extension Resolver {
     private func injectDataSources() {
         
+        container.register(Realm.self) { _ in
+            do {
+                let config = Realm.Configuration(schemaVersion: 1, deleteRealmIfMigrationNeeded: true)
+                return try Realm(configuration: config)
+            } catch {
+                fatalError("Realm init error: \(error)")
+            }
+        }.inObjectScope(.container)
+        
         container.register(FootballNetworkService.self) { _ in
             FootballNetworkServiceImpl()
         }.inObjectScope(.container)
@@ -50,8 +60,14 @@ extension Resolver {
             ErrorsHandlerImpl()
         }.inObjectScope(.container)
         
-        container.register(CompetitionsLocalManager.self) { _ in
-            CompetitionsLocalManagerImpl()
+        container.register(CompetitionsLocalManager.self) { resolver in
+            let realm = resolver.resolve(Realm.self)!
+            return CompetitionsLocalManagerImpl(realm: realm)
+        }.inObjectScope(.container)
+        
+        container.register(StandingsLocalManager.self) { resolver in
+            let realm = resolver.resolve(Realm.self)!
+            return StandingsLocalManagerImpl(realm: realm)
         }.inObjectScope(.container)
         
         container.register(CompetitionsRepository.self) { resolver in
@@ -64,6 +80,15 @@ extension Resolver {
                 competitionsLocalManager: competitionsLocalManager
             )
         }.inObjectScope(.container)
+        
+        container.register(StandingsRepository.self) { resolver in
+            let networkService = resolver.resolve(FootballNetworkService.self)!
+            let errorHandler = resolver.resolve(ErrorsHandler.self)!
+            let standingsLocalManager = resolver.resolve(StandingsLocalManager.self)!
+            return StandingsRepositoryImpl(
+                networkService: networkService, errorHandler: errorHandler, standingsLocalManager: standingsLocalManager
+            )
+        }.inObjectScope(.container)
     }
 }
 
@@ -73,6 +98,11 @@ extension Resolver {
         container.register(CompetitionsViewModel.self) { resolver in
             let repository = resolver.resolve(CompetitionsRepository.self)!
             return CompetitionsViewModel(repository: repository)
+        }
+        
+        container.register(StandingsViewModel.self) { resolver in
+            let standingsRepository = resolver.resolve(StandingsRepository.self)!
+            return StandingsViewModel(repository: standingsRepository)
         }
     }
 }

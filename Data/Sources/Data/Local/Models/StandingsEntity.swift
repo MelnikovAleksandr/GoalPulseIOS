@@ -9,7 +9,7 @@ import Foundation
 import RealmSwift
 
 public class StandingsEntity: Object, Identifiable {
-    @Persisted(primaryKey: true) public var id: Int
+    @Persisted(primaryKey: true) public var id: String
     @Persisted var area: AreaEntity?
     @Persisted var currentSeason: CurrentSeasonEntity?
     @Persisted var competition: CompetitionEntity?

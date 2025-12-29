@@ -34,7 +34,7 @@ public struct CompetitonsPage: View {
                             ForEach(viewModel.competitions) { competition in
                                 CompetitionItem(competition: competition)
                                     .onTapGesture {
-                                        navigationManager.toStandlings()
+                                        navigationManager.toStandlings(compCode: competition.code)
                                     }
                             }
                             .scrollTransition { content, phase in

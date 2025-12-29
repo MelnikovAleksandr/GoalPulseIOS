@@ -17,11 +17,12 @@ public protocol CompetitionsLocalManager: Sendable {
 
 
 public final class CompetitionsLocalManagerImpl: CompetitionsLocalManager {
+    
     private var realm: Realm?
     private var token: NotificationToken?
     
-    public init() {
-        openRealm()
+    public init(realm: Realm?) {
+        self.realm = realm
     }
     
     deinit {
@@ -62,13 +63,5 @@ public final class CompetitionsLocalManagerImpl: CompetitionsLocalManager {
             }
         }
     }
-    
-    private func openRealm() {
-        do {
-            let config = Realm.Configuration(schemaVersion: 1, deleteRealmIfMigrationNeeded: true)
-            realm = try Realm(configuration: config)
-        } catch {
-            print("Realm init error: \(error)")
-        }
-    }
+
 }

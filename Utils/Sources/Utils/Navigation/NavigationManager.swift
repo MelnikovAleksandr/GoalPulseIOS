@@ -11,7 +11,7 @@ public protocol NavigationManager {
     
     var path: NavigationPath { get set }
     
-    func toStandlings()
+    func toStandlings(compCode: String)
     
     func toTeamDetails()
     
@@ -30,8 +30,8 @@ public class NavigationManagerImpl: NavigationManager {
     
     public var path = NavigationPath()
     
-    public func toStandlings() {
-        path.append(Routes.standlings)
+    public func toStandlings(compCode: String) {
+        path.append(Routes.standlings(compCode: compCode))
     }
     
     public func toTeamDetails() {

@@ -10,14 +10,14 @@ import Utils
 
 public struct StandingsPage: View {
     @Binding var navigationManager: NavigationManager
-    @ObservedObject private var viewModel: StandingsViewModel
-    @State var firstAppear: Bool = true
-    let compCode: String
+    @StateObject private var viewModel: StandingsViewModel
     
-    public init(navigationManager: Binding<NavigationManager>, viewModel: Binding<StandingsViewModel>, compCode: String) {
+    public init(
+        navigationManager: Binding<NavigationManager>,
+        viewModel: @escaping () -> StandingsViewModel
+    ) {
         self._navigationManager = navigationManager
-        self._viewModel = ObservedObject(wrappedValue: viewModel.wrappedValue)
-        self.compCode = compCode
+        self._viewModel = .init(wrappedValue: viewModel())
     }
     
     public var body: some View {
@@ -32,16 +32,10 @@ public struct StandingsPage: View {
             Button("Go back") {
                 navigationManager.pop()
             }
-        }.onAppear {
-            if self.firstAppear {
-                viewModel.getStandingsFlow(compCode: compCode)
-                viewModel.loadStandings(compCode: compCode)
-                self.firstAppear = false
-            }
         }
     }
 }
 
 #Preview {
-    StandingsPage(navigationManager: .constant(MockData.navManager), viewModel: .constant(MockData.standingsViewModel), compCode: "")
+    StandingsPage(navigationManager: .constant(MockData.navManager), viewModel: { MockData.standingsViewModel })
 }

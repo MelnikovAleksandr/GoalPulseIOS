@@ -20,7 +20,7 @@ class MockData {
     @MainActor static let competitionsViewModel: CompetitionsViewModel = CompetitionsViewModel(repository: footballRepository)
     
     @MainActor static let standingsViewModel: StandingsViewModel =
-        StandingsViewModel(repository: standingsRepository)
+        StandingsViewModel(repository: standingsRepository, compCode: "")
 }
 
 final class MockFootballRepository: CompetitionsRepository {

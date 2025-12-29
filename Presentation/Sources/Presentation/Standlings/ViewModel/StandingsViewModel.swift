@@ -20,12 +20,17 @@ public final class StandingsViewModel: ObservableObject {
     @Published var showSnackBar: Bool = false
     private var loadStandingsTask: Task<Void, Never>?
     private var getStandingsFromLocalTask: Task<Void, Never>?
+    private let compCode: String
     
-    public init(repository: StandingsRepository) {
+    public init(repository: StandingsRepository, compCode: String) {
         self.repository = repository
+        self.compCode = compCode
+        
+        getStandingsFlow()
+        loadStandings()
     }
     
-    func loadStandings(compCode: String) {
+    func loadStandings() {
         loadStandingsTask?.cancel()
         loadStandingsTask = Task {
             isLoading = true
@@ -47,7 +52,7 @@ public final class StandingsViewModel: ObservableObject {
         }
     }
     
-    func getStandingsFlow(compCode: String) {
+    private func getStandingsFlow() {
         getStandingsFromLocalTask?.cancel()
         getStandingsFromLocalTask = Task {
             for await standings in repository.getStandingsByIdFromLocal(compCode: compCode) {

@@ -30,6 +30,11 @@ class Resolver {
     func resolve<T>(_ type: T.Type) -> T {
         container.resolve(T.self)!
     }
+    
+    func resolve<T, Arg>(_ type: T.Type, argument: Arg) -> T {
+        return container.resolve(T.self, argument: argument)!
+    }
+    
 }
 
 extension Resolver {
@@ -100,9 +105,13 @@ extension Resolver {
             return CompetitionsViewModel(repository: repository)
         }
         
-        container.register(StandingsViewModel.self) { resolver in
+        container.register(StandingsViewModel.self) {
+            (resolver, compCode: String) in
             let standingsRepository = resolver.resolve(StandingsRepository.self)!
-            return StandingsViewModel(repository: standingsRepository)
+            return StandingsViewModel(
+                repository: standingsRepository,
+                compCode: compCode
+            )
         }
     }
 }

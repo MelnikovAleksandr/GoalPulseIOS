@@ -11,22 +11,26 @@ import Observation
 
 public struct CompetitonsPage: View {
     @Binding var navigationManager: NavigationManager
-    @ObservedObject private var viewModel: CompetitionsViewModel
+    @StateObject private var viewModel: CompetitionsViewModel
     @State private var isRefreshing = false
     @State var scrollOffset: CGFloat = 0.0
     
-    public init(navigationManager: Binding<NavigationManager>, viewModel: Binding<CompetitionsViewModel>) {
+    public init(navigationManager: Binding<NavigationManager>) {
         self._navigationManager = navigationManager
-        self._viewModel = ObservedObject(wrappedValue: viewModel.wrappedValue)
+        self._viewModel = StateObject(wrappedValue: ResolverApp.shared.resolve(CompetitionsViewModel.self))
+    }
+
+    // Preview init
+    public init(navigationManager: Binding<NavigationManager>, viewModel: CompetitionsViewModel) {
+        self._navigationManager = navigationManager
+        self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
     public var body: some View {
         ZStack {
             LoadingPlayerView().ignoresSafeArea(.all)
             if viewModel.isLoading && viewModel.competitions.isEmpty {
-                ProgressView()
-                    .scaleEffect(2)
-                    .tint(Color.theme.primary)
+                BallProgressView()
             } else {
                 ScrollView {
                     LazyVStack(spacing: 12, pinnedViews: [.sectionHeaders]) {
@@ -47,6 +51,11 @@ public struct CompetitonsPage: View {
                         }
                     }
                 }
+                .refreshable(isRefreshing: .init(get: { isRefreshing || viewModel.isLoading }, set: { isRefreshing = $0 }), action: {
+                    await viewModel.loadCompetitions()
+                }, indicatorView: {
+                    BallProgressView(width: 50, height: 50)
+                })
                 .animation(.spring(), value: viewModel.competitions)
                 .onScrollGeometryChange(for: CGFloat.self, of: { geometry in
                     geometry.contentOffset.y
@@ -56,16 +65,6 @@ public struct CompetitonsPage: View {
                 .onAppear {
                     UIRefreshControl.appearance().tintColor = UIColor(Color.theme.primary)
                 }
-                .overlay {
-                    if viewModel.isLoading {
-                        ProgressView()
-                            .scaleEffect(2)
-                            .tint(Color.theme.primary)
-                    }
-                }
-                .refreshable {
-                    viewModel.loadCompetitions()
-                }
             }
         }
         .snackbar(show: $viewModel.showSnackBar, bgColor: Color.theme.error, txtColor: Color.theme.surface, icon: "xmark", iconColor: Color.theme.surface, message: viewModel.errorMessage ?? "")
@@ -73,5 +72,5 @@ public struct CompetitonsPage: View {
 }
 
 #Preview {
-    CompetitonsPage(navigationManager: .constant(MockData.navManager), viewModel: .constant(MockData.competitionsViewModel))
+    CompetitonsPage(navigationManager: .constant(MockData.navManager), viewModel: MockData.competitionsViewModel)
 }

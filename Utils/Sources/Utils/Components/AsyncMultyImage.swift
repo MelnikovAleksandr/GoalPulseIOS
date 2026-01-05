@@ -9,21 +9,16 @@ import SwiftUI
 
 public struct AsyncMultiImage<Placeholder: View, ErrorView: View>: View {
     private let url: URL?
-    private let width: CGFloat?
-    private let height: CGFloat?
+
     private let placeholder: Placeholder
     private let errorView: ErrorView
     
     public init(
         url: URL?,
-        width: CGFloat? = nil,
-        height: CGFloat? = nil,
         @ViewBuilder placeholder: () -> Placeholder = { ProgressView() },
         @ViewBuilder errorView: () -> ErrorView = { Image(systemName: "photo") }
     ) {
         self.url = url
-        self.width = width
-        self.height = height
         self.placeholder = placeholder()
         self.errorView = errorView()
     }
@@ -48,6 +43,5 @@ public struct AsyncMultiImage<Placeholder: View, ErrorView: View>: View {
                 }
             }
         }
-        .frame(width: width, height: height)
     }
 }

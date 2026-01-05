@@ -27,7 +27,7 @@ extension CompetitionEntity {
             name: name ?? "",
             numberOfAvailableSeasons: numberOfAvailableSeasons,
             plan: plan ?? "",
-            type: type ?? "",
+            type: Type(rawValue: type ?? "") ?? .LEAGUE,
             seasons: []
         )
     }
@@ -49,7 +49,7 @@ extension TeamEntity {
         Team(
             address: address ?? "",
             clubColors: clubColors ?? "",
-            crest: crest ?? "",
+            crest: URL(string: crest ?? ""),
             founded: founded,
             id: id,
             lastUpdated: lastUpdated?.description ?? "",
@@ -73,7 +73,7 @@ extension CurrentSeasonEntity {
             winner: winner?.toDomain() ?? Team(
                 address: "",
                 clubColors: "",
-                crest: "",
+                crest: nil,
                 founded: 0,
                 id: abs(UUID().hashValue),
                 lastUpdated: "",
@@ -109,7 +109,7 @@ extension StandingsEntity {
                 name: "",
                 numberOfAvailableSeasons: 0,
                 plan: "",
-                type: "",
+                type: .LEAGUE,
                 seasons: []
             ),
             season: currentSeason?.toDomain() ?? CurrentSeason(

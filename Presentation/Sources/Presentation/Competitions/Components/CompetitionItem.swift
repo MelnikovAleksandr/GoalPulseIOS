@@ -14,7 +14,7 @@ struct CompetitionItem: View {
     
     var body: some View {
         HStack {
-            AsyncMultiImage(url: competition.emblem, width: 100, height: 100).padding(8)
+            AsyncMultiImage(url: competition.emblem).frame(width: 100, height: 100).padding(8)
             
             Spacer()
             
@@ -25,7 +25,7 @@ struct CompetitionItem: View {
                         .font(.theme.semiBoldItalic(18))
                         .foregroundColor(Color.theme.onBackground)
                     
-                    AsyncMultiImage(url: competition.area.flag, width: 24, height: 24)
+                    AsyncMultiImage(url: competition.area.flag).frame(width: 24, height: 24)
                     
                 }
                 Text("\(Locale.get("Start")) \(competition.currentSeason.startDate)")

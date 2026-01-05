@@ -7,11 +7,17 @@
 
 import SwiftUI
 import Utils
+import Presentation
+import Data
 
 @main
 struct GoalPulseApp: App {
     init() {
-        Resolver.shared.injectModules()
+        SVGHelper.setUpDependencies()
+        FontsHelper.resigterFonts()
+        ResolverApp.injectUtils()
+        ResolverApp.injectDataSources()
+        ResolverApp.injectViewModels()
     }
     var body: some Scene {
         WindowGroup {

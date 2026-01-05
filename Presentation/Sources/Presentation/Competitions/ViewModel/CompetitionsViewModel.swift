@@ -16,18 +16,17 @@ public final class CompetitionsViewModel: ObservableObject {
     @Published private(set) var isLoading = false
     @Published private(set) var errorMessage: String?
     @Published var showSnackBar: Bool = false
-    private var loadCompetitionsTask: Task<Void, Never>?
     private var getAllCompetitionsFromLocalTask: Task<Void, Never>?
     
     public init(repository: CompetitionsRepository) {
         self.repository = repository
         getCompetitionsFlow()
-        loadCompetitions()
+        Task {
+            await loadCompetitions()
+        }
     }
     
-    func loadCompetitions() {
-        loadCompetitionsTask?.cancel()
-        loadCompetitionsTask = Task {
+    func loadCompetitions() async {
             isLoading = true
             errorMessage = nil
             showSnackBar = false
@@ -45,7 +44,6 @@ public final class CompetitionsViewModel: ObservableObject {
                 showSnackBar = true
                 print("❌ Fetch error: \(message)")
             }
-        }
     }
     
     private func getCompetitionsFlow() {
@@ -57,7 +55,6 @@ public final class CompetitionsViewModel: ObservableObject {
     }
     
     deinit {
-        loadCompetitionsTask?.cancel()
         getAllCompetitionsFromLocalTask?.cancel()
     }
 }

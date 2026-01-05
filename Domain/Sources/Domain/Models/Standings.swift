@@ -5,6 +5,8 @@
 //  Created by Александр Мельников on 26.12.2025.
 //
 
+import Foundation
+
 public struct Standings: Identifiable, Sendable {
     public let id: String
     public let area: Area
@@ -22,7 +24,7 @@ public struct Standings: Identifiable, Sendable {
 }
 
 
-public struct Standing: Sendable {
+public struct Standing: Sendable, Hashable {
     public let stage: String
     public let type: String
     public let group: String
@@ -34,9 +36,21 @@ public struct Standing: Sendable {
         self.group = group
         self.table = table
     }
+    
+    public static func == (lhs: Standing, rhs: Standing) -> Bool {
+        return lhs.stage == rhs.stage &&
+        lhs.type == rhs.type &&
+        lhs.group == rhs.group
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(stage)
+        hasher.combine(type)
+        hasher.combine(group)
+    }
 }
 
-public struct Table: Sendable {
+public struct Table: Sendable, Identifiable, Hashable {
     public let position: Int
     public let team: Team?
     public let playedGames: Int
@@ -62,4 +76,18 @@ public struct Table: Sendable {
         self.goalsAgainst = goalsAgainst
         self.goalDifference = goalDifference
     }
+    
+    public var id: Int {
+        return team?.id ?? abs(UUID().hashValue)
+    }
+    
+    public static func == (lhs: Table, rhs: Table) -> Bool {
+            return lhs.team?.id == rhs.team?.id &&
+                   lhs.position == rhs.position
+        }
+        
+        public func hash(into hasher: inout Hasher) {
+            hasher.combine(team?.id)
+            hasher.combine(position)
+        }
 }

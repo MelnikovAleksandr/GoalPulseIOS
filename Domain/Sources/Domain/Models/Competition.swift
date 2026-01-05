@@ -17,10 +17,10 @@ public struct Competition: Identifiable, Sendable, Equatable {
     public let name: String
     public let numberOfAvailableSeasons: Int
     public let plan: String
-    public let type: String
+    public let type: Type
     public let seasons: [Season]
     
-    public init(area: Area, code: String, currentSeason: CurrentSeason, emblem: URL?, id: Int, lastUpdated: String, name: String, numberOfAvailableSeasons: Int, plan: String, type: String, seasons: [Season]) {
+    public init(area: Area, code: String, currentSeason: CurrentSeason, emblem: URL?, id: Int, lastUpdated: String, name: String, numberOfAvailableSeasons: Int, plan: String, type: Type, seasons: [Season]) {
         self.area = area
         self.code = code
         self.currentSeason = currentSeason
@@ -33,6 +33,10 @@ public struct Competition: Identifiable, Sendable, Equatable {
         self.type = type
         self.seasons = seasons
     }
+}
+
+public enum Type: String, Sendable {
+    case LEAGUE, CUP
 }
 
 public struct Area: Sendable, Equatable {
@@ -70,7 +74,7 @@ public struct CurrentSeason: Sendable, Equatable {
 public struct Team: Sendable, Equatable {
     public let address: String
     public let clubColors: String
-    public let crest: String
+    public let crest: URL?
     public let founded: Int
     public let id: Int
     public let lastUpdated: String
@@ -80,7 +84,7 @@ public struct Team: Sendable, Equatable {
     public let website: String
     public let venue: String
     
-    public init(address: String, clubColors: String, crest: String, founded: Int, id: Int, lastUpdated: String, name: String, shortName: String, tla: String, website: String, venue: String) {
+    public init(address: String, clubColors: String, crest: URL?, founded: Int, id: Int, lastUpdated: String, name: String, shortName: String, tla: String, website: String, venue: String) {
         self.address = address
         self.clubColors = clubColors
         self.crest = crest

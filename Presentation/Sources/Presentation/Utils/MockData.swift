@@ -26,7 +26,7 @@ class MockData {
 final class MockFootballRepository: CompetitionsRepository {
     func getAllCompetitionsFromLocal() -> AsyncStream<[Competition]> {
         AsyncStream { continuation in
-            continuation.yield([MockUIData.competition, MockUIData.competition])
+            continuation.yield([MockUIData.competition])
             continuation.finish()
         }
     }
@@ -70,7 +70,7 @@ class MockUIData {
             winner: Team(
                 address: "",
                 clubColors: "",
-                crest: "",
+                crest: nil,
                 founded: 0,
                 id: 0,
                 lastUpdated: "",
@@ -87,7 +87,7 @@ class MockUIData {
         name: "Campeonato Brasileiro Série A",
         numberOfAvailableSeasons: 9,
         plan: "TIER_ONE",
-        type: "LEAGUE",
+        type: .LEAGUE,
         seasons: []
     )
     
@@ -115,13 +115,13 @@ class MockUIData {
                     startDate: "2025-08-08",
                     winner: nil
                 ),
-                emblem: URL(string: "https://crests.football-data.org/ED.png"),
+                emblem: URL(string: "https://crests.football-data.org/ec.png"),
                 id: 2003,
                 lastUpdated: "",
                 name: "Eredivisie",
                 numberOfAvailableSeasons: 0,
                 plan: "",
-                type: "LEAGUE",
+                type: .LEAGUE,
                 seasons: []
             ),
             season: CurrentSeason(
@@ -143,7 +143,7 @@ class MockUIData {
                             team: Team(
                                 address: "",
                                 clubColors: "",
-                                crest: "https://crests.football-data.org/674.png",
+                                crest: URL(string: "https://crests.football-data.org/674.png"),
                                 founded: 0,
                                 id: 674,
                                 lastUpdated: "",
@@ -168,7 +168,7 @@ class MockUIData {
                             team: Team(
                                 address: "",
                                 clubColors: "",
-                                crest: "https://crests.football-data.org/675.png",
+                                crest: URL(string: "https://crests.football-data.org/675.png"),
                                 founded: 0,
                                 id: 675,
                                 lastUpdated: "",
@@ -193,7 +193,7 @@ class MockUIData {
                             team: Team(
                                 address: "",
                                 clubColors: "",
-                                crest: "https://crests.football-data.org/678.png",
+                                crest: URL(string: "https://crests.football-data.org/678.png"),
                                 founded: 0,
                                 id: 678,
                                 lastUpdated: "",
@@ -218,7 +218,7 @@ class MockUIData {
                             team: Team(
                                 address: "",
                                 clubColors: "",
-                                crest: "https://crests.football-data.org/1915.png",
+                                crest: URL(string: "https://crests.football-data.org/1915.png"),
                                 founded: 0,
                                 id: 1915,
                                 lastUpdated: "",
@@ -243,7 +243,7 @@ class MockUIData {
                             team: Team(
                                 address: "",
                                 clubColors: "",
-                                crest: "https://crests.football-data.org/677.png",
+                                crest: URL(string: "https://crests.football-data.org/677.png"),
                                 founded: 0,
                                 id: 677,
                                 lastUpdated: "",
@@ -268,7 +268,7 @@ class MockUIData {
                             team: Team(
                                 address: "",
                                 clubColors: "",
-                                crest: "https://crests.football-data.org/666.png",
+                                crest: URL(string: "https://crests.football-data.org/666.png"),
                                 founded: 0,
                                 id: 666,
                                 lastUpdated: "",
@@ -293,7 +293,7 @@ class MockUIData {
                             team: Team(
                                 address: "",
                                 clubColors: "",
-                                crest: "https://crests.football-data.org/682.png",
+                                crest: URL(string: "https://crests.football-data.org/682.png"),
                                 founded: 0,
                                 id: 682,
                                 lastUpdated: "",
@@ -318,7 +318,7 @@ class MockUIData {
                             team: Team(
                                 address: "",
                                 clubColors: "",
-                                crest: "https://crests.football-data.org/676.png",
+                                crest: URL(string: "https://crests.football-data.org/676.png"),
                                 founded: 0,
                                 id: 676,
                                 lastUpdated: "",
@@ -343,7 +343,7 @@ class MockUIData {
                             team: Team(
                                 address: "",
                                 clubColors: "",
-                                crest: "https://crests.football-data.org/673.png",
+                                crest: URL(string: "https://crests.football-data.org/673.png"),
                                 founded: 0,
                                 id: 673,
                                 lastUpdated: "",
@@ -368,7 +368,7 @@ class MockUIData {
                             team: Team(
                                 address: "",
                                 clubColors: "",
-                                crest: "https://crests.football-data.org/6806.png",
+                                crest: URL(string: "https://crests.football-data.org/6806.png"),
                                 founded: 0,
                                 id: 6806,
                                 lastUpdated: "",
@@ -393,7 +393,7 @@ class MockUIData {
                             team: Team(
                                 address: "",
                                 clubColors: "",
-                                crest: "https://crests.football-data.org/1920.png",
+                                crest: URL(string: "https://crests.football-data.org/1920.png"),
                                 founded: 0,
                                 id: 1920,
                                 lastUpdated: "",
@@ -418,7 +418,7 @@ class MockUIData {
                             team: Team(
                                 address: "",
                                 clubColors: "",
-                                crest: "https://crests.football-data.org/718.png",
+                                crest: URL(string: "https://crests.football-data.org/718.png"),
                                 founded: 0,
                                 id: 718,
                                 lastUpdated: "",
@@ -443,7 +443,7 @@ class MockUIData {
                             team: Team(
                                 address: "",
                                 clubColors: "",
-                                crest: "https://crests.football-data.org/670.png",
+                                crest: URL(string: "https://crests.football-data.org/670.png"),
                                 founded: 0,
                                 id: 670,
                                 lastUpdated: "",
@@ -468,7 +468,7 @@ class MockUIData {
                             team: Team(
                                 address: "",
                                 clubColors: "",
-                                crest: "https://crests.football-data.org/684.png",
+                                crest: URL(string: "https://crests.football-data.org/684.png"),
                                 founded: 0,
                                 id: 684,
                                 lastUpdated: "",
@@ -493,7 +493,7 @@ class MockUIData {
                             team: Team(
                                 address: "",
                                 clubColors: "",
-                                crest: "https://crests.football-data.org/1912.png",
+                                crest: URL(string: "https://crests.football-data.org/1912.png"),
                                 founded: 0,
                                 id: 1912,
                                 lastUpdated: "",
@@ -518,7 +518,7 @@ class MockUIData {
                             team: Team(
                                 address: "",
                                 clubColors: "",
-                                crest: "https://crests.football-data.org/1919.png",
+                                crest: URL(string: "https://crests.football-data.org/1919.png"),
                                 founded: 0,
                                 id: 1919,
                                 lastUpdated: "",
@@ -543,7 +543,7 @@ class MockUIData {
                             team: Team(
                                 address: "",
                                 clubColors: "",
-                                crest: "https://crests.football-data.org/671.png",
+                                crest: URL(string: "https://crests.football-data.org/671.png"),
                                 founded: 0,
                                 id: 671,
                                 lastUpdated: "",
@@ -568,7 +568,7 @@ class MockUIData {
                             team: Team(
                                 address: "",
                                 clubColors: "",
-                                crest: "https://crests.football-data.org/681.png",
+                                crest: URL(string: "https://crests.football-data.org/681.png"),
                                 founded: 0,
                                 id: 681,
                                 lastUpdated: "",

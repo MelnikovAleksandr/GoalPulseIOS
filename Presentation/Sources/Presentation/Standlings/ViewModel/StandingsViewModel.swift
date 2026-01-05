@@ -30,7 +30,7 @@ public final class StandingsViewModel: ObservableObject {
         loadStandings()
     }
     
-    func loadStandings() {
+    private func loadStandings() {
         loadStandingsTask?.cancel()
         loadStandingsTask = Task {
             isLoading = true

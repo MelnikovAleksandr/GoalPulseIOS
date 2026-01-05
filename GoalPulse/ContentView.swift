@@ -12,20 +12,14 @@ import Presentation
 
 struct ContentView: View {
     
-    @State private var navigationManager: NavigationManager = Resolver.shared.resolve(NavigationManager.self)
-    @State private var competitionsViewModel: CompetitionsViewModel = Resolver.shared.resolve(CompetitionsViewModel.self)
+    @State private var navigationManager: NavigationManager = ResolverApp.shared.resolve(NavigationManager.self)
     
     var body: some View {
         NavigationStack(path: $navigationManager.path) {
-            CompetitonsPage(navigationManager: $navigationManager, viewModel: $competitionsViewModel)
+            CompetitonsPage(navigationManager: $navigationManager)
                 .navigationDestination(for: Routes.self) { page in
                     switch page {
-                    case .standlings(let compCode): StandingsPage(navigationManager: $navigationManager, viewModel: {
-                        Resolver.shared.resolve(
-                            StandingsViewModel.self,
-                            argument: compCode
-                        )
-                    })
+                    case .standlings(let compCode): StandingsPage(navigationManager: $navigationManager, compCode: compCode)
                     case .team: TeamPage(navigationManager: $navigationManager)
                     case .player: PlayerPage(navigationManager: $navigationManager)
                     }

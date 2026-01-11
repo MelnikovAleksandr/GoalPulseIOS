@@ -239,6 +239,23 @@
         }
       }
     },
+    "Players" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Players"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Игроки"
+          }
+        }
+      }
+    },
     "Points" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -252,6 +269,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "очки"
+          }
+        }
+      }
+    },
+    "Standings" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standings"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Таблица"
           }
         }
       }

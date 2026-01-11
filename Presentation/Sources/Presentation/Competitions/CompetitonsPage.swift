@@ -47,7 +47,13 @@ public struct CompetitonsPage: View {
                                     .scaleEffect(phase.isIdentity ? 1.0 : 0.9)
                             }
                         } header: {
-                            Header(scrollOffset: scrollOffset)
+                            if #available(iOS 26.1, *) {
+                                HeaderGlass(scrollOffset: scrollOffset)
+                                    .padding(.horizontal, 16)
+                            } else {
+                                Header(scrollOffset: scrollOffset)
+                                    .padding(.horizontal, 16)
+                            }
                         }
                     }
                 }

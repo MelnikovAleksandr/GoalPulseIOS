@@ -55,3 +55,29 @@ struct VisualEffectView: UIViewRepresentable {
         uiView.effect = UIBlurEffect(style: style)
     }
 }
+
+@available(iOS 26.1, *)
+struct HeaderGlass: View {
+    
+    let scrollOffset: CGFloat
+    
+    var body: some View {
+        HStack {
+            Text(Locale.get("AppName"))
+                .lineLimit(1)
+                .font(.system(
+                    size: max(15, 30 - scrollOffset / 10),
+                    weight: .bold
+                ))
+                .foregroundColor(Color.theme.primary)
+                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 24)
+                .animation(.spring(response: 0.3), value: scrollOffset)
+        }
+        .opacity(Double(max(0, 1 - scrollOffset / 100)))
+        .padding(.horizontal, 16)
+        .padding(.top, 16)
+        .glassEffect()
+    }
+}

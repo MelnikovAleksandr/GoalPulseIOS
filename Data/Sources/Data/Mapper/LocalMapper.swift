@@ -114,3 +114,51 @@ extension TableEntity {
         return entity
     }
 }
+
+extension ScorersEntity {
+    static func from(dto: ScorersDTO?) -> ScorersEntity? {
+        guard let dto = dto else { return nil }
+        let entity = ScorersEntity()
+        entity.id = dto.competition?.code ?? UUID().uuidString
+        entity.competition = CompetitionEntity.from(dto: dto.competition)
+        entity.season = CurrentSeasonEntity.from(dto: dto.season)
+        entity.scorers.append(objectsIn: dto.scorers?.compactMap { scorer in
+            ScorerEntity.from(dto: scorer)
+        } ?? [])
+        return entity
+    }
+}
+
+extension ScorerEntity {
+    static func from(dto: ScorerDTO?) -> ScorerEntity? {
+        guard let dto = dto else { return nil }
+        let entity = ScorerEntity()
+        entity.id = dto.player?.id
+        entity.team = TeamEntity.from(dto: dto.team)
+        entity.player = PlayerEntity.from(dto: dto.player)
+        entity.playedMatches = dto.playedMatches
+        entity.goals = dto.goals
+        entity.assists = dto.assists
+        entity.penalties = dto.penalties
+        return entity
+    }
+}
+
+extension PlayerEntity {
+    static func from(dto: PlayerDTO?) -> PlayerEntity? {
+        guard let dto = dto else { return nil }
+        let entity = PlayerEntity()
+        entity.id = dto.id
+        entity.name = dto.name
+        entity.firstName = dto.firstName
+        entity.lastName = dto.lastName
+        entity.dateOfBirth = dto.dateOfBirth
+        entity.nationality = dto.nationality
+        entity.section = dto.section
+        entity.shirtNumber = dto.shirtNumber
+        entity.lastUpdated = dto.lastUpdated
+        return entity
+    }
+}
+
+

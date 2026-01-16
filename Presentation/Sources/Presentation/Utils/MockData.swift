@@ -41,9 +41,20 @@ final class MockStandingsRepository: StandingsRepository {
         return .success(true)
     }
     
+    func getScorersFromRemoteToLocal(compCode: String) async -> Resource<Bool> {
+        return .success(true)
+    }
+    
     func getStandingsByIdFromLocal(compCode: String) -> AsyncStream<Domain.Standings> {
         AsyncStream { continuation in
             continuation.yield(MockUIData.standings)
+            continuation.finish()
+        }
+    }
+    
+    func getScorersByCompCodeFromLocalFlow(compCode: String) -> AsyncStream<Scorers> {
+        AsyncStream { continuation in
+            continuation.yield(MockUIData.scorers())
             continuation.finish()
         }
     }
@@ -593,4 +604,351 @@ class MockUIData {
             ]
         )
     
+    static func scorers() -> Scorers {
+        let competition = Competition(
+            area: Area(
+                code: "NED",
+                flag: nil,
+                id: 0,
+                name: "Netherlands"
+            ),
+            code: "DED",
+            currentSeason: CurrentSeason(
+                currentMatchDay: 19,
+                startDateEndDate: "2025-08-08 - 2026-05-17",
+                endDate: "2026-05-17",
+                id: 2400,
+                startDate: "2025-08-08",
+                winner: nil
+            ),
+            emblem: URL(string: "https://crests.football-data.org/ED.png"),
+            id: 2003,
+            lastUpdated: "",
+            name: "Eredivisie",
+            numberOfAvailableSeasons: 0,
+            plan: "TIER_ONE",
+            type: .LEAGUE,
+            seasons: []
+        )
+        
+        let season = CurrentSeason(
+            currentMatchDay: 19,
+            startDateEndDate: "2025-08-08 - 2026-05-17",
+            endDate: "2026-05-17",
+            id: 2400,
+            startDate: "2025-08-08",
+            winner: nil
+        )
+        
+        let scorers = [
+            Scorer(
+                id: 119460,
+                player: Player(
+                    id: 119460,
+                    name: "Ayase Ueda",
+                    firstName: "Ayase",
+                    lastName: "Ueda",
+                    dateOfBirth: "1998-09-10",
+                    nationality: "Japan",
+                    section: "Centre-Forward",
+                    shirtNumber: 36
+                ),
+                team: Team(
+                    address: "Van Zandvlietplein 3 Rotterdam 3007 AP",
+                    clubColors: "Red / White / Black",
+                    crest: URL(string: "https://crests.football-data.org/675.png"),
+                    founded: 1908,
+                    id: 675,
+                    lastUpdated: "2022-03-24T17:06:52Z",
+                    name: "Feyenoord Rotterdam",
+                    shortName: "Feyenoord",
+                    tla: "FEY",
+                    website: "http://www.feyenoord.nl",
+                    venue: "Stadion Feijenoord"
+                ),
+                playedMatches: 18,
+                goals: 18,
+                assists: 1,
+                penalties: 0
+            ),
+            Scorer(
+                id: 7688,
+                player: Player(
+                    id: 7688,
+                    name: "Guus Til",
+                    firstName: "Guus",
+                    lastName: "Til",
+                    dateOfBirth: "1997-12-22",
+                    nationality: "Netherlands",
+                    section: "Attacking Midfield",
+                    shirtNumber: 8
+                ),
+                team: Team(
+                    address: "Fredriklaan 10a Eindhoven 5616 NH",
+                    clubColors: "Red / White",
+                    crest: URL(string: "https://crests.football-data.org/674.png"),
+                    founded: 1913,
+                    id: 674,
+                    lastUpdated: "2022-03-06T09:30:40Z",
+                    name: "PSV",
+                    shortName: "PSV",
+                    tla: "PSV",
+                    website: "http://www.psv.nl",
+                    venue: "Philips Stadion"
+                ),
+                playedMatches: 18,
+                goals: 11,
+                assists: 2,
+                penalties: 0
+            ),
+            Scorer(
+                id: 7432,
+                player: Player(
+                    id: 7432,
+                    name: "Jizz Hornkamp",
+                    firstName: "Jizz",
+                    lastName: "Hornkamp",
+                    dateOfBirth: "1998-03-07",
+                    nationality: "Netherlands",
+                    section: "Centre-Forward",
+                    shirtNumber: 9
+                ),
+                team: Team(
+                    address: "Stadionlaan 1 Almelo 7606 JZ",
+                    clubColors: "Black / White",
+                    crest: URL(string: "https://crests.football-data.org/671.png"),
+                    founded: 1903,
+                    id: 671,
+                    lastUpdated: "2022-03-22T10:10:18Z",
+                    name: "Heracles Almelo",
+                    shortName: "Heracles",
+                    tla: "HER",
+                    website: "http://www.heracles.nl",
+                    venue: "Erve Asito"
+                ),
+                playedMatches: 15,
+                goals: 10,
+                assists: 1,
+                penalties: 1
+            ),
+            Scorer(
+                id: 131041,
+                player: Player(
+                    id: 131041,
+                    name: "Troy Parrott",
+                    firstName: "Troy",
+                    lastName: "Parrott",
+                    dateOfBirth: "2002-02-04",
+                    nationality: "Ireland",
+                    section: "Centre-Forward",
+                    shirtNumber: 0
+                ),
+                team: Team(
+                    address: "Stadionweg 1 Alkmaar 1812 AZ",
+                    clubColors: "Red / White",
+                    crest: URL(string: "https://crests.football-data.org/682.png"),
+                    founded: 1967,
+                    id: 682,
+                    lastUpdated: "2022-03-22T10:11:18Z",
+                    name: "AZ",
+                    shortName: "AZ",
+                    tla: "AZ",
+                    website: "http://www.az.nl",
+                    venue: "AFAS Stadion"
+                ),
+                playedMatches: 12,
+                goals: 9,
+                assists: 1,
+                penalties: 2
+            ),
+            Scorer(
+                id: 38124,
+                player: Player(
+                    id: 38124,
+                    name: "Tobias Lauritsen",
+                    firstName: "Tobias",
+                    lastName: "Lauritsen",
+                    dateOfBirth: "1997-08-30",
+                    nationality: "Norway",
+                    section: "Centre-Forward",
+                    shirtNumber: 20
+                ),
+                team: Team(
+                    address: "Spartapark Noord 1 Rotterdam 3027 VW",
+                    clubColors: "Red / White / Black",
+                    crest: URL(string: "https://crests.football-data.org/6806.png"),
+                    founded: 1888,
+                    id: 6806,
+                    lastUpdated: "2022-03-22T10:09:59Z",
+                    name: "Sparta Rotterdam",
+                    shortName: "Sparta",
+                    tla: "SPA",
+                    website: "http://www.sparta-rotterdam.nl",
+                    venue: "Sparta-Stadion Het Kasteel"
+                ),
+                playedMatches: 18,
+                goals: 9,
+                assists: 2,
+                penalties: 3
+            ),
+            Scorer(
+                id: 130173,
+                player: Player(
+                    id: 130173,
+                    name: "Ismael Saibari",
+                    firstName: "Ismael",
+                    lastName: "Saibari",
+                    dateOfBirth: "2001-01-28",
+                    nationality: "Morocco",
+                    section: "Central Midfield",
+                    shirtNumber: 9
+                ),
+                team: Team(
+                    address: "Fredriklaan 10a Eindhoven 5616 NH",
+                    clubColors: "Red / White",
+                    crest: URL(string: "https://crests.football-data.org/674.png"),
+                    founded: 1913,
+                    id: 674,
+                    lastUpdated: "2022-03-06T09:30:40Z",
+                    name: "PSV",
+                    shortName: "PSV",
+                    tla: "PSV",
+                    website: "http://www.psv.nl",
+                    venue: "Philips Stadion"
+                ),
+                playedMatches: 16,
+                goals: 9,
+                assists: 2,
+                penalties: 1
+            ),
+            Scorer(
+                id: 53426,
+                player: Player(
+                    id: 53426,
+                    name: "Joey Veerman",
+                    firstName: "Joey",
+                    lastName: "Veerman",
+                    dateOfBirth: "1998-11-19",
+                    nationality: "Netherlands",
+                    section: "Central Midfield",
+                    shirtNumber: 0
+                ),
+                team: Team(
+                    address: "Fredriklaan 10a Eindhoven 5616 NH",
+                    clubColors: "Red / White",
+                    crest: URL(string: "https://crests.football-data.org/674.png"),
+                    founded: 1913,
+                    id: 674,
+                    lastUpdated: "2022-03-06T09:30:40Z",
+                    name: "PSV",
+                    shortName: "PSV",
+                    tla: "PSV",
+                    website: "http://www.psv.nl",
+                    venue: "Philips Stadion"
+                ),
+                playedMatches: 17,
+                goals: 8,
+                assists: 8,
+                penalties: 0
+            ),
+            Scorer(
+                id: 9701,
+                player: Player(
+                    id: 9701,
+                    name: "Koen Kostons",
+                    firstName: "Koen",
+                    lastName: "Kostons",
+                    dateOfBirth: "1999-09-18",
+                    nationality: "Netherlands",
+                    section: "Centre-Forward",
+                    shirtNumber: 16
+                ),
+                team: Team(
+                    address: "Stadionplein 1 Zwolle 8025 CP",
+                    clubColors: "Blue / White",
+                    crest: URL(string: "https://crests.football-data.org/684.png"),
+                    founded: 1910,
+                    id: 684,
+                    lastUpdated: "2022-03-22T10:11:39Z",
+                    name: "PEC Zwolle",
+                    shortName: "Zwolle",
+                    tla: "ZWO",
+                    website: "http://www.peczwolle.nl",
+                    venue: "MAC³PARK Stadion"
+                ),
+                playedMatches: 18,
+                goals: 8,
+                assists: 4,
+                penalties: 0
+            ),
+            Scorer(
+                id: 189574,
+                player: Player(
+                    id: 189574,
+                    name: "Mika Godts",
+                    firstName: "Mika",
+                    lastName: "Godts",
+                    dateOfBirth: "2005-06-07",
+                    nationality: "Belgium",
+                    section: "Left Winger",
+                    shirtNumber: 0
+                ),
+                team: Team(
+                    address: "ArenA Boulevard 29 Amsterdam 1101 AX",
+                    clubColors: "Red / White",
+                    crest: URL(string: "https://crests.football-data.org/678.png"),
+                    founded: 1900,
+                    id: 678,
+                    lastUpdated: "2022-03-22T10:11:05Z",
+                    name: "AFC Ajax",
+                    shortName: "Ajax",
+                    tla: "AJA",
+                    website: "http://www.ajax.nl",
+                    venue: "Johan Cruyff ArenA"
+                ),
+                playedMatches: 16,
+                goals: 8,
+                assists: 6,
+                penalties: 0
+            ),
+            Scorer(
+                id: 119731,
+                player: Player(
+                    id: 119731,
+                    name: "Ricardo Pepi",
+                    firstName: "Ricardo",
+                    lastName: "Pepi",
+                    dateOfBirth: "2003-01-09",
+                    nationality: "USA",
+                    section: "Centre-Forward",
+                    shirtNumber: 16
+                ),
+                team: Team(
+                    address: "Fredriklaan 10a Eindhoven 5616 NH",
+                    clubColors: "Red / White",
+                    crest: URL(string: "https://crests.football-data.org/674.png"),
+                    founded: 1913,
+                    id: 674,
+                    lastUpdated: "2022-03-06T09:30:40Z",
+                    name: "PSV",
+                    shortName: "PSV",
+                    tla: "PSV",
+                    website: "http://www.psv.nl",
+                    venue: "Philips Stadion"
+                ),
+                playedMatches: 15,
+                goals: 8,
+                assists: 0,
+                penalties: 1
+            )
+        ]
+        
+        return Scorers(
+            id: "DED",
+            competition: competition,
+            season: season,
+            scorers: scorers
+        )
+    }
+
 }

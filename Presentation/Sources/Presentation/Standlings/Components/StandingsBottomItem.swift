@@ -1,5 +1,5 @@
 //
-//  BottomItem.swift
+//  StandingsBottomItem.swift
 //  Presentation
 //
 //  Created by Александр Мельников on 05.01.2026.
@@ -8,7 +8,7 @@
 import SwiftUI
 import Utils
 
-struct BottomItem: View {
+struct StandingsBottomItem: View {
     private let itemsRow = [Locale.get("M"), Locale.get("W"), Locale.get("D"), Locale.get("L"), Locale.get("GF"), Locale.get("GA"), Locale.get("P")]
     var body: some View {
         let text = itemsRow.enumerated().map { index, item in
@@ -32,5 +32,5 @@ struct BottomItem: View {
 }
 
 #Preview {
-    BottomItem()
+    StandingsBottomItem()
 }

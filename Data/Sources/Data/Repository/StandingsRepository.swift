@@ -22,7 +22,7 @@ public final class StandingsRepositoryImpl: StandingsRepository {
         self.standingsLocalManager = standingsLocalManager
     }
     
-    public func getStandingsFromRemoteToLocal(compCode: String) async -> Utils.Resource<Bool> {
+    public func getStandingsFromRemoteToLocal(compCode: String) async -> Resource<Bool> {
         return await errorHandler.executeSafely {
             let response: StandingsDTO = try await self.networkService.performRequest(EndPoints.standings(compCode).rawValue, method: .get, parameters: nil, encoding: URLEncoding.default)
             
@@ -40,6 +40,27 @@ public final class StandingsRepositoryImpl: StandingsRepository {
     
     public func getStandingsByIdFromLocal(compCode: String) -> AsyncStream<Domain.Standings> {
         return standingsLocalManager.getStandingsByIdFlow(compCode: compCode)
+    }
+    
+    
+    public func getScorersFromRemoteToLocal(compCode: String) async -> Resource<Bool> {
+        return await errorHandler.executeSafely{
+            let response: ScorersDTO = try await self.networkService.performRequest(EndPoints.scorers(compCode).rawValue, method: .get, parameters: ["limit": 20], encoding: URLEncoding.default)
+            
+            let scorersEntity = ScorersEntity.from(dto: response)
+            
+            guard let scorersEntity = scorersEntity else {
+                return .success(true)
+            }
+            
+            try await self.standingsLocalManager.saveScorers(scorersEntity)
+            
+            return .success(true)
+        }
+    }
+    
+    public func getScorersByCompCodeFromLocalFlow(compCode: String) -> AsyncStream<Scorers> {
+        return standingsLocalManager.getScorercByCompCodeFlow(compCode: compCode)
     }
     
 }

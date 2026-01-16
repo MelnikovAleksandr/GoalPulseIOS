@@ -15,25 +15,38 @@ public final class StandingsViewModel: ObservableObject {
     private let repository: StandingsRepository
     
     @Published private(set) var standings: Standings? = nil
-    @Published private(set) var isLoading = false
+    @Published private(set) var scorers: Scorers? = nil
+    
+    @Published private(set) var isStandingsLoading = false
+    @Published private(set) var isScorersLoading = false
+    
     @Published private(set) var errorMessage: String?
     @Published var showSnackBar: Bool = false
+    
     private var loadStandingsTask: Task<Void, Never>?
     private var getStandingsFromLocalTask: Task<Void, Never>?
+    
+    private var loadScorersTask: Task<Void, Never>?
+    private var getScorersFromLocalTask: Task<Void, Never>?
+    
     private let compCode: String
     
     public init(repository: StandingsRepository, compCode: String) {
         self.repository = repository
         self.compCode = compCode
         
+        
         getStandingsFlow()
+        getScorersFlow()
+        
         loadStandings()
+        loadScorers()
     }
     
     private func loadStandings() {
         loadStandingsTask?.cancel()
         loadStandingsTask = Task {
-            isLoading = true
+            isStandingsLoading = true
             errorMessage = nil
             showSnackBar = false
             
@@ -41,11 +54,33 @@ public final class StandingsViewModel: ObservableObject {
             
             switch result {
             case .success(_):
-                isLoading = false
+                isStandingsLoading = false
             case .error(let errorType, _):
                 let message = errorType?.errorMessage ?? Locale.get("UnknownError")
                 self.errorMessage = message
-                isLoading = false
+                isStandingsLoading = false
+                showSnackBar = true
+                print("❌ Fetch error: \(message)")
+            }
+        }
+    }
+    
+    private func loadScorers() {
+        loadScorersTask?.cancel()
+        loadScorersTask = Task {
+            isScorersLoading = true
+            errorMessage = nil
+            showSnackBar = false
+            
+            let result = await repository.getScorersFromRemoteToLocal(compCode: compCode)
+            
+            switch result {
+            case .success(_):
+                isScorersLoading = false
+            case .error(let errorType, _):
+                let message = errorType?.errorMessage ?? Locale.get("UnknownError")
+                self.errorMessage = message
+                isScorersLoading = false
                 showSnackBar = true
                 print("❌ Fetch error: \(message)")
             }
@@ -61,8 +96,19 @@ public final class StandingsViewModel: ObservableObject {
         }
     }
     
+    private func getScorersFlow() {
+        getScorersFromLocalTask?.cancel()
+        getScorersFromLocalTask = Task {
+            for await scorers in repository.getScorersByCompCodeFromLocalFlow(compCode: compCode) {
+                self.scorers = scorers
+            }
+        }
+    }
+    
     deinit {
         loadStandingsTask?.cancel()
         getStandingsFromLocalTask?.cancel()
+        loadScorersTask?.cancel()
+        getScorersFromLocalTask?.cancel()
     }
 }

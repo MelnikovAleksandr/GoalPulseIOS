@@ -11,16 +11,9 @@ import Domain
 extension CompetitionEntity {
     func toDomain() -> Competition {
         Competition(
-            area: area?.toDomain() ?? Area(code: "", flag: nil, id: abs(UUID().hashValue), name: ""),
+            area: area?.toDomain() ?? getEmptyArea(),
             code: code ?? "",
-            currentSeason: currentSeason?.toDomain() ?? CurrentSeason(
-                currentMatchDay: 0,
-                startDateEndDate: "",
-                endDate: "",
-                id: abs(UUID().hashValue),
-                startDate: "",
-                winner: nil
-            ),
+            currentSeason: currentSeason?.toDomain() ?? getEmptySeason(),
             emblem: URL(string: emblem ?? ""),
             id: id,
             lastUpdated: lastUpdated?.description ?? "",
@@ -70,19 +63,7 @@ extension CurrentSeasonEntity {
             endDate: endDate ?? "",
             id: id,
             startDate: startDate ?? "",
-            winner: winner?.toDomain() ?? Team(
-                address: "",
-                clubColors: "",
-                crest: nil,
-                founded: 0,
-                id: abs(UUID().hashValue),
-                lastUpdated: "",
-                name: "",
-                shortName: "",
-                tla: "",
-                website: "",
-                venue: ""
-            )
+            winner: winner?.toDomain() ?? getEmptyTeam()
         )
     }
 }
@@ -91,35 +72,9 @@ extension StandingsEntity {
     func toDomain() -> Standings {
         Standings(
             id: id,
-            area: area?.toDomain() ?? Area(code: "", flag: nil, id: abs(UUID().hashValue), name: ""),
-            competition: competition?.toDomain() ?? Competition(
-                area: area?.toDomain() ?? Area(code: "", flag: nil, id: abs(UUID().hashValue), name: ""),
-                code: "",
-                currentSeason: currentSeason?.toDomain() ?? CurrentSeason(
-                    currentMatchDay: 0,
-                    startDateEndDate: "",
-                    endDate: "",
-                    id: abs(UUID().hashValue),
-                    startDate: "",
-                    winner: nil
-                ),
-                emblem: nil,
-                id: abs(UUID().hashValue),
-                lastUpdated: "",
-                name: "",
-                numberOfAvailableSeasons: 0,
-                plan: "",
-                type: .LEAGUE,
-                seasons: []
-            ),
-            season: currentSeason?.toDomain() ?? CurrentSeason(
-                currentMatchDay: 0,
-                startDateEndDate: "",
-                endDate: "",
-                id: abs(UUID().hashValue),
-                startDate: "",
-                winner: nil
-            ),
+            area: area?.toDomain() ?? getEmptyArea(),
+            competition: competition?.toDomain() ?? getEmptyCompetition(),
+            season: currentSeason?.toDomain() ?? getEmptySeason(),
             standings: standing.compactMap { $0.toDomain() })
     }
 }
@@ -150,4 +105,106 @@ extension TableEntity {
             goalsAgainst: goalsAgainst ?? 0,
             goalDifference: goalDifference ?? 0)
     }
+}
+
+extension ScorersEntity {
+    func toDomain() -> Scorers {
+        Scorers(
+            id: id,
+            competition: competition?.toDomain() ?? getEmptyCompetition(),
+            season: season?.toDomain() ?? getEmptySeason(),
+            scorers: scorers.compactMap {
+                $0.toDomain()
+            }
+        )
+    }
+}
+
+extension ScorerEntity {
+    func toDomain() -> Scorer {
+        Scorer(
+            id: id ?? abs(UUID().hashValue),
+            player: player?.toDomain() ?? getEmptyPlayer(),
+            team: team?.toDomain() ?? getEmptyTeam(),
+            playedMatches: playedMatches ?? 0,
+            goals: goals ?? 0,
+            assists: assists ?? 0,
+            penalties: penalties ?? 0
+        )
+    }
+}
+
+extension PlayerEntity {
+    func toDomain() -> Player {
+        Player(
+            id: id ?? abs(UUID().hashValue),
+            name: name ?? "",
+            firstName: firstName ?? "",
+            lastName: lastName ?? "",
+            dateOfBirth: dateOfBirth ?? "",
+            nationality: nationality ?? "",
+            section: section ?? "",
+            shirtNumber: shirtNumber ?? 0
+        )
+    }
+}
+
+func getEmptyPlayer() -> Player {
+    return Player(
+        id: abs(UUID().hashValue),
+        name: "",
+        firstName: "",
+        lastName: "",
+        dateOfBirth: "",
+        nationality: "",
+        section: "",
+        shirtNumber: 0
+    )
+}
+
+func getEmptyTeam() -> Team {
+    return Team(
+        address: "",
+        clubColors: "",
+        crest: nil,
+        founded: 0,
+        id: abs(UUID().hashValue),
+        lastUpdated: "",
+        name: "",
+        shortName: "",
+        tla: "",
+        website: "",
+        venue: ""
+    )
+}
+
+func getEmptyArea() -> Area {
+    return Area(code: "", flag: nil, id: abs(UUID().hashValue), name: "")
+}
+
+func getEmptySeason() -> CurrentSeason {
+    return CurrentSeason(
+        currentMatchDay: 0,
+        startDateEndDate: "",
+        endDate: "",
+        id: abs(UUID().hashValue),
+        startDate: "",
+        winner: nil
+    )
+}
+
+func getEmptyCompetition() -> Competition {
+    return Competition(
+        area: getEmptyArea(),
+        code: "",
+        currentSeason: getEmptySeason(),
+        emblem: nil,
+        id: abs(UUID().hashValue),
+        lastUpdated: "",
+        name: "",
+        numberOfAvailableSeasons: 0,
+        plan: "",
+        type: .LEAGUE,
+        seasons: []
+    )
 }

@@ -16,6 +16,20 @@ public struct StandingsPage: View {
     @State private var currentTab: Tab? = Tab.standings
     @State var headerOffsets: (CGFloat, CGFloat) = (0,0)
     @State var tabProgress: CGFloat = 0
+    @State private var contentHeight: CGFloat?
+    
+    private func heightReader(target: Tab) -> some View {
+        GeometryReader { proxy in
+            Color.clear
+                .onChange(of: currentTab, initial: true) { oldVal, newVal in
+                    if target == newVal {
+                        withAnimation {
+                            contentHeight = proxy.size.height
+                        }
+                    }
+                }
+        }
+    }
     
     public init(
         navigationManager: Binding<NavigationManager>,
@@ -35,16 +49,13 @@ public struct StandingsPage: View {
     
     public var body: some View {
         
-        if viewModel.isLoading && viewModel.standings == nil {
-            BallProgressView()
+        if #available(iOS 26.1, *) {
+            ScrollViewStandings()
+                .scrollEdgeEffectHidden()
         } else {
-            if #available(iOS 26.1, *) {
-                ScrollViewStandings()
-                    .scrollEdgeEffectHidden()
-            } else {
-                ScrollViewStandings()
-            }
+            ScrollViewStandings()
         }
+        
     }
     
     
@@ -61,17 +72,24 @@ public struct StandingsPage: View {
                     LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
                             Section {
                                 ScrollView(.horizontal) {
-                                    LazyHStack(spacing: 0) {
+                                    LazyHStack(alignment: .top, spacing: 0) {
                                         StandingsList()
                                             .id(Tab.standings)
+                                            .containerRelativeFrame(.horizontal)
+                                            .background { heightReader(target: Tab.standings) }
                                         
-                                        StandingsList()
+                                        ScorersList()
                                             .id(Tab.players)
+                                            .containerRelativeFrame(.horizontal)
+                                            .background { heightReader(target: Tab.players) }
                                         
                                         StandingsList()
                                             .id(Tab.matches)
+                                            .containerRelativeFrame(.horizontal)
+                                            .background { heightReader(target: Tab.matches) }
                                         
                                     }
+                                    .frame(minHeight: contentHeight, maxHeight: contentHeight)
                                     .scrollTargetLayout()
                                     .offsetX { value in
                                         let progress = -value / (size.width * CGFloat(Tab.allCases.count - 1))
@@ -104,26 +122,57 @@ public struct StandingsPage: View {
             .ignoresSafeArea(.container, edges: .all)
             .toolbar(headerOffsets.0 < 20 ? .hidden : .visible, for: .navigationBar)
             .animation(.easeInOut(duration: 0.1), value: headerOffsets.0 < 20)
+            .snackbar(show: $viewModel.showSnackBar, bgColor: Color.theme.error, txtColor: Color.theme.surface, icon: "xmark", iconColor: Color.theme.surface, message: viewModel.errorMessage ?? "")
         }
         
     }
     
     @ViewBuilder
     func StandingsList() -> some View {
-        VStack(spacing: 0) {
-            ForEach(viewModel.standings?.standings ?? [], id: \.self) { standing in
+        if viewModel.isStandingsLoading && viewModel.standings == nil {
+            ZStack {
+                BallProgressView().padding(.vertical, 80)
+            }.frame(width: UIScreen.main.bounds.width)
+        } else {
+            VStack(spacing: 0) {
+                ForEach(viewModel.standings?.standings ?? [], id: \.self) { standing in
+                    Section {
+                        ForEach(standing.table, id: \.self) { table in
+                            StandingItem(table: table, standingLastId: standing.table.last?.id)
+                                .background(Color.theme.background)
+                        }
+                    } header: {
+                        TableLeagueTopBar(standing: standing, type: viewModel.standings?.competition.type ?? Type.LEAGUE)
+                    }
+                }
+                StandingsBottomItem()
+                    .padding(.horizontal, 4)
+                    .frame(width: UIScreen.main.bounds.width)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    func ScorersList() -> some View {
+        if viewModel.isScorersLoading && viewModel.scorers == nil {
+            ZStack {
+                BallProgressView().padding(.vertical, 80)
+            }.frame(width: UIScreen.main.bounds.width)
+        } else {
+            VStack(spacing: 0) {
                 Section {
-                    ForEach(standing.table, id: \.self) { table in
-                        StandingItem(table: table, standingLastId: standing.table.last?.id)
+                    let lastId = viewModel.scorers?.scorers.last?.id
+                    ForEach(Array((viewModel.scorers?.scorers ?? []).enumerated()), id: \.element.id) { index, scorer in
+                        ScorerItem(scorer: scorer, scorersLastId: lastId, scorerIndex: index + 1)
                             .background(Color.theme.background)
                     }
                 } header: {
-                    TableLeagueTopBar(standing: standing, type: viewModel.standings?.competition.type ?? Type.LEAGUE)
+                    ScorersTopBar()
                 }
+                ScorersBottomItem()
+                    .padding(.horizontal, 4)
+                    .frame(width: UIScreen.main.bounds.width)
             }
-            BottomItem()
-                .padding(.horizontal, 4)
-                .frame(width: UIScreen.main.bounds.width)
         }
     }
     

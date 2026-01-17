@@ -18,19 +18,6 @@ public struct StandingsPage: View {
     @State var tabProgress: CGFloat = 0
     @State private var contentHeight: CGFloat?
     
-    private func heightReader(target: Tab) -> some View {
-        GeometryReader { proxy in
-            Color.clear
-                .onChange(of: currentTab, initial: true) { oldVal, newVal in
-                    if target == newVal {
-                        withAnimation {
-                            contentHeight = proxy.size.height
-                        }
-                    }
-                }
-        }
-    }
-    
     public init(
         navigationManager: Binding<NavigationManager>,
         compCode: String
@@ -62,8 +49,8 @@ public struct StandingsPage: View {
     @ViewBuilder
     func ScrollViewStandings() -> some View {
         
-        GeometryReader {
-            let size = $0.size
+        GeometryReader { proxy in
+            let size = proxy.size
             
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 0) {
@@ -76,20 +63,27 @@ public struct StandingsPage: View {
                                         StandingsList()
                                             .id(Tab.standings)
                                             .containerRelativeFrame(.horizontal)
-                                            .background { heightReader(target: Tab.standings) }
+                                            .background {
+                                                TabHeight(target: Tab.standings)
+                                            }
                                         
                                         ScorersList()
                                             .id(Tab.players)
                                             .containerRelativeFrame(.horizontal)
-                                            .background { heightReader(target: Tab.players) }
+                                            .background {
+                                                TabHeight(target: Tab.players)
+                                            }
                                         
                                         StandingsList()
                                             .id(Tab.matches)
                                             .containerRelativeFrame(.horizontal)
-                                            .background { heightReader(target: Tab.matches) }
+                                            .background {
+                                                TabHeight(target: Tab.matches)
+                                            }
                                         
                                     }
                                     .frame(minHeight: contentHeight, maxHeight: contentHeight)
+                                    .animation(.easeInOut(duration: 0.25), value: contentHeight)
                                     .scrollTargetLayout()
                                     .offsetX { value in
                                         let progress = -value / (size.width * CGFloat(Tab.allCases.count - 1))
@@ -125,6 +119,21 @@ public struct StandingsPage: View {
             .snackbar(show: $viewModel.showSnackBar, bgColor: Color.theme.error, txtColor: Color.theme.surface, icon: "xmark", iconColor: Color.theme.surface, message: viewModel.errorMessage ?? "")
         }
         
+    }
+    
+    @ViewBuilder
+    func TabHeight(target: Tab) -> some View {
+        GeometryReader { proxy in
+            Color.clear
+                .onChange(of: currentTab, initial: true) { _, newVal in
+                    if target == newVal {
+                        contentHeight = proxy.size.height
+                    }
+                }
+                .onChange(of: proxy.size.height, initial: true) { _, newVal in
+                    contentHeight = newVal
+                }
+        }
     }
     
     @ViewBuilder

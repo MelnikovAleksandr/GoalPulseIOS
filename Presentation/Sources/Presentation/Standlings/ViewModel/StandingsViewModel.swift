@@ -16,9 +16,12 @@ public final class StandingsViewModel: ObservableObject {
     
     @Published private(set) var standings: Standings? = nil
     @Published private(set) var scorers: Scorers? = nil
+    @Published private(set) var aheadMatches: [MatchesByTour]? = nil
+    @Published private(set) var completedMatches: [MatchesByTour]? = nil
     
     @Published private(set) var isStandingsLoading = false
     @Published private(set) var isScorersLoading = false
+    @Published private(set) var isMatchesLoading = false
     
     @Published private(set) var errorMessage: String?
     @Published var showSnackBar: Bool = false
@@ -29,6 +32,10 @@ public final class StandingsViewModel: ObservableObject {
     private var loadScorersTask: Task<Void, Never>?
     private var getScorersFromLocalTask: Task<Void, Never>?
     
+    private var loadMatchesTask: Task<Void, Never>?
+    private var getAheadMatchesFromLocalTask: Task<Void, Never>?
+    private var getCompletedMatchesFromLocalTask: Task<Void, Never>?
+    
     private let compCode: String
     
     public init(repository: StandingsRepository, compCode: String) {
@@ -38,9 +45,12 @@ public final class StandingsViewModel: ObservableObject {
         
         getStandingsFlow()
         getScorersFlow()
+        getAheadMatchesFlow()
+        getCompletedMatchesFlow()
         
         loadStandings()
         loadScorers()
+        loadMatches()
     }
     
     private func loadStandings() {
@@ -87,6 +97,28 @@ public final class StandingsViewModel: ObservableObject {
         }
     }
     
+    private func loadMatches() {
+        loadMatchesTask?.cancel()
+        loadMatchesTask = Task {
+            isMatchesLoading = true
+            errorMessage = nil
+            showSnackBar = false
+            
+            let result = await repository.getMatchesFromRemoteToLocal(compCode: compCode)
+            
+            switch result {
+            case .success(_):
+                isMatchesLoading = false
+            case .error(let errorType, _):
+                let message = errorType?.errorMessage ?? Locale.get("UnknownError")
+                self.errorMessage = message
+                isMatchesLoading = false
+                showSnackBar = true
+                print("❌ Fetch error: \(message)")
+            }
+        }
+    }
+    
     private func getStandingsFlow() {
         getStandingsFromLocalTask?.cancel()
         getStandingsFromLocalTask = Task {
@@ -105,10 +137,33 @@ public final class StandingsViewModel: ObservableObject {
         }
     }
     
+    private func getAheadMatchesFlow() {
+        getAheadMatchesFromLocalTask?.cancel()
+        getAheadMatchesFromLocalTask = Task {
+            for await matches in repository.getAheadMatchesFromLocalFlow(compCode: compCode) {
+                print("TEST_TEST Ahead - \(matches.count)")
+                self.aheadMatches = matches
+            }
+        }
+    }
+    
+    private func getCompletedMatchesFlow() {
+        getCompletedMatchesFromLocalTask?.cancel()
+        getCompletedMatchesFromLocalTask = Task {
+            for await matches in repository.getCompletedMatchesFromLocalFlow(compCode: compCode) {
+                print("TEST_TEST Completed - \(matches.count)")
+                self.completedMatches = matches
+            }
+        }
+    }
+    
     deinit {
         loadStandingsTask?.cancel()
         getStandingsFromLocalTask?.cancel()
         loadScorersTask?.cancel()
         getScorersFromLocalTask?.cancel()
+        loadMatchesTask?.cancel()
+        getAheadMatchesFromLocalTask?.cancel()
+        getCompletedMatchesFromLocalTask?.cancel()
     }
 }

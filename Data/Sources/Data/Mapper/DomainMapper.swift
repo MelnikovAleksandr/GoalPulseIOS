@@ -149,6 +149,44 @@ extension PlayerEntity {
     }
 }
 
+extension MatchEntity {
+    func toDomain() -> Match {
+        Match(
+            id: id ?? abs(UUID().hashValue),
+            status: status ?? "",
+            homeTeam: homeTeam?.toDomain() ?? getEmptyTeam(),
+            awayTeam: awayTeam?.toDomain() ?? getEmptyTeam(),
+            score: score?.toDomain() ?? getEmptyScore(),
+            dateTime: utcDate ?? Date()
+        )
+    }
+}
+
+extension ScoreEntity {
+    func toDomain() -> Score {
+        Score(winner: winner.toWinner(), time: fullTime?.toDomain() ?? getEmptyTime())
+    }
+}
+
+extension Optional where Wrapped == String {
+    func toWinner() -> Winner {
+        guard let self = self else { return .none }
+        switch self {
+        case "AWAY_TEAM": return .away
+        case "DRAW": return .draw
+        case "HOME_TEAM": return .home
+        default: return .none
+        }
+    }
+}
+
+
+extension TimeEntity {
+    func toDomain() -> Time {
+        Time(home: home ?? 0, away: away ?? 0)
+    }
+}
+
 func getEmptyPlayer() -> Player {
     return Player(
         id: abs(UUID().hashValue),
@@ -207,4 +245,12 @@ func getEmptyCompetition() -> Competition {
         type: .LEAGUE,
         seasons: []
     )
+}
+
+func getEmptyTime() -> Time {
+    Time(home: 0, away: 0)
+}
+
+func getEmptyScore() -> Score {
+    Score(winner: .none, time: getEmptyTime())
 }

@@ -16,4 +16,12 @@ public protocol StandingsRepository: Sendable {
     func getScorersFromRemoteToLocal(compCode: String) async -> Resource<Bool>
     @MainActor
     func getScorersByCompCodeFromLocalFlow(compCode: String) -> AsyncStream<Scorers>
+    
+    func getMatchesFromRemoteToLocal(compCode: String) async -> Resource<Bool>
+    
+    @MainActor
+    func getAheadMatchesFromLocalFlow(compCode: String) -> AsyncStream<[MatchesByTour]>
+    
+    @MainActor
+    func getCompletedMatchesFromLocalFlow(compCode: String) -> AsyncStream<[MatchesByTour]>
 }

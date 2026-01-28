@@ -45,6 +45,10 @@ final class MockStandingsRepository: StandingsRepository {
         return .success(true)
     }
     
+    func getMatchesFromRemoteToLocal(compCode: String) async -> Resource<Bool> {
+        return .success(true)
+    }
+    
     func getStandingsByIdFromLocal(compCode: String) -> AsyncStream<Domain.Standings> {
         AsyncStream { continuation in
             continuation.yield(MockUIData.standings)
@@ -59,6 +63,19 @@ final class MockStandingsRepository: StandingsRepository {
         }
     }
     
+    func getAheadMatchesFromLocalFlow(compCode: String) -> AsyncStream<[MatchesByTour]> {
+        AsyncStream { continuation in
+            continuation.yield([])
+            continuation.finish()
+        }
+    }
+    
+    func getCompletedMatchesFromLocalFlow(compCode: String) -> AsyncStream<[MatchesByTour]> {
+        AsyncStream { continuation in
+            continuation.yield([])
+            continuation.finish()
+        }
+    }
     
 }
 

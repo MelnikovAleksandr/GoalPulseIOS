@@ -63,4 +63,28 @@ public final class StandingsRepositoryImpl: StandingsRepository {
         return standingsLocalManager.getScorercByCompCodeFlow(compCode: compCode)
     }
     
+    public func getMatchesFromRemoteToLocal(compCode: String) async -> Resource<Bool> {
+        return await errorHandler.executeSafely {
+            let response: MatchesDTO = try await self.networkService.performRequest(EndPoints.matches(compCode).rawValue, method: .get, parameters: nil, encoding: URLEncoding.default)
+            
+            let matchesEntity = MatchesEntity.from(dto: response)
+            
+            guard let matchesEntity = matchesEntity else {
+                return .success(true)
+            }
+            
+            try await self.standingsLocalManager.saveMatches(matchesEntity)
+            
+            return .success(true)
+        }
+    }
+    
+    public func getAheadMatchesFromLocalFlow(compCode: String) -> AsyncStream<[MatchesByTour]> {
+        return standingsLocalManager.getAheadMatchesByCompCodeFlow(compCode: compCode)
+    }
+    
+    public func getCompletedMatchesFromLocalFlow(compCode: String) -> AsyncStream<[MatchesByTour]> {
+        return standingsLocalManager.getCompletedMatchesByCompCodeFlow(compCode: compCode)
+    }
+    
 }

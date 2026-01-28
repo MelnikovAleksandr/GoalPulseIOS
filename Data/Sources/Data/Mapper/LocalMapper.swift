@@ -161,4 +161,72 @@ extension PlayerEntity {
     }
 }
 
+extension MatchesEntity {
+    static func from(dto: MatchesDTO?) -> MatchesEntity? {
+        guard let dto = dto else { return nil }
+        let entity = MatchesEntity()
+        entity.id = dto.competition?.code ?? UUID().uuidString
+        entity.competition = CompetitionEntity.from(dto: dto.competition)
+        entity.matches.append(objectsIn: dto.matches?.compactMap { match in
+            MatchEntity.from(dto: match)
+        } ?? [])
+        return entity
+    }
+}
+
+extension MatchEntity {
+    static func from(dto: MatchDTO?) -> MatchEntity? {
+        guard let dto = dto else { return nil }
+        let entity = MatchEntity()
+        entity.area = AreaEntity.from(dto: dto.area)
+        entity.competition = CompetitionEntity.from(dto: dto.competition)
+        entity.homeTeam = TeamEntity.from(dto: dto.homeTeam)
+        entity.awayTeam = TeamEntity.from(dto: dto.awayTeam)
+        entity.id = dto.id
+        entity.utcDate = dto.utcDate
+        entity.status = dto.status
+        entity.matchday = dto.matchday
+        entity.stage = dto.stage
+        entity.lastUpdated = dto.lastUpdated
+        entity.score = ScoreEntity.from(dto: dto.score)
+        entity.referees.append(objectsIn: dto.referees?.compactMap { referee in
+            RefereeEntity.from(dto: referee)
+        } ?? [])
+        return entity
+    }
+}
+
+extension ScoreEntity {
+    static func from(dto: ScoreDTO?) -> ScoreEntity? {
+        guard let dto = dto else { return nil }
+        let entity = ScoreEntity()
+        entity.winner = dto.winner
+        entity.duration = dto.duration
+        entity.fullTime = TimeEntity.from(dto: dto.fullTime)
+        entity.halfTime = TimeEntity.from(dto: dto.halfTime)
+        return entity
+    }
+}
+
+extension TimeEntity {
+    static func from(dto: TimeDTO?) -> TimeEntity? {
+        guard let dto = dto else { return nil }
+        let entity = TimeEntity()
+        entity.home = dto.home
+        entity.away = dto.away
+        return entity
+    }
+}
+
+extension RefereeEntity {
+    static func from(dto: RefereeDTO?) -> RefereeEntity? {
+        guard let dto = dto else { return nil }
+        let entity = RefereeEntity()
+        entity.id = dto.id
+        entity.name = dto.name
+        entity.type = dto.type
+        entity.nationality = dto.nationality
+        return entity
+    }
+}
 

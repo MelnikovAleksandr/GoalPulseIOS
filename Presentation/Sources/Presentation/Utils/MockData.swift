@@ -8,10 +8,11 @@
 import Foundation
 import Utils
 import Domain
+import SwiftUI
 
 class MockData {
     
-    @MainActor static let navManager: NavigationManager = NavigationManagerImpl()
+    @MainActor static let navManager: NavigationManager = MockNavManager()
     
     @MainActor static let footballRepository: CompetitionsRepository = MockFootballRepository()
     
@@ -21,6 +22,36 @@ class MockData {
     
     @MainActor static let standingsViewModel: StandingsViewModel =
         StandingsViewModel(repository: standingsRepository, compCode: "")
+}
+
+@Observable
+final class MockNavManager: NavigationManager {
+    
+    public init() {}
+    
+    public var path = NavigationPath()
+    
+    public func toStandlings(compCode: String) {
+        path.append(Routes.standlings(compCode: compCode))
+    }
+    
+    public func toTeamDetails() {
+        path.append(Routes.team)
+    }
+    
+    public func toPlayerDetails() {
+        path.append(Routes.player)
+    }
+    
+    public func pop() {
+        if !path.isEmpty {
+            path.removeLast()
+        }
+    }
+    
+    public func popToRoot() {
+        path = NavigationPath()
+    }
 }
 
 final class MockFootballRepository: CompetitionsRepository {
@@ -65,14 +96,14 @@ final class MockStandingsRepository: StandingsRepository {
     
     func getAheadMatchesFromLocalFlow(compCode: String) -> AsyncStream<[MatchesByTour]> {
         AsyncStream { continuation in
-            continuation.yield([])
+            continuation.yield(MockUIData.getMatchesByTour())
             continuation.finish()
         }
     }
     
     func getCompletedMatchesFromLocalFlow(compCode: String) -> AsyncStream<[MatchesByTour]> {
         AsyncStream { continuation in
-            continuation.yield([])
+            continuation.yield(MockUIData.getMatchesByTour())
             continuation.finish()
         }
     }
@@ -966,6 +997,250 @@ class MockUIData {
             season: season,
             scorers: scorers
         )
+    }
+    
+    static func getMatchesByTour() -> [MatchesByTour] {
+        let dateFormatter = ISO8601DateFormatter()
+        
+        let tour1Matches = [
+            Match(
+                id: 537441,
+                status: "FINISHED",
+                homeTeam: Team(
+                    address: "",
+                    clubColors: "",
+                    crest: URL(string: "https://crests.football-data.org/1920.png"),
+                    founded: 0,
+                    id: 1920,
+                    lastUpdated: "",
+                    name: "Fortuna Sittard",
+                    shortName: "Sittard",
+                    tla: "SIT",
+                    website: "",
+                    venue: ""
+                ),
+                awayTeam: Team(
+                    address: "",
+                    clubColors: "",
+                    crest: URL(string: "https://crests.football-data.org/718.png"),
+                    founded: 0,
+                    id: 718,
+                    lastUpdated: "",
+                    name: "Go Ahead Eagles",
+                    shortName: "Go Ahead",
+                    tla: "GOA",
+                    website: "",
+                    venue: ""
+                ),
+                score: Score(
+                    winner: .draw,
+                    time: Time(home: 2, away: 2)
+                ),
+                dateTime: dateFormatter.date(from: "2025-08-08T18:00:00Z")!
+            )
+        ]
+        
+        let tour2Matches = [
+            Match(
+                id: 537442,
+                status: "FINISHED",
+                homeTeam: Team(
+                    address: "",
+                    clubColors: "",
+                    crest: URL(string: "https://crests.football-data.org/1915.png"),
+                    founded: 0,
+                    id: 1915,
+                    lastUpdated: "",
+                    name: "NEC",
+                    shortName: "NEC",
+                    tla: "NEC",
+                    website: "",
+                    venue: ""
+                ),
+                awayTeam: Team(
+                    address: "",
+                    clubColors: "",
+                    crest: URL(string: "https://crests.football-data.org/670.png"),
+                    founded: 0,
+                    id: 670,
+                    lastUpdated: "",
+                    name: "SBV Excelsior",
+                    shortName: "Excelsior",
+                    tla: "EXC",
+                    website: "",
+                    venue: ""
+                ),
+                score: Score(
+                    winner: .home,
+                    time: Time(home: 5, away: 0)
+                ),
+                dateTime: dateFormatter.date(from: "2025-08-09T14:30:00Z")!
+            ),
+            Match(
+                id: 537443,
+                status: "FINISHED",
+                homeTeam: Team(
+                    address: "",
+                    clubColors: "",
+                    crest: URL(string: "https://crests.football-data.org/675.png"),
+                    founded: 0,
+                    id: 675,
+                    lastUpdated: "",
+                    name: "Feyenoord Rotterdam",
+                    shortName: "Feyenoord",
+                    tla: "FEY",
+                    website: "",
+                    venue: ""
+                ),
+                awayTeam: Team(
+                    address: "",
+                    clubColors: "",
+                    crest: URL(string: "https://crests.football-data.org/681.png"),
+                    founded: 0,
+                    id: 681,
+                    lastUpdated: "",
+                    name: "NAC Breda",
+                    shortName: "NAC",
+                    tla: "NAC",
+                    website: "",
+                    venue: ""
+                ),
+                score: Score(
+                    winner: .home,
+                    time: Time(home: 2, away: 0)
+                ),
+                dateTime: dateFormatter.date(from: "2025-08-09T16:45:00Z")!
+            ),
+            Match(
+                id: 537444,
+                status: "FINISHED",
+                homeTeam: Team(
+                    address: "",
+                    clubColors: "",
+                    crest: URL(string: "https://crests.football-data.org/673.png"),
+                    founded: 0,
+                    id: 673,
+                    lastUpdated: "",
+                    name: "SC Heerenveen",
+                    shortName: "Heerenveen",
+                    tla: "HEE",
+                    website: "",
+                    venue: ""
+                ),
+                awayTeam: Team(
+                    address: "",
+                    clubColors: "",
+                    crest: URL(string: "https://crests.football-data.org/1919.png"),
+                    founded: 0,
+                    id: 1919,
+                    lastUpdated: "",
+                    name: "FC Volendam",
+                    shortName: "Volendam",
+                    tla: "VOL",
+                    website: "",
+                    venue: ""
+                ),
+                score: Score(
+                    winner: .draw,
+                    time: Time(home: 1, away: 1)
+                ),
+                dateTime: dateFormatter.date(from: "2025-08-09T18:00:00Z")!
+            ),
+            Match(
+                id: 537445,
+                status: "FINISHED",
+                homeTeam: Team(
+                    address: "",
+                    clubColors: "",
+                    crest: URL(string: "https://crests.football-data.org/674.png"),
+                    founded: 0,
+                    id: 674,
+                    lastUpdated: "",
+                    name: "PSV",
+                    shortName: "PSV",
+                    tla: "PSV",
+                    website: "",
+                    venue: ""
+                ),
+                awayTeam: Team(
+                    address: "",
+                    clubColors: "",
+                    crest: URL(string: "https://crests.football-data.org/6806.png"),
+                    founded: 0,
+                    id: 6806,
+                    lastUpdated: "",
+                    name: "Sparta Rotterdam",
+                    shortName: "Sparta",
+                    tla: "SPA",
+                    website: "",
+                    venue: ""
+                ),
+                score: Score(
+                    winner: .home,
+                    time: Time(home: 6, away: 1)
+                ),
+                dateTime: dateFormatter.date(from: "2025-08-09T19:00:00Z")!
+            )
+        ]
+        
+        let tour3Matches = [
+            Match(
+                id: 537450,
+                status: "FINISHED",
+                homeTeam: Team(
+                    address: "",
+                    clubColors: "",
+                    crest: URL(string: "https://crests.football-data.org/1912.png"),
+                    founded: 0,
+                    id: 1912,
+                    lastUpdated: "",
+                    name: "Telstar 1963",
+                    shortName: "Telstar",
+                    tla: "TEL",
+                    website: "",
+                    venue: ""
+                ),
+                awayTeam: Team(
+                    address: "",
+                    clubColors: "",
+                    crest: URL(string: "https://crests.football-data.org/684.png"),
+                    founded: 0,
+                    id: 684,
+                    lastUpdated: "",
+                    name: "PEC Zwolle",
+                    shortName: "Zwolle",
+                    tla: "ZWO",
+                    website: "",
+                    venue: ""
+                ),
+                score: Score(
+                    winner: .away,
+                    time: Time(home: 0, away: 2)
+                ),
+                dateTime: dateFormatter.date(from: "2025-08-15T18:00:00Z")!
+            )
+        ]
+        
+        return [
+            MatchesByTour(
+                matchday: 1,
+                stage: "REGULAR_SEASON",
+                seasonType: "LEAGUE",
+                matches: tour1Matches
+            ),
+            MatchesByTour(
+                matchday: 2,
+                stage: "REGULAR_SEASON",
+                seasonType: "LEAGUE",
+                matches: tour2Matches
+            ),
+            MatchesByTour(
+                matchday: 3,
+                stage: "REGULAR_SEASON",
+                seasonType: "LEAGUE",
+                matches: tour3Matches
+            )
+        ]
     }
 
 }

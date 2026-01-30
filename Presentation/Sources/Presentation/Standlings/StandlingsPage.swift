@@ -57,50 +57,56 @@ public struct StandingsPage: View {
                     HeaderView()
                     
                     LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
-                            Section {
-                                ScrollView(.horizontal) {
-                                    LazyHStack(alignment: .top, spacing: 0) {
-                                        StandingsList()
-                                            .id(Tab.standings)
-                                            .containerRelativeFrame(.horizontal)
-                                            .background {
-                                                TabHeight(target: Tab.standings)
-                                            }
-                                        
-                                        ScorersList()
-                                            .id(Tab.players)
-                                            .containerRelativeFrame(.horizontal)
-                                            .background {
-                                                TabHeight(target: Tab.players)
-                                            }
-                                        
-                                        StandingsList()
-                                            .id(Tab.matches)
-                                            .containerRelativeFrame(.horizontal)
-                                            .background {
-                                                TabHeight(target: Tab.matches)
-                                            }
-                                        
-                                    }
-                                    .frame(minHeight: contentHeight, maxHeight: contentHeight)
-                                    .animation(.easeInOut(duration: 0.25), value: contentHeight)
-                                    .scrollTargetLayout()
-                                    .offsetX { value in
-                                        let progress = -value / (size.width * CGFloat(Tab.allCases.count - 1))
-                                        tabProgress = max(min(progress, 1), 0)
-                                    }
+                        Section {
+                            ScrollView(.horizontal) {
+                                LazyHStack(alignment: .top, spacing: 0) {
+                                    StandingsList()
+                                        .id(Tab.standings)
+                                        .containerRelativeFrame(.horizontal)
+                                        .background {
+                                            TabHeight(target: Tab.standings)
+                                        }
+                                    
+                                    ScorersList()
+                                        .id(Tab.players)
+                                        .containerRelativeFrame(.horizontal)
+                                        .background {
+                                            TabHeight(target: Tab.players)
+                                        }
+                                    
+                                    CompMatches()
+                                        .id(Tab.matches)
+                                        .containerRelativeFrame(.horizontal)
+                                        .background {
+                                            TabHeight(target: Tab.matches)
+                                        }
+                                    AheadMatches()
+                                        .id(Tab.ahead)
+                                        .containerRelativeFrame(.horizontal)
+                                        .background {
+                                            TabHeight(target: Tab.ahead)
+                                        }
+                                    
                                 }
-                                .scrollPosition(id: $currentTab)
-                                .scrollIndicators(.hidden)
-                                .scrollTargetBehavior(.paging)
-                            } header: {
-                                PinnedHeaderView()
-                                    .background(Color.theme.background)
-                                    .offset(y: headerOffsets.1 > 0 ? 0 : -headerOffsets.1 / 6)
-                                    .modifier(OffsetModifier(offset: $headerOffsets.0, returnFromStart: false))
-                                    .modifier(OffsetModifier(offset: $headerOffsets.1))
+                                .frame(minHeight: contentHeight, maxHeight: contentHeight)
+                                .animation(.easeInOut(duration: 0.25), value: contentHeight)
+                                .scrollTargetLayout()
+                                .offsetX { value in
+                                    let progress = -value / (size.width * CGFloat(Tab.allCases.count - 1))
+                                    tabProgress = max(min(progress, 1), 0)
+                                }
                             }
-       
+                            .scrollPosition(id: $currentTab)
+                            .scrollIndicators(.hidden)
+                            .scrollTargetBehavior(.paging)
+                        } header: {
+                            PinnedHeaderView()
+                                .background(Color.theme.background)
+                                .offset(y: headerOffsets.1 > 0 ? 0 : -headerOffsets.1 / 6)
+                                .modifier(OffsetModifier(offset: $headerOffsets.0, returnFromStart: false))
+                                .modifier(OffsetModifier(offset: $headerOffsets.1))
+                        }
+                        
                     }
                 }
             }
@@ -133,6 +139,50 @@ public struct StandingsPage: View {
                 .onChange(of: proxy.size.height, initial: true) { _, newVal in
                     contentHeight = newVal
                 }
+        }
+    }
+    
+    @ViewBuilder
+    func CompMatches() -> some View {
+        if viewModel.isMatchesLoading && viewModel.completedMatches == nil {
+            ZStack {
+                BallProgressView().padding(.vertical, 80)
+            }.frame(width: UIScreen.main.bounds.width)
+        } else {
+            VStack(spacing: 0) {
+                let matches = viewModel.completedMatches ?? []
+                ForEach(matches, id: \.self) { groupMatches in
+                    Section {
+                        ForEach(groupMatches.matches, id: \.id) { match in
+                            MatchItem(match: match, isAhead: false)
+                        }
+                    } header: {
+                        MatchGroupHeader(matchesByTour: groupMatches)
+                    }
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
+    func AheadMatches() -> some View {
+        if viewModel.isMatchesLoading && viewModel.aheadMatches == nil {
+            ZStack {
+                BallProgressView().padding(.vertical, 80)
+            }.frame(width: UIScreen.main.bounds.width)
+        } else {
+            VStack(spacing: 0) {
+                let matches = viewModel.aheadMatches ?? []
+                ForEach(matches, id: \.self) { groupMatches in
+                    Section {
+                        ForEach(groupMatches.matches, id: \.id) { match in
+                            MatchItem(match: match, isAhead: true)
+                        }
+                    } header: {
+                        MatchGroupHeader(matchesByTour: groupMatches)
+                    }
+                }
+            }
         }
     }
     
@@ -262,6 +312,16 @@ public struct StandingsPage: View {
 }
 
 #Preview {
-    StandingsPage(navigationManager: .constant(MockData.navManager), viewModel: MockData.standingsViewModel)
-        .loadCustomFonts()
+    NavigationStack {
+        StandingsPage(navigationManager: .constant(MockData.navManager), viewModel: MockData.standingsViewModel)
+            .loadCustomFonts()
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: {}) {
+                        Image(systemName: "chevron.left")
+                            .font(.headline)
+                    }
+                }
+            }
+    }
 }

@@ -13,6 +13,7 @@ enum Tab: String, CaseIterable, Hashable {
     case standings = "Standings"
     case players = "Players"
     case matches = "Matches"
+    case ahead = "Ahead"
     
     var localizedTitle: String {
         Locale.get(rawValue)

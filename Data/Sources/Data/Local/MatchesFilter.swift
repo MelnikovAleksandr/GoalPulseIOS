@@ -51,9 +51,22 @@ class MatchesFilterImpl: MatchesFilter {
         
         let groupedMatches = Dictionary(grouping: filteredMatches, by: { $0.stage })
         var result: [MatchesByTour] = []
-        for (stage, matchesByStage) in groupedMatches {
+        
+        let sortedStages = groupedMatches.keys.sorted {
+            guard let stage1 = $0, let stage2 = $1 else { return false }
+            return stage1 < stage2
+        }
+        
+        for stage in sortedStages {
+            guard let matchesByStage = groupedMatches[stage] else { continue }
             let matchesByTourEntities = Dictionary(grouping: matchesByStage, by: { $0.matchday })
-            for (matchday, matchesByMatchday) in matchesByTourEntities {
+            let sortedMatchdays = matchesByTourEntities.keys.sorted { (matchday1, matchday2) -> Bool in
+                return (matchday1 ?? 0) > (matchday2 ?? 0)
+            }
+            
+            for matchday in sortedMatchdays {
+                guard let matchesByMatchday = matchesByTourEntities[matchday] else { continue }
+                
                 let domainMatches = matchesByMatchday.map { $0.toDomain() }
                 let matchesByTour = MatchesByTour(
                     matchday: matchday ?? 0,
@@ -64,7 +77,7 @@ class MatchesFilterImpl: MatchesFilter {
                 result.append(matchesByTour)
             }
         }
-        return result.reversed()
+        return result
     }
     
 }

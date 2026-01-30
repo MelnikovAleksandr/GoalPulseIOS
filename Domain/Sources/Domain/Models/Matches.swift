@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct MatchesByTour: Sendable {
+public struct MatchesByTour: Sendable, Hashable {
     public let matchday: Int
     public let stage: String
     public let seasonType: String
@@ -20,6 +20,17 @@ public struct MatchesByTour: Sendable {
         self.matches = matches
     }
     
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(matchday)
+        hasher.combine(stage)
+        hasher.combine(seasonType)
+    }
+    
+    public static func == (lhs: MatchesByTour, rhs: MatchesByTour) -> Bool {
+        return lhs.matchday == rhs.matchday &&
+               lhs.stage == rhs.stage &&
+               lhs.seasonType == rhs.seasonType
+    }
 }
 
 public struct Match: Identifiable, Sendable {

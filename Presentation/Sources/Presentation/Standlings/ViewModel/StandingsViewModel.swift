@@ -141,7 +141,6 @@ public final class StandingsViewModel: ObservableObject {
         getAheadMatchesFromLocalTask?.cancel()
         getAheadMatchesFromLocalTask = Task {
             for await matches in repository.getAheadMatchesFromLocalFlow(compCode: compCode) {
-                print("TEST_TEST Ahead - \(matches.count)")
                 self.aheadMatches = matches
             }
         }
@@ -151,7 +150,6 @@ public final class StandingsViewModel: ObservableObject {
         getCompletedMatchesFromLocalTask?.cancel()
         getCompletedMatchesFromLocalTask = Task {
             for await matches in repository.getCompletedMatchesFromLocalFlow(compCode: compCode) {
-                print("TEST_TEST Completed - \(matches.count)")
                 self.completedMatches = matches
             }
         }

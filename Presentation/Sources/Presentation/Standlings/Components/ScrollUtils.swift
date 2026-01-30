@@ -54,4 +54,26 @@ extension View {
                 }
             }
     }
+    
+    @ViewBuilder
+    func tabMask(_ tabProgress: CGFloat, _ tabs: [Tab]) -> some View {
+        ZStack {
+            self
+                .foregroundStyle(.gray)
+            
+            self
+                .symbolVariant(.fill)
+                .foregroundStyle(Color.theme.primary)
+                .mask {
+                    GeometryReader {
+                        let size = $0.size
+                        let capsuleWidth = size.width / CGFloat(tabs.count)
+                        Capsule()
+                            
+                            .frame(width: capsuleWidth)
+                            .offset(x: tabProgress * (size.width - capsuleWidth))
+                    }
+                }
+        }
+    }
 }

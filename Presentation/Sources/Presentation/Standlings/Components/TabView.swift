@@ -18,5 +18,16 @@ enum Tab: String, CaseIterable, Hashable {
     var localizedTitle: String {
         Locale.get(rawValue)
     }
-    
+    var systemImageName: String {
+            switch self {
+            case .standings:
+                return "tablecells.fill"
+            case .players:
+                return "person.2.fill"
+            case .matches:
+                return "sportscourt.fill"
+            case .ahead:
+                return "clock.badge"
+            }
+        }
 }

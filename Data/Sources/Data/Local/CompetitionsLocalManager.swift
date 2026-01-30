@@ -33,8 +33,6 @@ public final class CompetitionsLocalManagerImpl: CompetitionsLocalManager {
         guard let realm = realm else { throw NSError(domain: "Realm not initialized", code: 0) }
         
         try realm.write {
-            realm.delete(realm.objects(CompetitionEntity.self))
-            
             for comp in competitions {
                 realm.add(comp, update: .modified)
             }

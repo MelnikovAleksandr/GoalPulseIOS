@@ -46,8 +46,6 @@ public final class StandingsLocalManagerImpl: StandingsLocalManager {
         guard let realm = realm else { throw NSError(domain: "Realm not initialized", code: 0) }
         
         try realm.write {
-            realm.delete(realm.objects(StandingsEntity.self))
-            
             realm.add(standings, update: .modified)
         }
     }
@@ -84,8 +82,6 @@ public final class StandingsLocalManagerImpl: StandingsLocalManager {
         guard let realm = realm else { throw NSError(domain: "Realm not initialized", code: 0) }
         
         try realm.write {
-            realm.delete(realm.objects(ScorersEntity.self))
-            
             realm.add(scorers, update: .modified)
         }
     }
@@ -121,8 +117,6 @@ public final class StandingsLocalManagerImpl: StandingsLocalManager {
     public func saveMatches(_ matches: MatchesEntity) async throws {
         guard let realm = realm else { throw NSError(domain: "Realm not initialized", code: 0) }
         try realm.write {
-            realm.delete(realm.objects(MatchesEntity.self))
-            
             realm.add(matches, update: .modified)
         }
     }
@@ -144,7 +138,7 @@ public final class StandingsLocalManagerImpl: StandingsLocalManager {
             self?.aheadMatchesToken = matches.observe { changes in
                 switch changes {
                 case .initial(let results), .update(let results, _, _, _):
-                    if let initMatches = matches.first {
+                    if let initMatches = results.first {
                         continuation.yield(self?.matchesFilter.filterAheadMatches(matches: initMatches) ?? [])
                     }
                 case .error(let error):
@@ -173,7 +167,7 @@ public final class StandingsLocalManagerImpl: StandingsLocalManager {
             self?.completedMatchesToken = matches.observe { changes in
                 switch changes {
                 case .initial(let results), .update(let results, _, _, _):
-                    if let initMatches = matches.first {
+                    if let initMatches = results.first {
                         continuation.yield(self?.matchesFilter.filterCompletedMatches(matches: initMatches) ?? [])
                     }
                 case .error(let error):

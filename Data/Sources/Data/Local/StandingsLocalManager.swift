@@ -46,6 +46,9 @@ public final class StandingsLocalManagerImpl: StandingsLocalManager {
         guard let realm = realm else { throw NSError(domain: "Realm not initialized", code: 0) }
         
         try realm.write {
+            if let existingStandings = realm.object(ofType: StandingsEntity.self, forPrimaryKey: standings.id) {
+                realm.delete(existingStandings)
+            }
             realm.add(standings, update: .modified)
         }
     }
@@ -82,6 +85,9 @@ public final class StandingsLocalManagerImpl: StandingsLocalManager {
         guard let realm = realm else { throw NSError(domain: "Realm not initialized", code: 0) }
         
         try realm.write {
+            if let existingScorers = realm.object(ofType: ScorersEntity.self, forPrimaryKey: scorers.id) {
+                realm.delete(existingScorers)
+            }
             realm.add(scorers, update: .modified)
         }
     }
@@ -117,6 +123,9 @@ public final class StandingsLocalManagerImpl: StandingsLocalManager {
     public func saveMatches(_ matches: MatchesEntity) async throws {
         guard let realm = realm else { throw NSError(domain: "Realm not initialized", code: 0) }
         try realm.write {
+            if let existingMatches = realm.object(ofType: MatchesEntity.self, forPrimaryKey: matches.id) {
+                realm.delete(existingMatches)
+            }
             realm.add(matches, update: .modified)
         }
     }

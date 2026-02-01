@@ -14,7 +14,7 @@ public struct ConditionalGlassModifier: ViewModifier {
     @ViewBuilder
     public func body(content: Content) -> some View {
         if #available(iOS 26, *) {
-            content.glassEffect()
+            content.glassEffect(.regular.interactive(), in: .capsule)
         } else {
             content
         }

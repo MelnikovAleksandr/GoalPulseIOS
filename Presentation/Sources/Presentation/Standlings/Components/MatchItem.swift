@@ -31,18 +31,16 @@ struct MatchItem: View {
             }
             
             HStack(spacing: 0) {
-                Text(match.homeTeam.name)
+                Text(match.homeTeam.shortName)
                     .lineLimit(1)
-                    .frame(maxWidth: .infinity, alignment: .trailing)
                     .foregroundColor(Color.theme.onBackground)
                     .font(.theme.medium(18))
                 
                 Text(" - ")
                     .padding(.horizontal, 4)
                 
-                Text(match.awayTeam.name)
+                Text(match.awayTeam.shortName)
                     .lineLimit(1)
-                    .frame(maxWidth: .infinity, alignment: .leading)
                     .foregroundColor(Color.theme.onBackground)
                     .font(.theme.medium(18))
             }

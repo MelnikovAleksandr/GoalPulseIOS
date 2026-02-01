@@ -33,6 +33,10 @@ public final class CompetitionsLocalManagerImpl: CompetitionsLocalManager {
         guard let realm = realm else { throw NSError(domain: "Realm not initialized", code: 0) }
         
         try realm.write {
+            let newIds = Set(competitions.map { $0.id })
+            let existingCompetitions = realm.objects(CompetitionEntity.self)
+            let competitionsToDelete = existingCompetitions.filter { !newIds.contains($0.id) }
+            realm.delete(competitionsToDelete)
             for comp in competitions {
                 realm.add(comp, update: .modified)
             }

@@ -74,6 +74,7 @@ public struct StandingsPage: View {
         .scrollTargetBehavior(.paging)
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
+        .toolbarBackground(.visible, for: .navigationBar)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button(action: {
@@ -84,7 +85,12 @@ public struct StandingsPage: View {
                 }
             }
             ToolbarItem(placement: .principal) {
-                PinnedHeaderView()
+                if #available(iOS 26, *) {
+                    PinnedHeaderGlassView()
+                } else {
+                    PinnedHeaderView().padding(.bottom, 5)
+                }
+                
             }
             ToolbarItem(placement: .topBarTrailing) {
                 AsyncMultiImage(url: viewModel.standings?.competition.emblem).frame(height: 34)
@@ -93,17 +99,44 @@ public struct StandingsPage: View {
         .snackbar(show: $viewModel.showSnackBar, bgColor: Color.theme.error, txtColor: Color.theme.surface, icon: "xmark", iconColor: Color.theme.surface, message: viewModel.errorMessage ?? "")
     }
     
+    @available(iOS 26, *)
+    @ViewBuilder
+    func PinnedHeaderGlassView() -> some View {
+        let calculatedWidth = CGFloat(tabs.count) * 65
+        HStack(spacing: 0) {
+            
+            GeometryReader { geo in
+                let size = geo.size
+                
+                CustomtabBar(size: size, activeTab: $currentTab, tabs: tabs) { tab in
+                    VStack(spacing: 3) {
+                        Image(systemName: tab.systemImageName)
+                            .font(.title3)
+                        
+                        Text(tab.localizedTitle.capitalized)
+                            .font(.system(size: 10))
+                            .fontWeight(.medium)
+                    }
+                    .symbolVariant(.fill)
+                    .frame(maxWidth: .infinity)
+                }
+                .glassEffect(.regular.interactive(), in: .capsule)
+            }
+        }
+        .frame(width: calculatedWidth, height: 45)
+        .animation(.easeInOut(duration: 0.3), value: tabs)
+        .id(tabs.count)
+    }
     
     @ViewBuilder
     func PinnedHeaderView() -> some View {
-        
         HStack(spacing: 0) {
             ForEach(tabs, id: \.rawValue) { tab in
                 VStack(spacing: 0) {
                     Image(systemName: tab.systemImageName)
                 }
                 .frame(maxWidth: .infinity)
-                .padding(.vertical, 10)
+                .padding(.vertical, 5)
                 .padding(.horizontal, 10)
                 .contentShape(.capsule)
                 .onTapGesture {

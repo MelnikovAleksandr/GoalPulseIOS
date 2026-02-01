@@ -7,28 +7,19 @@
 import SwiftUI
 
 public struct FontsHelper {
-    public static func resigterFonts() {
+    public static func registerFonts() {
         FontsEnum.allCases.forEach {
-            registerFont(bundle: Bundle.module, fontName: $0.rawValue, fontExtension: "ttf")
+            guard let fontURL = Bundle.module.url(forResource: $0.rawValue, withExtension: "ttf") else { return }
+            var error: Unmanaged<CFError>?
+            CTFontManagerRegisterFontsForURL(fontURL as CFURL, .process, &error)
         }
-    }
-    
-    
-    fileprivate static func registerFont(bundle: Bundle, fontName: String, fontExtension: String) {
-        guard let fontURL = bundle.url(forResource: fontName, withExtension: fontExtension),
-              let fontDataProvider = CGDataProvider(url: fontURL as CFURL),
-              let font = CGFont(fontDataProvider) else {
-            fatalError("Cant create font from filename: \(fontName) with ext \(fontExtension)")
-        }
-        var error : Unmanaged<CFError>?
-        CTFontManagerRegisterGraphicsFont(font, &error)
     }
 }
 
 // For preview
 extension View {
     public func loadCustomFonts() -> some View {
-        FontsHelper.resigterFonts()
+        FontsHelper.registerFonts()
         return self
     }
 }

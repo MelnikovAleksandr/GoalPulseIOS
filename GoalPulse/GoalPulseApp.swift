@@ -14,7 +14,7 @@ import Data
 struct GoalPulseApp: App {
     init() {
         SVGHelper.setUpDependencies()
-        FontsHelper.resigterFonts()
+        FontsHelper.registerFonts()
         ResolverApp.injectUtils()
         ResolverApp.injectDataSources()
         ResolverApp.injectViewModels()

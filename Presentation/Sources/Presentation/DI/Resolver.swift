@@ -24,5 +24,13 @@ extension ResolverApp {
                 compCode: compCode
             )
         }
+        
+        shared.container.register(TeamViewModel.self) { (resolver, teamId: Int) in
+            let teamRepository = resolver.resolve(TeamRepository.self)!
+            return TeamViewModel(
+                repository: teamRepository,
+                teamId: teamId
+            )
+        }
     }
 }

@@ -40,6 +40,11 @@ extension ResolverApp {
             return StandingsLocalManagerImpl(realm: realm)
         }.inObjectScope(.container)
         
+        shared.container.register(TeamsLocalManager.self) { resolver in
+            let realm = resolver.resolve(Realm.self)!
+            return TeamsLocalManagerImpl(realm: realm)
+        }.inObjectScope(.container)
+        
         shared.container.register(CompetitionsRepository.self) { resolver in
             let networkService = resolver.resolve(FootballNetworkService.self)!
             let errorHandler = resolver.resolve(ErrorsHandler.self)!
@@ -57,6 +62,15 @@ extension ResolverApp {
             let standingsLocalManager = resolver.resolve(StandingsLocalManager.self)!
             return StandingsRepositoryImpl(
                 networkService: networkService, errorHandler: errorHandler, standingsLocalManager: standingsLocalManager
+            )
+        }.inObjectScope(.container)
+        
+        shared.container.register(TeamRepository.self) { resolver in
+            let networkService = resolver.resolve(FootballNetworkService.self)!
+            let errorHandler = resolver.resolve(ErrorsHandler.self)!
+            let teamsLocalManager = resolver.resolve(TeamsLocalManager.self)!
+            return TeamRepositoryImpl(
+                networkService: networkService, errorHandler: errorHandler, teamsLocalManager: teamsLocalManager
             )
         }.inObjectScope(.container)
     }

@@ -28,8 +28,8 @@ public struct MatchesByTour: Sendable, Hashable {
     
     public static func == (lhs: MatchesByTour, rhs: MatchesByTour) -> Bool {
         return lhs.matchday == rhs.matchday &&
-               lhs.stage == rhs.stage &&
-               lhs.seasonType == rhs.seasonType
+        lhs.stage == rhs.stage &&
+        lhs.seasonType == rhs.seasonType
     }
 }
 

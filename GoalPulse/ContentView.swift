@@ -20,7 +20,7 @@ struct ContentView: View {
                 .navigationDestination(for: Routes.self) { page in
                     switch page {
                     case .standlings(let compCode): StandingsPage(navigationManager: $navigationManager, compCode: compCode)
-                    case .team: TeamPage(navigationManager: $navigationManager)
+                    case .team(let teamId): TeamPage(navigationManager: $navigationManager, teamId: teamId)
                     case .player: PlayerPage(navigationManager: $navigationManager)
                     }
                 }

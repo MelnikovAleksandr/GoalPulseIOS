@@ -82,12 +82,12 @@ public struct Table: Sendable, Identifiable, Hashable {
     }
     
     public static func == (lhs: Table, rhs: Table) -> Bool {
-            return lhs.team?.id == rhs.team?.id &&
-                   lhs.position == rhs.position
-        }
-        
-        public func hash(into hasher: inout Hasher) {
-            hasher.combine(team?.id)
-            hasher.combine(position)
-        }
+        return lhs.team?.id == rhs.team?.id &&
+        lhs.position == rhs.position
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(team?.id)
+        hasher.combine(position)
+    }
 }

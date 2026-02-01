@@ -225,6 +225,9 @@ public struct StandingsPage: View {
                             ForEach(standing.table, id: \.self) { table in
                                 StandingItem(table: table, standingLastId: standing.table.last?.id)
                                     .background(Color.theme.background)
+                                    .onTapGesture {
+                                        navigationManager.toTeamDetails(teamId: table.team?.id ?? 0)
+                                    }
                             }
                         } header: {
                             TableLeagueTopBar(standing: standing, type: viewModel.standings?.competition.type ?? Type.LEAGUE)

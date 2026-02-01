@@ -5,18 +5,15 @@
 //  Created by Александр Мельников on 25.12.2025.
 //
 
-
 import Foundation
 
 struct StandingsDTO: Codable {
-    let filters: FiltersDTO?
     let area: AreaDTO?
     let competition: CompetitionDTO?
     let season: CurrentSeasonDTO?
     let standings: [StandingDTO]?
-
+    
     enum CodingKeys: String, CodingKey {
-        case filters = "filters"
         case area = "area"
         case competition = "competition"
         case season = "season"
@@ -24,13 +21,12 @@ struct StandingsDTO: Codable {
     }
 }
 
-
 struct StandingDTO: Codable {
     let stage: String?
     let type: String?
     let group: String?
     let table: [TableDTO]?
-
+    
     enum CodingKeys: String, CodingKey {
         case stage = "stage"
         case type = "type"
@@ -51,7 +47,7 @@ struct TableDTO: Codable {
     let goalsFor: Int?
     let goalsAgainst: Int?
     let goalDifference: Int?
-
+    
     enum CodingKeys: String, CodingKey {
         case position = "position"
         case team = "team"

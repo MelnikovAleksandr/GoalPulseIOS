@@ -9,14 +9,12 @@ import Foundation
 
 struct ScorersDTO: Codable {
     let count: Int?
-    let filters: FiltersDTO?
     let competition: CompetitionDTO?
     let season: CurrentSeasonDTO?
     let scorers: [ScorerDTO]?
-
+    
     enum CodingKeys: String, CodingKey {
         case count = "count"
-        case filters = "filters"
         case competition = "competition"
         case season = "season"
         case scorers = "scorers"
@@ -30,7 +28,7 @@ struct ScorerDTO: Codable {
     let goals: Int?
     let assists: Int?
     let penalties: Int?
-
+    
     enum CodingKeys: String, CodingKey {
         case player = "player"
         case team = "team"
@@ -51,7 +49,7 @@ struct PlayerDTO: Codable {
     let section: String?
     let shirtNumber: Int?
     let lastUpdated: Date?
-
+    
     enum CodingKeys: String, CodingKey {
         case id = "id"
         case name = "name"

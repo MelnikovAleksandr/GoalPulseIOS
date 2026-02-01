@@ -21,7 +21,12 @@ class MockData {
     @MainActor static let competitionsViewModel: CompetitionsViewModel = CompetitionsViewModel(repository: footballRepository)
     
     @MainActor static let standingsViewModel: StandingsViewModel =
-        StandingsViewModel(repository: standingsRepository, compCode: "")
+    StandingsViewModel(repository: standingsRepository, compCode: "")
+    
+    @MainActor static let teamRepository: TeamRepository = MockTeamRepository()
+    
+    @MainActor static let teamViewModel: TeamViewModel =
+    TeamViewModel(repository: teamRepository, teamId: 11)
 }
 
 @Observable
@@ -35,8 +40,8 @@ final class MockNavManager: NavigationManager {
         path.append(Routes.standlings(compCode: compCode))
     }
     
-    public func toTeamDetails() {
-        path.append(Routes.team)
+    public func toTeamDetails(teamId: Int) {
+        path.append(Routes.team(teamId: teamId))
     }
     
     public func toPlayerDetails() {
@@ -52,6 +57,20 @@ final class MockNavManager: NavigationManager {
     public func popToRoot() {
         path = NavigationPath()
     }
+}
+
+final class MockTeamRepository: TeamRepository {
+    func getTeamFromRemoteToLocal(teamId: Int) async -> Utils.Resource<Bool> {
+        return .success(true)
+    }
+    
+    func getTeamInfoFromLocalFlow(teamId: Int) -> AsyncStream<Domain.TeamInfo> {
+        AsyncStream { continuation in
+            continuation.yield(MockUIData.getTeamInfo())
+            continuation.finish()
+        }
+    }
+    
 }
 
 final class MockFootballRepository: CompetitionsRepository {
@@ -145,45 +164,27 @@ class MockUIData {
         lastUpdated: "2024-09-13T16:55:53Z",
         name: "Campeonato Brasileiro Série A",
         numberOfAvailableSeasons: 9,
-        plan: "TIER_ONE",
         type: .LEAGUE,
         seasons: []
     )
     
     static let standings: Standings = Standings(
-            id: UUID().uuidString,
+        id: UUID().uuidString,
+        area: Area(
+            code: "NLD",
+            flag: URL(string: "https://crests.football-data.org/8601.svg"),
+            id: 2163,
+            name: "Netherlands"
+        ),
+        competition: Competition(
             area: Area(
                 code: "NLD",
                 flag: URL(string: "https://crests.football-data.org/8601.svg"),
                 id: 2163,
                 name: "Netherlands"
             ),
-            competition: Competition(
-                area: Area(
-                    code: "NLD",
-                    flag: URL(string: "https://crests.football-data.org/8601.svg"),
-                    id: 2163,
-                    name: "Netherlands"
-                ),
-                code: "DED",
-                currentSeason: CurrentSeason(
-                    currentMatchDay: 18,
-                    startDateEndDate: "2025-08-08 - 2026-05-17",
-                    endDate: "2026-05-17",
-                    id: 2400,
-                    startDate: "2025-08-08",
-                    winner: nil
-                ),
-                emblem: URL(string: "https://crests.football-data.org/ec.png"),
-                id: 2003,
-                lastUpdated: "",
-                name: "Eredivisie",
-                numberOfAvailableSeasons: 0,
-                plan: "",
-                type: .LEAGUE,
-                seasons: []
-            ),
-            season: CurrentSeason(
+            code: "DED",
+            currentSeason: CurrentSeason(
                 currentMatchDay: 18,
                 startDateEndDate: "2025-08-08 - 2026-05-17",
                 endDate: "2026-05-17",
@@ -191,466 +192,482 @@ class MockUIData {
                 startDate: "2025-08-08",
                 winner: nil
             ),
-            standings: [
-                Standing(
-                    stage: "REGULAR_SEASON",
-                    type: "TOTAL",
-                    group: "",
-                    table: [
-                        Table(
-                            position: 1,
-                            team: Team(
-                                address: "",
-                                clubColors: "",
-                                crest: URL(string: "https://crests.football-data.org/674.png"),
-                                founded: 0,
-                                id: 674,
-                                lastUpdated: "",
-                                name: "PSV",
-                                shortName: "PSV",
-                                tla: "PSV",
-                                website: "",
-                                venue: ""
-                            ),
-                            playedGames: 17,
-                            form: "",
-                            won: 15,
-                            draw: 1,
-                            lost: 1,
-                            points: 46,
-                            goalsFor: 52,
-                            goalsAgainst: 21,
-                            goalDifference: 31
+            emblem: URL(string: "https://crests.football-data.org/ec.png"),
+            id: 2003,
+            lastUpdated: "",
+            name: "Eredivisie",
+            numberOfAvailableSeasons: 0,
+            type: .LEAGUE,
+            seasons: []
+        ),
+        season: CurrentSeason(
+            currentMatchDay: 18,
+            startDateEndDate: "2025-08-08 - 2026-05-17",
+            endDate: "2026-05-17",
+            id: 2400,
+            startDate: "2025-08-08",
+            winner: nil
+        ),
+        standings: [
+            Standing(
+                stage: "REGULAR_SEASON",
+                type: "TOTAL",
+                group: "",
+                table: [
+                    Table(
+                        position: 1,
+                        team: Team(
+                            address: "",
+                            clubColors: "",
+                            crest: URL(string: "https://crests.football-data.org/674.png"),
+                            founded: 0,
+                            id: 674,
+                            lastUpdated: "",
+                            name: "PSV",
+                            shortName: "PSV",
+                            tla: "PSV",
+                            website: "",
+                            venue: ""
                         ),
-                        Table(
-                            position: 2,
-                            team: Team(
-                                address: "",
-                                clubColors: "",
-                                crest: URL(string: "https://crests.football-data.org/675.png"),
-                                founded: 0,
-                                id: 675,
-                                lastUpdated: "",
-                                name: "Feyenoord Rotterdam",
-                                shortName: "Feyenoord",
-                                tla: "FEY",
-                                website: "",
-                                venue: ""
-                            ),
-                            playedGames: 17,
-                            form: "",
-                            won: 11,
-                            draw: 2,
-                            lost: 4,
-                            points: 35,
-                            goalsFor: 42,
-                            goalsAgainst: 21,
-                            goalDifference: 21
+                        playedGames: 17,
+                        form: "",
+                        won: 15,
+                        draw: 1,
+                        lost: 1,
+                        points: 46,
+                        goalsFor: 52,
+                        goalsAgainst: 21,
+                        goalDifference: 31
+                    ),
+                    Table(
+                        position: 2,
+                        team: Team(
+                            address: "",
+                            clubColors: "",
+                            crest: URL(string: "https://crests.football-data.org/675.png"),
+                            founded: 0,
+                            id: 675,
+                            lastUpdated: "",
+                            name: "Feyenoord Rotterdam",
+                            shortName: "Feyenoord",
+                            tla: "FEY",
+                            website: "",
+                            venue: ""
                         ),
-                        Table(
-                            position: 3,
-                            team: Team(
-                                address: "",
-                                clubColors: "",
-                                crest: URL(string: "https://crests.football-data.org/678.png"),
-                                founded: 0,
-                                id: 678,
-                                lastUpdated: "",
-                                name: "AFC Ajax",
-                                shortName: "Ajax",
-                                tla: "AJA",
-                                website: "",
-                                venue: ""
-                            ),
-                            playedGames: 17,
-                            form: "",
-                            won: 8,
-                            draw: 6,
-                            lost: 3,
-                            points: 30,
-                            goalsFor: 32,
-                            goalsAgainst: 22,
-                            goalDifference: 10
+                        playedGames: 17,
+                        form: "",
+                        won: 11,
+                        draw: 2,
+                        lost: 4,
+                        points: 35,
+                        goalsFor: 42,
+                        goalsAgainst: 21,
+                        goalDifference: 21
+                    ),
+                    Table(
+                        position: 3,
+                        team: Team(
+                            address: "",
+                            clubColors: "",
+                            crest: URL(string: "https://crests.football-data.org/678.png"),
+                            founded: 0,
+                            id: 678,
+                            lastUpdated: "",
+                            name: "AFC Ajax",
+                            shortName: "Ajax",
+                            tla: "AJA",
+                            website: "",
+                            venue: ""
                         ),
-                        Table(
-                            position: 4,
-                            team: Team(
-                                address: "",
-                                clubColors: "",
-                                crest: URL(string: "https://crests.football-data.org/1915.png"),
-                                founded: 0,
-                                id: 1915,
-                                lastUpdated: "",
-                                name: "NEC",
-                                shortName: "NEC",
-                                tla: "NEC",
-                                website: "",
-                                venue: ""
-                            ),
-                            playedGames: 17,
-                            form: "",
-                            won: 8,
-                            draw: 5,
-                            lost: 4,
-                            points: 29,
-                            goalsFor: 43,
-                            goalsAgainst: 29,
-                            goalDifference: 14
+                        playedGames: 17,
+                        form: "",
+                        won: 8,
+                        draw: 6,
+                        lost: 3,
+                        points: 30,
+                        goalsFor: 32,
+                        goalsAgainst: 22,
+                        goalDifference: 10
+                    ),
+                    Table(
+                        position: 4,
+                        team: Team(
+                            address: "",
+                            clubColors: "",
+                            crest: URL(string: "https://crests.football-data.org/1915.png"),
+                            founded: 0,
+                            id: 1915,
+                            lastUpdated: "",
+                            name: "NEC",
+                            shortName: "NEC",
+                            tla: "NEC",
+                            website: "",
+                            venue: ""
                         ),
-                        Table(
-                            position: 5,
-                            team: Team(
-                                address: "",
-                                clubColors: "",
-                                crest: URL(string: "https://crests.football-data.org/677.png"),
-                                founded: 0,
-                                id: 677,
-                                lastUpdated: "",
-                                name: "FC Groningen",
-                                shortName: "Groningen",
-                                tla: "GRO",
-                                website: "",
-                                venue: ""
-                            ),
-                            playedGames: 17,
-                            form: "",
-                            won: 8,
-                            draw: 3,
-                            lost: 6,
-                            points: 27,
-                            goalsFor: 25,
-                            goalsAgainst: 22,
-                            goalDifference: 3
+                        playedGames: 17,
+                        form: "",
+                        won: 8,
+                        draw: 5,
+                        lost: 4,
+                        points: 29,
+                        goalsFor: 43,
+                        goalsAgainst: 29,
+                        goalDifference: 14
+                    ),
+                    Table(
+                        position: 5,
+                        team: Team(
+                            address: "",
+                            clubColors: "",
+                            crest: URL(string: "https://crests.football-data.org/677.png"),
+                            founded: 0,
+                            id: 677,
+                            lastUpdated: "",
+                            name: "FC Groningen",
+                            shortName: "Groningen",
+                            tla: "GRO",
+                            website: "",
+                            venue: ""
                         ),
-                        Table(
-                            position: 6,
-                            team: Team(
-                                address: "",
-                                clubColors: "",
-                                crest: URL(string: "https://crests.football-data.org/666.png"),
-                                founded: 0,
-                                id: 666,
-                                lastUpdated: "",
-                                name: "FC Twente '65",
-                                shortName: "Twente",
-                                tla: "TWE",
-                                website: "",
-                                venue: ""
-                            ),
-                            playedGames: 17,
-                            form: "",
-                            won: 6,
-                            draw: 7,
-                            lost: 4,
-                            points: 25,
-                            goalsFor: 26,
-                            goalsAgainst: 21,
-                            goalDifference: 5
+                        playedGames: 17,
+                        form: "",
+                        won: 8,
+                        draw: 3,
+                        lost: 6,
+                        points: 27,
+                        goalsFor: 25,
+                        goalsAgainst: 22,
+                        goalDifference: 3
+                    ),
+                    Table(
+                        position: 6,
+                        team: Team(
+                            address: "",
+                            clubColors: "",
+                            crest: URL(string: "https://crests.football-data.org/666.png"),
+                            founded: 0,
+                            id: 666,
+                            lastUpdated: "",
+                            name: "FC Twente '65",
+                            shortName: "Twente",
+                            tla: "TWE",
+                            website: "",
+                            venue: ""
                         ),
-                        Table(
-                            position: 7,
-                            team: Team(
-                                address: "",
-                                clubColors: "",
-                                crest: URL(string: "https://crests.football-data.org/682.png"),
-                                founded: 0,
-                                id: 682,
-                                lastUpdated: "",
-                                name: "AZ",
-                                shortName: "AZ",
-                                tla: "AZ",
-                                website: "",
-                                venue: ""
-                            ),
-                            playedGames: 16,
-                            form: "",
-                            won: 7,
-                            draw: 4,
-                            lost: 5,
-                            points: 25,
-                            goalsFor: 31,
-                            goalsAgainst: 28,
-                            goalDifference: 3
+                        playedGames: 17,
+                        form: "",
+                        won: 6,
+                        draw: 7,
+                        lost: 4,
+                        points: 25,
+                        goalsFor: 26,
+                        goalsAgainst: 21,
+                        goalDifference: 5
+                    ),
+                    Table(
+                        position: 7,
+                        team: Team(
+                            address: "",
+                            clubColors: "",
+                            crest: URL(string: "https://crests.football-data.org/682.png"),
+                            founded: 0,
+                            id: 682,
+                            lastUpdated: "",
+                            name: "AZ",
+                            shortName: "AZ",
+                            tla: "AZ",
+                            website: "",
+                            venue: ""
                         ),
-                        Table(
-                            position: 8,
-                            team: Team(
-                                address: "",
-                                clubColors: "",
-                                crest: URL(string: "https://crests.football-data.org/676.png"),
-                                founded: 0,
-                                id: 676,
-                                lastUpdated: "",
-                                name: "FC Utrecht",
-                                shortName: "Utrecht",
-                                tla: "UTR",
-                                website: "",
-                                venue: ""
-                            ),
-                            playedGames: 17,
-                            form: "",
-                            won: 6,
-                            draw: 5,
-                            lost: 6,
-                            points: 23,
-                            goalsFor: 28,
-                            goalsAgainst: 23,
-                            goalDifference: 5
+                        playedGames: 16,
+                        form: "",
+                        won: 7,
+                        draw: 4,
+                        lost: 5,
+                        points: 25,
+                        goalsFor: 31,
+                        goalsAgainst: 28,
+                        goalDifference: 3
+                    ),
+                    Table(
+                        position: 8,
+                        team: Team(
+                            address: "",
+                            clubColors: "",
+                            crest: URL(string: "https://crests.football-data.org/676.png"),
+                            founded: 0,
+                            id: 676,
+                            lastUpdated: "",
+                            name: "FC Utrecht",
+                            shortName: "Utrecht",
+                            tla: "UTR",
+                            website: "",
+                            venue: ""
                         ),
-                        Table(
-                            position: 9,
-                            team: Team(
-                                address: "",
-                                clubColors: "",
-                                crest: URL(string: "https://crests.football-data.org/673.png"),
-                                founded: 0,
-                                id: 673,
-                                lastUpdated: "",
-                                name: "SC Heerenveen",
-                                shortName: "Heerenveen",
-                                tla: "HEE",
-                                website: "",
-                                venue: ""
-                            ),
-                            playedGames: 17,
-                            form: "",
-                            won: 6,
-                            draw: 5,
-                            lost: 6,
-                            points: 23,
-                            goalsFor: 29,
-                            goalsAgainst: 26,
-                            goalDifference: 3
+                        playedGames: 17,
+                        form: "",
+                        won: 6,
+                        draw: 5,
+                        lost: 6,
+                        points: 23,
+                        goalsFor: 28,
+                        goalsAgainst: 23,
+                        goalDifference: 5
+                    ),
+                    Table(
+                        position: 9,
+                        team: Team(
+                            address: "",
+                            clubColors: "",
+                            crest: URL(string: "https://crests.football-data.org/673.png"),
+                            founded: 0,
+                            id: 673,
+                            lastUpdated: "",
+                            name: "SC Heerenveen",
+                            shortName: "Heerenveen",
+                            tla: "HEE",
+                            website: "",
+                            venue: ""
                         ),
-                        Table(
-                            position: 10,
-                            team: Team(
-                                address: "",
-                                clubColors: "",
-                                crest: URL(string: "https://crests.football-data.org/6806.png"),
-                                founded: 0,
-                                id: 6806,
-                                lastUpdated: "",
-                                name: "Sparta Rotterdam",
-                                shortName: "Sparta",
-                                tla: "SPA",
-                                website: "",
-                                venue: ""
-                            ),
-                            playedGames: 17,
-                            form: "",
-                            won: 7,
-                            draw: 2,
-                            lost: 8,
-                            points: 23,
-                            goalsFor: 18,
-                            goalsAgainst: 31,
-                            goalDifference: -13
+                        playedGames: 17,
+                        form: "",
+                        won: 6,
+                        draw: 5,
+                        lost: 6,
+                        points: 23,
+                        goalsFor: 29,
+                        goalsAgainst: 26,
+                        goalDifference: 3
+                    ),
+                    Table(
+                        position: 10,
+                        team: Team(
+                            address: "",
+                            clubColors: "",
+                            crest: URL(string: "https://crests.football-data.org/6806.png"),
+                            founded: 0,
+                            id: 6806,
+                            lastUpdated: "",
+                            name: "Sparta Rotterdam",
+                            shortName: "Sparta",
+                            tla: "SPA",
+                            website: "",
+                            venue: ""
                         ),
-                        Table(
-                            position: 11,
-                            team: Team(
-                                address: "",
-                                clubColors: "",
-                                crest: URL(string: "https://crests.football-data.org/1920.png"),
-                                founded: 0,
-                                id: 1920,
-                                lastUpdated: "",
-                                name: "Fortuna Sittard",
-                                shortName: "Sittard",
-                                tla: "SIT",
-                                website: "",
-                                venue: ""
-                            ),
-                            playedGames: 17,
-                            form: "",
-                            won: 6,
-                            draw: 3,
-                            lost: 8,
-                            points: 21,
-                            goalsFor: 25,
-                            goalsAgainst: 29,
-                            goalDifference: -4
+                        playedGames: 17,
+                        form: "",
+                        won: 7,
+                        draw: 2,
+                        lost: 8,
+                        points: 23,
+                        goalsFor: 18,
+                        goalsAgainst: 31,
+                        goalDifference: -13
+                    ),
+                    Table(
+                        position: 11,
+                        team: Team(
+                            address: "",
+                            clubColors: "",
+                            crest: URL(string: "https://crests.football-data.org/1920.png"),
+                            founded: 0,
+                            id: 1920,
+                            lastUpdated: "",
+                            name: "Fortuna Sittard",
+                            shortName: "Sittard",
+                            tla: "SIT",
+                            website: "",
+                            venue: ""
                         ),
-                        Table(
-                            position: 12,
-                            team: Team(
-                                address: "",
-                                clubColors: "",
-                                crest: URL(string: "https://crests.football-data.org/718.png"),
-                                founded: 0,
-                                id: 718,
-                                lastUpdated: "",
-                                name: "Go Ahead Eagles",
-                                shortName: "Go Ahead",
-                                tla: "GOA",
-                                website: "",
-                                venue: ""
-                            ),
-                            playedGames: 17,
-                            form: "",
-                            won: 4,
-                            draw: 7,
-                            lost: 6,
-                            points: 19,
-                            goalsFor: 26,
-                            goalsAgainst: 29,
-                            goalDifference: -3
+                        playedGames: 17,
+                        form: "",
+                        won: 6,
+                        draw: 3,
+                        lost: 8,
+                        points: 21,
+                        goalsFor: 25,
+                        goalsAgainst: 29,
+                        goalDifference: -4
+                    ),
+                    Table(
+                        position: 12,
+                        team: Team(
+                            address: "",
+                            clubColors: "",
+                            crest: URL(string: "https://crests.football-data.org/718.png"),
+                            founded: 0,
+                            id: 718,
+                            lastUpdated: "",
+                            name: "Go Ahead Eagles",
+                            shortName: "Go Ahead",
+                            tla: "GOA",
+                            website: "",
+                            venue: ""
                         ),
-                        Table(
-                            position: 13,
-                            team: Team(
-                                address: "",
-                                clubColors: "",
-                                crest: URL(string: "https://crests.football-data.org/670.png"),
-                                founded: 0,
-                                id: 670,
-                                lastUpdated: "",
-                                name: "SBV Excelsior",
-                                shortName: "Excelsior",
-                                tla: "EXC",
-                                website: "",
-                                venue: ""
-                            ),
-                            playedGames: 16,
-                            form: "",
-                            won: 6,
-                            draw: 1,
-                            lost: 9,
-                            points: 19,
-                            goalsFor: 16,
-                            goalsAgainst: 27,
-                            goalDifference: -11
+                        playedGames: 17,
+                        form: "",
+                        won: 4,
+                        draw: 7,
+                        lost: 6,
+                        points: 19,
+                        goalsFor: 26,
+                        goalsAgainst: 29,
+                        goalDifference: -3
+                    ),
+                    Table(
+                        position: 13,
+                        team: Team(
+                            address: "",
+                            clubColors: "",
+                            crest: URL(string: "https://crests.football-data.org/670.png"),
+                            founded: 0,
+                            id: 670,
+                            lastUpdated: "",
+                            name: "SBV Excelsior",
+                            shortName: "Excelsior",
+                            tla: "EXC",
+                            website: "",
+                            venue: ""
                         ),
-                        Table(
-                            position: 14,
-                            team: Team(
-                                address: "",
-                                clubColors: "",
-                                crest: URL(string: "https://crests.football-data.org/684.png"),
-                                founded: 0,
-                                id: 684,
-                                lastUpdated: "",
-                                name: "PEC Zwolle",
-                                shortName: "Zwolle",
-                                tla: "ZWO",
-                                website: "",
-                                venue: ""
-                            ),
-                            playedGames: 17,
-                            form: "",
-                            won: 5,
-                            draw: 4,
-                            lost: 8,
-                            points: 19,
-                            goalsFor: 21,
-                            goalsAgainst: 38,
-                            goalDifference: -17
+                        playedGames: 16,
+                        form: "",
+                        won: 6,
+                        draw: 1,
+                        lost: 9,
+                        points: 19,
+                        goalsFor: 16,
+                        goalsAgainst: 27,
+                        goalDifference: -11
+                    ),
+                    Table(
+                        position: 14,
+                        team: Team(
+                            address: "",
+                            clubColors: "",
+                            crest: URL(string: "https://crests.football-data.org/684.png"),
+                            founded: 0,
+                            id: 684,
+                            lastUpdated: "",
+                            name: "PEC Zwolle",
+                            shortName: "Zwolle",
+                            tla: "ZWO",
+                            website: "",
+                            venue: ""
                         ),
-                        Table(
-                            position: 15,
-                            team: Team(
-                                address: "",
-                                clubColors: "",
-                                crest: URL(string: "https://crests.football-data.org/1912.png"),
-                                founded: 0,
-                                id: 1912,
-                                lastUpdated: "",
-                                name: "Telstar 1963",
-                                shortName: "Telstar",
-                                tla: "TEL",
-                                website: "",
-                                venue: ""
-                            ),
-                            playedGames: 17,
-                            form: "",
-                            won: 3,
-                            draw: 6,
-                            lost: 8,
-                            points: 15,
-                            goalsFor: 20,
-                            goalsAgainst: 27,
-                            goalDifference: -7
+                        playedGames: 17,
+                        form: "",
+                        won: 5,
+                        draw: 4,
+                        lost: 8,
+                        points: 19,
+                        goalsFor: 21,
+                        goalsAgainst: 38,
+                        goalDifference: -17
+                    ),
+                    Table(
+                        position: 15,
+                        team: Team(
+                            address: "",
+                            clubColors: "",
+                            crest: URL(string: "https://crests.football-data.org/1912.png"),
+                            founded: 0,
+                            id: 1912,
+                            lastUpdated: "",
+                            name: "Telstar 1963",
+                            shortName: "Telstar",
+                            tla: "TEL",
+                            website: "",
+                            venue: ""
                         ),
-                        Table(
-                            position: 16,
-                            team: Team(
-                                address: "",
-                                clubColors: "",
-                                crest: URL(string: "https://crests.football-data.org/1919.png"),
-                                founded: 0,
-                                id: 1919,
-                                lastUpdated: "",
-                                name: "FC Volendam",
-                                shortName: "Volendam",
-                                tla: "VOL",
-                                website: "",
-                                venue: ""
-                            ),
-                            playedGames: 17,
-                            form: "",
-                            won: 3,
-                            draw: 5,
-                            lost: 9,
-                            points: 14,
-                            goalsFor: 19,
-                            goalsAgainst: 31,
-                            goalDifference: -12
+                        playedGames: 17,
+                        form: "",
+                        won: 3,
+                        draw: 6,
+                        lost: 8,
+                        points: 15,
+                        goalsFor: 20,
+                        goalsAgainst: 27,
+                        goalDifference: -7
+                    ),
+                    Table(
+                        position: 16,
+                        team: Team(
+                            address: "",
+                            clubColors: "",
+                            crest: URL(string: "https://crests.football-data.org/1919.png"),
+                            founded: 0,
+                            id: 1919,
+                            lastUpdated: "",
+                            name: "FC Volendam",
+                            shortName: "Volendam",
+                            tla: "VOL",
+                            website: "",
+                            venue: ""
                         ),
-                        Table(
-                            position: 17,
-                            team: Team(
-                                address: "",
-                                clubColors: "",
-                                crest: URL(string: "https://crests.football-data.org/671.png"),
-                                founded: 0,
-                                id: 671,
-                                lastUpdated: "",
-                                name: "Heracles Almelo",
-                                shortName: "Heracles",
-                                tla: "HER",
-                                website: "",
-                                venue: ""
-                            ),
-                            playedGames: 17,
-                            form: "",
-                            won: 4,
-                            draw: 2,
-                            lost: 11,
-                            points: 14,
-                            goalsFor: 26,
-                            goalsAgainst: 44,
-                            goalDifference: -18
+                        playedGames: 17,
+                        form: "",
+                        won: 3,
+                        draw: 5,
+                        lost: 9,
+                        points: 14,
+                        goalsFor: 19,
+                        goalsAgainst: 31,
+                        goalDifference: -12
+                    ),
+                    Table(
+                        position: 17,
+                        team: Team(
+                            address: "",
+                            clubColors: "",
+                            crest: URL(string: "https://crests.football-data.org/671.png"),
+                            founded: 0,
+                            id: 671,
+                            lastUpdated: "",
+                            name: "Heracles Almelo",
+                            shortName: "Heracles",
+                            tla: "HER",
+                            website: "",
+                            venue: ""
                         ),
-                        Table(
-                            position: 18,
-                            team: Team(
-                                address: "",
-                                clubColors: "",
-                                crest: URL(string: "https://crests.football-data.org/681.png"),
-                                founded: 0,
-                                id: 681,
-                                lastUpdated: "",
-                                name: "NAC Breda",
-                                shortName: "NAC",
-                                tla: "NAC",
-                                website: "",
-                                venue: ""
-                            ),
-                            playedGames: 17,
-                            form: "",
-                            won: 3,
-                            draw: 4,
-                            lost: 10,
-                            points: 13,
-                            goalsFor: 16,
-                            goalsAgainst: 26,
-                            goalDifference: -10
-                        )
-                    ]
-                )
-            ]
-        )
+                        playedGames: 17,
+                        form: "",
+                        won: 4,
+                        draw: 2,
+                        lost: 11,
+                        points: 14,
+                        goalsFor: 26,
+                        goalsAgainst: 44,
+                        goalDifference: -18
+                    ),
+                    Table(
+                        position: 18,
+                        team: Team(
+                            address: "",
+                            clubColors: "",
+                            crest: URL(string: "https://crests.football-data.org/681.png"),
+                            founded: 0,
+                            id: 681,
+                            lastUpdated: "",
+                            name: "NAC Breda",
+                            shortName: "NAC",
+                            tla: "NAC",
+                            website: "",
+                            venue: ""
+                        ),
+                        playedGames: 17,
+                        form: "",
+                        won: 3,
+                        draw: 4,
+                        lost: 10,
+                        points: 13,
+                        goalsFor: 16,
+                        goalsAgainst: 26,
+                        goalDifference: -10
+                    )
+                ]
+            )
+        ]
+    )
     
     static func scorers() -> Scorers {
         let competition = Competition(
@@ -674,7 +691,6 @@ class MockUIData {
             lastUpdated: "",
             name: "Eredivisie",
             numberOfAvailableSeasons: 0,
-            plan: "TIER_ONE",
             type: .LEAGUE,
             seasons: []
         )
@@ -1242,5 +1258,136 @@ class MockUIData {
             )
         ]
     }
-
+    
+    static func getTeamInfo() -> TeamInfo {
+        let dateFormatter = ISO8601DateFormatter()
+        
+        let contract = Contract(
+            start: dateFormatter.date(from: "2022-09-01T00:00:00Z")!,
+            until: dateFormatter.date(from: "2026-06-30T00:00:00Z")!
+        )
+        
+        let coach = Person(
+            id: 124504,
+            name: "Jacob Neestrup",
+            firstName: "Jacob",
+            lastName: "Neestrup",
+            dateOfBirth: dateFormatter.date(from: "1988-03-08T00:00:00Z")!,
+            nationality: "Denmark",
+            position: .non,
+            shirtNumber: 0,
+            contract: contract
+        )
+        
+        let squad = [
+            Person(
+                id: 3827,
+                name: "Rúnar Alex Rúnarsson",
+                firstName: "Rúnar Alex",
+                lastName: "Rúnarsson",
+                dateOfBirth: dateFormatter.date(from: "1995-02-18T00:00:00Z")!,
+                nationality: "Iceland",
+                position: .goalkeeper,
+                shirtNumber: 1,
+                contract: Contract(
+                    start: dateFormatter.date(from: "2024-01-01T00:00:00Z")!,
+                    until: dateFormatter.date(from: "2026-06-30T00:00:00Z")!
+                )
+            ),
+            Person(
+                id: 67883,
+                name: "Dominik Kotarski",
+                firstName: "Dominik",
+                lastName: "Kotarski",
+                dateOfBirth: dateFormatter.date(from: "2000-02-10T00:00:00Z")!,
+                nationality: "Croatia",
+                position: .goalkeeper,
+                shirtNumber: 13,
+                contract: Contract(
+                    start: dateFormatter.date(from: "2023-07-01T00:00:00Z")!,
+                    until: dateFormatter.date(from: "2027-06-30T00:00:00Z")!
+                )
+            ),
+            Person(
+                id: 58827,
+                name: "Marcos López",
+                firstName: "Marcos",
+                lastName: "López",
+                dateOfBirth: dateFormatter.date(from: "1999-11-20T00:00:00Z")!,
+                nationality: "Peru",
+                position: .defence,
+                shirtNumber: 3,
+                contract: Contract(
+                    start: dateFormatter.date(from: "2023-08-01T00:00:00Z")!,
+                    until: dateFormatter.date(from: "2026-06-30T00:00:00Z")!
+                )
+            ),
+            Person(
+                id: 3460,
+                name: "Thomas Delaney",
+                firstName: "Thomas",
+                lastName: "Delaney",
+                dateOfBirth: dateFormatter.date(from: "1991-09-03T00:00:00Z")!,
+                nationality: "Denmark",
+                position: .midfield,
+                shirtNumber: 8,
+                contract: Contract(
+                    start: dateFormatter.date(from: "2022-07-01T00:00:00Z")!,
+                    until: dateFormatter.date(from: "2026-06-30T00:00:00Z")!
+                )
+            ),
+            Person(
+                id: 1855,
+                name: "Andreas Cornelius",
+                firstName: "Andreas",
+                lastName: "Cornelius",
+                dateOfBirth: dateFormatter.date(from: "1993-03-16T00:00:00Z")!,
+                nationality: "Denmark",
+                position: .centreForward,
+                shirtNumber: 9,
+                contract: Contract(
+                    start: dateFormatter.date(from: "2024-01-01T00:00:00Z")!,
+                    until: dateFormatter.date(from: "2026-06-30T00:00:00Z")!
+                )
+            ),
+            Person(
+                id: 150817,
+                name: "Youssoufa Moukoko",
+                firstName: "Youssoufa",
+                lastName: "Moukoko",
+                dateOfBirth: dateFormatter.date(from: "2004-11-20T00:00:00Z")!,
+                nationality: "Germany",
+                position: .centreForward,
+                shirtNumber: 10,
+                contract: Contract(
+                    start: dateFormatter.date(from: "2024-07-01T00:00:00Z")!,
+                    until: dateFormatter.date(from: "2028-06-30T00:00:00Z")!
+                )
+            )
+        ]
+        
+        let area = Area(
+            code: "DNK",
+            flag: URL(string: "https://crests.football-data.org/782.svg"),
+            id: 2065,
+            name: "Denmark"
+        )
+        
+        return TeamInfo(
+            id: 1876,
+            address: "Per Henrik Lings Allé 2 København 2100",
+            clubColors: "White / Blue",
+            crest: URL(string: "https://crests.football-data.org/1876.png"),
+            founded: 1992,
+            name: "FC København",
+            shortName: "København",
+            tla: "KOB",
+            website: "http://www.fck.dk",
+            venue: "Telia Parken",
+            area: area,
+            coach: coach,
+            squad: squad
+        )
+    }
+    
 }

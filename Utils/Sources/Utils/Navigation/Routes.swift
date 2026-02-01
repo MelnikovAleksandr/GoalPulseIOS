@@ -9,6 +9,6 @@ import Foundation
 
 public enum Routes: Hashable {
     case standlings(compCode: String)
-    case team
+    case team(teamId: Int)
     case player
 }

@@ -10,7 +10,7 @@ import Foundation
 struct MatchesDTO: Codable {
     let competition: CompetitionDTO?
     let matches: [MatchDTO]?
-
+    
     enum CodingKeys: String, CodingKey {
         case competition = "competition"
         case matches = "matches"
@@ -31,7 +31,7 @@ struct MatchDTO: Codable {
     let awayTeam: TeamDTO?
     let score: ScoreDTO?
     let referees: [RefereeDTO]?
-
+    
     enum CodingKeys: String, CodingKey {
         case area = "area"
         case competition = "competition"
@@ -49,13 +49,12 @@ struct MatchDTO: Codable {
     }
 }
 
-
 struct RefereeDTO: Codable {
     let id: Int?
     let name: String?
     let type: String?
     let nationality: String?
-
+    
     enum CodingKeys: String, CodingKey {
         case id = "id"
         case name = "name"
@@ -69,7 +68,7 @@ struct ScoreDTO: Codable {
     let duration: String?
     let fullTime: TimeDTO?
     let halfTime: TimeDTO?
-
+    
     enum CodingKeys: String, CodingKey {
         case winner = "winner"
         case duration = "duration"
@@ -81,7 +80,7 @@ struct ScoreDTO: Codable {
 struct TimeDTO: Codable {
     let home: Int?
     let away: Int?
-
+    
     enum CodingKeys: String, CodingKey {
         case home = "home"
         case away = "away"

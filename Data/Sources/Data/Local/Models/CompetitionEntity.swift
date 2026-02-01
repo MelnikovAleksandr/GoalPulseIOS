@@ -14,7 +14,6 @@ public class CompetitionEntity: Object, Identifiable {
     @Persisted var code: String?
     @Persisted var emblem: String?
     @Persisted var type: String?
-    @Persisted var plan: String?
     @Persisted var numberOfAvailableSeasons: Int
     @Persisted var lastUpdated: Date?
     @Persisted var area: AreaEntity?
@@ -39,6 +38,7 @@ class TeamEntity: EmbeddedObject {
     @Persisted var founded: Int
     @Persisted var clubColors: String?
     @Persisted var venue: String?
+    @Persisted var contract: ContractEntity?
     @Persisted var lastUpdated: Date?
 }
 
@@ -50,3 +50,7 @@ class CurrentSeasonEntity: EmbeddedObject {
     @Persisted var winner: TeamEntity?
 }
 
+class ContractEntity: EmbeddedObject {
+    @Persisted var start: Date?
+    @Persisted var until: Date?
+}

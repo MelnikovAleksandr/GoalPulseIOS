@@ -19,7 +19,6 @@ extension CompetitionEntity {
             lastUpdated: lastUpdated?.description ?? "",
             name: name ?? "",
             numberOfAvailableSeasons: numberOfAvailableSeasons,
-            plan: plan ?? "",
             type: Type(rawValue: type ?? "") ?? .LEAGUE,
             seasons: []
         )
@@ -187,6 +186,68 @@ extension TimeEntity {
     }
 }
 
+extension TeamInfoEntity {
+    func toDomain() -> TeamInfo {
+        TeamInfo(
+            id: id,
+            address: address ?? "",
+            clubColors: clubColors ?? "",
+            crest: URL(string: crest ?? ""),
+            founded: founded ?? 0,
+            name: name ?? "",
+            shortName: shortName ?? "",
+            tla: tla ?? "",
+            website: website ?? "",
+            venue: venue ?? "",
+            area: area?.toDomain() ?? getEmptyArea(),
+            coach: coach?.toDomain() ?? getEmptyPerson(),
+            squad: squad.compactMap {
+                $0.toDomain()
+            }
+        )
+    }
+}
+
+extension PersonEntity {
+    func toDomain() -> Person {
+        return Person(
+            id: id ?? abs(UUID().hashValue),
+            name: name ?? "",
+            firstName: firstName ?? "",
+            lastName: lastName ?? "",
+            dateOfBirth: dateOfBirth ?? Date(),
+            nationality: nationality ?? "",
+            position: PlayerPosition.valueOf(position),
+            shirtNumber: shirtNumber ?? 0,
+            contract: contract?.toDomain() ?? getEmptyContract()
+        )
+    }
+}
+
+extension ContractEntity {
+    func toDomain() -> Contract {
+        return Contract(start: start ?? Date(), until: until ?? Date())
+    }
+}
+
+func getEmptyPerson() -> Person {
+    return Person(
+        id: abs(UUID().hashValue),
+        name: "",
+        firstName: "",
+        lastName: "",
+        dateOfBirth: Date(),
+        nationality: "",
+        position: .non,
+        shirtNumber: 0,
+        contract: getEmptyContract()
+    )
+}
+
+func getEmptyContract() -> Contract {
+    return Contract(start: Date(), until: Date())
+}
+
 func getEmptyPlayer() -> Player {
     return Player(
         id: abs(UUID().hashValue),
@@ -241,7 +302,6 @@ func getEmptyCompetition() -> Competition {
         lastUpdated: "",
         name: "",
         numberOfAvailableSeasons: 0,
-        plan: "",
         type: .LEAGUE,
         seasons: []
     )

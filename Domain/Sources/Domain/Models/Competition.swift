@@ -16,11 +16,10 @@ public struct Competition: Identifiable, Sendable, Equatable {
     public let lastUpdated: String
     public let name: String
     public let numberOfAvailableSeasons: Int
-    public let plan: String
     public let type: Type
     public let seasons: [Season]
     
-    public init(area: Area, code: String, currentSeason: CurrentSeason, emblem: URL?, id: Int, lastUpdated: String, name: String, numberOfAvailableSeasons: Int, plan: String, type: Type, seasons: [Season]) {
+    public init(area: Area, code: String, currentSeason: CurrentSeason, emblem: URL?, id: Int, lastUpdated: String, name: String, numberOfAvailableSeasons: Int, type: Type, seasons: [Season]) {
         self.area = area
         self.code = code
         self.currentSeason = currentSeason
@@ -29,14 +28,13 @@ public struct Competition: Identifiable, Sendable, Equatable {
         self.lastUpdated = lastUpdated
         self.name = name
         self.numberOfAvailableSeasons = numberOfAvailableSeasons
-        self.plan = plan
         self.type = type
         self.seasons = seasons
     }
 }
 
 public enum Type: String, Sendable {
-    case LEAGUE, CUP
+case LEAGUE, CUP
 }
 
 public struct Area: Sendable, Equatable {

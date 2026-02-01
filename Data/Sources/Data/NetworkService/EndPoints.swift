@@ -6,7 +6,14 @@
 //
 
 enum EndPoints {
-    case competitions, standings(String), scorers(String), matches(String)
+    case competitions,
+         standings(String),
+         scorers(String),
+         matches(String),
+         head2head(String),
+         teams(String),
+         teamsMatches(String),
+         persons(String)
     
     var rawValue: String {
         switch self {
@@ -14,6 +21,10 @@ enum EndPoints {
         case .standings(let id): "competitions/\(id)/standings/"
         case .scorers(let id): "competitions/\(id)/scorers/"
         case .matches(let id): "competitions/\(id)/matches"
+        case .head2head(let id): "matches/\(id)/head2head"
+        case .teams(let id): "teams/\(id)"
+        case .teamsMatches(let id): "teams/\(id)/matches"
+        case .persons(let id): "persons/\(id)"
         }
     }
 }

@@ -16,8 +16,7 @@ extension CompetitionEntity {
         entity.name = dto.name
         entity.code = dto.code
         entity.emblem = dto.emblem
-        entity.type = dto.type?.rawValue
-        entity.plan = dto.plan?.rawValue
+        entity.type = dto.type
         entity.numberOfAvailableSeasons = dto.numberOfAvailableSeasons ?? 0
         entity.lastUpdated = dto.lastUpdated
         entity.area = AreaEntity.from(dto: dto.area)
@@ -230,3 +229,68 @@ extension RefereeEntity {
     }
 }
 
+extension TeamInfoEntity {
+    static func from(dto: TeamDTO?) -> TeamInfoEntity? {
+        guard let dto = dto else { return nil }
+        let entity = TeamInfoEntity()
+        entity.id = dto.id ?? abs(UUID().hashValue)
+        entity.name = dto.name
+        entity.shortName = dto.shortName
+        entity.tla = dto.tla
+        entity.crest = dto.crest
+        entity.address = dto.address
+        entity.website = dto.website
+        entity.founded = dto.founded ?? 0
+        entity.clubColors = dto.clubColors
+        entity.area = AreaEntity.from(dto: dto.area)
+        entity.venue = dto.venue
+        entity.lastUpdated = dto.lastUpdated
+        entity.coach = PersonEntity.from(dto: dto.coach)
+        entity.squad.append(objectsIn: dto.squad?.compactMap { person in
+            PersonEntity.from(dto: person)
+        } ?? [])
+        return entity
+    }
+}
+
+extension PersonEntity {
+    static func from(dto: PersonDTO?) -> PersonEntity? {
+        guard let dto = dto else { return nil }
+        let entity = PersonEntity()
+        entity.id = dto.id
+        entity.name = dto.name
+        entity.firstName = dto.firstName
+        entity.lastName = dto.lastName
+        entity.dateOfBirth = dto.dateOfBirth?.toDate()
+        entity.nationality = dto.nationality
+        entity.position = dto.position
+        entity.contract = ContractEntity.from(dto: dto.contract)
+        return entity
+    }
+}
+
+extension ContractEntity {
+    static func from(dto: ContractDTO?) -> ContractEntity? {
+        guard let dto = dto else { return nil }
+        let entity = ContractEntity()
+        entity.start = dto.start.flatMap { $0.toDate() }
+        entity.until = dto.until.flatMap { $0.toDate() }
+        return entity
+    }
+}
+
+extension String {
+    func toDate() -> Date? {
+        let formats = ["yyyy-MM-dd", "yyyy-MM"]
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        
+        for format in formats {
+            formatter.dateFormat = format
+            if let date = formatter.date(from: self) {
+                return date
+            }
+        }
+        return nil
+    }
+}

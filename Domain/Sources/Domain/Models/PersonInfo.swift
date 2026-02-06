@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Utils
 
 public struct PersonInfo: Identifiable, Sendable, Equatable {
     public let id: Int
@@ -48,6 +49,10 @@ public enum PlayerPosition: String, CaseIterable, Codable, Sendable {
     case offence = "Offence"
     case centreForward = "Centre-Forward"
     case non = "Non"
+    
+    public var localizedTitle: String {
+        Locale.get(rawValue)
+    }
 }
 
 public extension PlayerPosition {

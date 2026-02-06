@@ -1372,7 +1372,10 @@ class MockUIData {
             id: 2065,
             name: "Denmark"
         )
-        
+        let groupedPlayers = Dictionary(grouping: squad) { $0.position }
+        let squadByPosition = groupedPlayers.map { (position, squad) in
+            SquadByPosition(position: position, squad: squad)
+        }
         return TeamInfo(
             id: 1876,
             address: "Per Henrik Lings Allé 2 København 2100",
@@ -1386,7 +1389,7 @@ class MockUIData {
             venue: "Telia Parken",
             area: area,
             coach: coach,
-            squad: squad
+            squad: squadByPosition
         )
     }
     

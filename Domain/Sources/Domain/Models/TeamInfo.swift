@@ -20,9 +20,9 @@ public struct TeamInfo: Identifiable, Sendable, Equatable {
     public let venue: String
     public let area: Area
     public let coach: Person
-    public let squad: [Person]
+    public let squad: [SquadByPosition]
     
-    public init(id: Int, address: String, clubColors: String, crest: URL?, founded: Int, name: String, shortName: String, tla: String, website: String, venue: String, area: Area, coach: Person, squad: [Person]) {
+    public init(id: Int, address: String, clubColors: String, crest: URL?, founded: Int, name: String, shortName: String, tla: String, website: String, venue: String, area: Area, coach: Person, squad: [SquadByPosition]) {
         self.id = id
         self.address = address
         self.clubColors = clubColors
@@ -35,6 +35,17 @@ public struct TeamInfo: Identifiable, Sendable, Equatable {
         self.venue = venue
         self.area = area
         self.coach = coach
+        self.squad = squad
+    }
+}
+
+public struct SquadByPosition: Identifiable, Sendable, Equatable {
+    public var id: PlayerPosition { position }
+    public let position: PlayerPosition
+    public let squad: [Person]
+    
+    public init(position: PlayerPosition, squad: [Person]) {
+        self.position = position
         self.squad = squad
     }
 }
@@ -60,6 +71,14 @@ public struct Person: Identifiable, Sendable, Equatable {
         self.position = position
         self.shirtNumber = shirtNumber
         self.contract = contract
+    }
+    
+    public var age: Int {
+        Calendar.current.dateComponents([.year], from: dateOfBirth, to: Date()).year ?? 0
+    }
+    
+    public var contractUntilYear: String {
+        return String(Calendar.current.component(.year, from: contract.until))
     }
 }
 

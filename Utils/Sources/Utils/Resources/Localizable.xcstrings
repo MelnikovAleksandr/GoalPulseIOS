@@ -18,6 +18,23 @@
         }
       }
     },
+    "Age" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Age"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Возраст"
+          }
+        }
+      }
+    },
     "Ahead" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -69,6 +86,91 @@
         }
       }
     },
+    "Attacking Midfield" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attacking Midfield"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Атакующий полузащитник"
+          }
+        }
+      }
+    },
+    "Central Midfield" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Central Midfield"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Центральный полузащитник"
+          }
+        }
+      }
+    },
+    "Centre-Back" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Centre-Back"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Центральный защитник"
+          }
+        }
+      }
+    },
+    "Centre-Forward" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Centre-Forward"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Центральный нападающий"
+          }
+        }
+      }
+    },
+    "Contract until" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contract until"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Контракт до"
+          }
+        }
+      }
+    },
     "CurrentTour" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -99,6 +201,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Н"
+          }
+        }
+      }
+    },
+    "Defence" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Defence"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Защита"
+          }
+        }
+      }
+    },
+    "Defensive Midfield" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Defensive Midfield"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Опорный полузащитник"
           }
         }
       }
@@ -188,6 +324,23 @@
         }
       }
     },
+    "Goalkeeper" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Goalkeeper"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вратарь"
+          }
+        }
+      }
+    },
     "Goals" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -239,6 +392,23 @@
         }
       }
     },
+    "Info" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Info"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Инфо"
+          }
+        }
+      }
+    },
     "L" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -252,6 +422,57 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "П"
+          }
+        }
+      }
+    },
+    "Left Midfield" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Left Midfield"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Левый полузащитник"
+          }
+        }
+      }
+    },
+    "Left Winger" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Left Winger"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Левый вингер"
+          }
+        }
+      }
+    },
+    "Left-Back" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Left-Back"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Левый защитник"
           }
         }
       }
@@ -290,6 +511,23 @@
         }
       }
     },
+    "Manager" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manager"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тренер"
+          }
+        }
+      }
+    },
     "Matches" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -303,6 +541,74 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "матчи"
+          }
+        }
+      }
+    },
+    "Midfield" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Midfield"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Полузащита"
+          }
+        }
+      }
+    },
+    "Name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Имя"
+          }
+        }
+      }
+    },
+    "Nation" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nation"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нация"
+          }
+        }
+      }
+    },
+    "Offence" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Offence"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нападение"
           }
         }
       }
@@ -409,6 +715,57 @@
         }
       }
     },
+    "Right Midfield" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Right Midfield"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Правый полузащитник"
+          }
+        }
+      }
+    },
+    "Right Winger" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Right Winger"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Правый вингер"
+          }
+        }
+      }
+    },
+    "Right-Back" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Right-Back"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Правый защитник"
+          }
+        }
+      }
+    },
     "Standings" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -507,6 +864,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "выигрыши"
+          }
+        }
+      }
+    },
+    "YO" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "y.o."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " "
           }
         }
       }

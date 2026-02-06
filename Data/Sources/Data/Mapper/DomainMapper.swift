@@ -188,7 +188,12 @@ extension TimeEntity {
 
 extension TeamInfoEntity {
     func toDomain() -> TeamInfo {
-        TeamInfo(
+        let players = squad.compactMap { $0.toDomain() }
+        let groupedPlayers = Dictionary(grouping: players) { $0.position }
+        let squadByPosition = groupedPlayers.map { (position, squad) in
+            SquadByPosition(position: position, squad: squad)
+        }
+        return TeamInfo(
             id: id,
             address: address ?? "",
             clubColors: clubColors ?? "",
@@ -201,9 +206,7 @@ extension TeamInfoEntity {
             venue: venue ?? "",
             area: area?.toDomain() ?? getEmptyArea(),
             coach: coach?.toDomain() ?? getEmptyPerson(),
-            squad: squad.compactMap {
-                $0.toDomain()
-            }
+            squad: squadByPosition
         )
     }
 }

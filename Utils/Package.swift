@@ -17,7 +17,8 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/Swinject/Swinject.git", from: "2.10.0"),
         .package(url: "https://github.com/SDWebImage/SDWebImageSVGCoder.git", from: "1.4.0"),
-        .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", from: "3.0.0")
+        .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", from: "3.0.0"),
+        .package(url: "https://github.com/DenDmitriev/DominantColors.git", .upToNextMajor(from: "1.2.0"))
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -27,7 +28,8 @@ let package = Package(
             dependencies: [
                 .product(name: "Swinject", package: "Swinject"),
                 .product(name: "SDWebImageSVGCoder", package: "SDWebImageSVGCoder"),
-                .product(name: "SDWebImageSwiftUI", package: "SDWebImageSwiftUI")
+                .product(name: "SDWebImageSwiftUI", package: "SDWebImageSwiftUI"),
+                .product(name: "DominantColors", package: "DominantColors")
             ],
             resources: [.process("Resources")]
         ),

@@ -8,7 +8,12 @@
 import Foundation
 import Alamofire
 
-public protocol FootballNetworkService: Sendable {
+public enum NetworkType: String {
+    case football
+    case news
+}
+
+public protocol NetworkService: Sendable {
     func performRequest<T: Decodable>(
         _ endpoint: String,
         method: HTTPMethod,
@@ -17,17 +22,26 @@ public protocol FootballNetworkService: Sendable {
     ) async throws -> T
 }
 
-public final class FootballNetworkServiceImpl: FootballNetworkService {
-    private let baseURL = "https://api.football-data.org/v4/"
-    private let apiKey: String
+public final class NetworkServiceImpl: NetworkService {
+    private let baseURL: String
+    private let keyName: String
     private let decoder: JSONDecoder
     private let session: Session
+    private let interceptor: RequestInterceptor
     
-    public init() {
-        guard let key = Bundle.main.object(forInfoDictionaryKey: "FOOTBALL_DATA_API_KEY") as? String else {
+    public init(type: NetworkType) {
+        switch type {
+        case .football:
+            keyName = "FOOTBALL_DATA_API_KEY"
+            baseURL = "https://api.football-data.org/v4/"
+        case .news:
+            keyName = "NEWS_DATA_API_KEY"
+            baseURL = "https://newsapi.org/v2/"
+        }
+        guard let key = Bundle.main.object(forInfoDictionaryKey: keyName) as? String else {
             fatalError("Could not read API Key from Info.plist")
         }
-        self.apiKey = key
+
         decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         decoder.dateDecodingStrategy = .iso8601
@@ -35,8 +49,12 @@ public final class FootballNetworkServiceImpl: FootballNetworkService {
         let configuration = URLSessionConfiguration.af.default
         configuration.timeoutIntervalForRequest = 30
         configuration.timeoutIntervalForResource = 60
-        
-        let interceptor = FootballRequestInterceptor(apiKey: apiKey)
+        switch type {
+        case .football:
+            interceptor = FootballRequestInterceptor(apiKey: key)
+        case .news:
+            interceptor = NewsRequestInterceptor(apiKey: key)
+        }
         session = Session(configuration: configuration, interceptor: interceptor)
     }
     
@@ -97,6 +115,21 @@ final class FootballRequestInterceptor: RequestInterceptor {
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
         var request = urlRequest
         request.headers.add(name: "X-Auth-Token", value: apiKey)
+        request.headers.add(name: "Content-Type", value: "application/json")
+        completion(.success(request))
+    }
+}
+
+final class NewsRequestInterceptor: RequestInterceptor {
+    private let apiKey: String
+    
+    init(apiKey: String) {
+        self.apiKey = apiKey
+    }
+    
+    func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
+        var request = urlRequest
+        request.headers.add(name: "X-Api-Key", value: apiKey)
         request.headers.add(name: "Content-Type", value: "application/json")
         completion(.success(request))
     }

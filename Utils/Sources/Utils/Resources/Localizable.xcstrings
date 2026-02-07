@@ -18,6 +18,23 @@
         }
       }
     },
+    "Address" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Address"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Адрес"
+          }
+        }
+      }
+    },
     "Age" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -65,6 +82,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Голевой Пульс"
+          }
+        }
+      }
+    },
+    "Area" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Страна"
           }
         }
       }
@@ -269,6 +297,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Конец:"
+          }
+        }
+      }
+    },
+    "Founded" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Founded"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Основана"
           }
         }
       }
@@ -830,6 +875,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Неизвестная ошибка"
+          }
+        }
+      }
+    },
+    "Venue" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Venue"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Стадион"
           }
         }
       }

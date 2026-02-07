@@ -4,5 +4,7 @@
 <dict>
 	<key>FOOTBALL_DATA_API_KEY</key>
 	<string>$(FOOTBALL_DATA_API_KEY)</string>
+	<key>NEWS_DATA_API_KEY</key>
+	<string>$(NEWS_DATA_API_KEY)</string>
 </dict>
 </plist>

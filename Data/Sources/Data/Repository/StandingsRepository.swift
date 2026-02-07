@@ -12,11 +12,11 @@ import Alamofire
 
 public final class StandingsRepositoryImpl: StandingsRepository {
     
-    private let networkService: FootballNetworkService
+    private let networkService: NetworkService
     private let errorHandler: ErrorsHandler
     private let standingsLocalManager: StandingsLocalManager
     
-    public init(networkService: FootballNetworkService, errorHandler: ErrorsHandler, standingsLocalManager: StandingsLocalManager) {
+    public init(networkService: NetworkService, errorHandler: ErrorsHandler, standingsLocalManager: StandingsLocalManager) {
         self.networkService = networkService
         self.errorHandler = errorHandler
         self.standingsLocalManager = standingsLocalManager

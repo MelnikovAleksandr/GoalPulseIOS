@@ -202,7 +202,7 @@ extension TeamInfoEntity {
             name: name ?? "",
             shortName: shortName ?? "",
             tla: tla ?? "",
-            website: website ?? "",
+            website: URL(string: website ?? ""),
             venue: venue ?? "",
             area: area?.toDomain() ?? getEmptyArea(),
             coach: coach?.toDomain() ?? getEmptyPerson(),
@@ -230,6 +230,20 @@ extension PersonEntity {
 extension ContractEntity {
     func toDomain() -> Contract {
         return Contract(start: start ?? Date(), until: until ?? Date())
+    }
+}
+
+extension ArticleDTO {
+    func toDomain() -> Article {
+        Article(
+            author: author ?? "",
+            title: title ?? "",
+            description: description ?? "",
+            url: URL(string: url ?? ""),
+            urlToImage: URL(string: urlToImage ?? ""),
+            publishedAt: publishedAt ?? Date(),
+            content: content ?? ""
+        )
     }
 }
 

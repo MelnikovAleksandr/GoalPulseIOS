@@ -22,8 +22,12 @@ extension ResolverApp {
             }
         }.inObjectScope(.container)
         
-        shared.container.register(FootballNetworkService.self) { _ in
-            FootballNetworkServiceImpl()
+        shared.container.register(NetworkService.self, name: NetworkType.football.rawValue) { _ in
+            NetworkServiceImpl(type: NetworkType.football)
+        }.inObjectScope(.container)
+        
+        shared.container.register(NetworkService.self, name: NetworkType.news.rawValue) { _ in
+            NetworkServiceImpl(type: NetworkType.news)
         }.inObjectScope(.container)
         
         shared.container.register(ErrorsHandler.self) { _ in
@@ -46,7 +50,7 @@ extension ResolverApp {
         }.inObjectScope(.container)
         
         shared.container.register(CompetitionsRepository.self) { resolver in
-            let networkService = resolver.resolve(FootballNetworkService.self)!
+            let networkService = resolver.resolve(NetworkService.self, name: NetworkType.football.rawValue)!
             let errorHandler = resolver.resolve(ErrorsHandler.self)!
             let competitionsLocalManager = resolver.resolve(CompetitionsLocalManager.self)!
             return CompetitionsRepositoryImpl(
@@ -57,7 +61,7 @@ extension ResolverApp {
         }.inObjectScope(.container)
         
         shared.container.register(StandingsRepository.self) { resolver in
-            let networkService = resolver.resolve(FootballNetworkService.self)!
+            let networkService = resolver.resolve(NetworkService.self, name: NetworkType.football.rawValue)!
             let errorHandler = resolver.resolve(ErrorsHandler.self)!
             let standingsLocalManager = resolver.resolve(StandingsLocalManager.self)!
             return StandingsRepositoryImpl(
@@ -66,10 +70,19 @@ extension ResolverApp {
         }.inObjectScope(.container)
         
         shared.container.register(TeamRepository.self) { resolver in
-            let networkService = resolver.resolve(FootballNetworkService.self)!
+            let networkService = resolver.resolve(NetworkService.self, name: NetworkType.football.rawValue)!
             let errorHandler = resolver.resolve(ErrorsHandler.self)!
             let teamsLocalManager = resolver.resolve(TeamsLocalManager.self)!
             return TeamRepositoryImpl(
+                networkService: networkService, errorHandler: errorHandler, teamsLocalManager: teamsLocalManager
+            )
+        }.inObjectScope(.container)
+        
+        shared.container.register(NewsRepository.self) { resolver in
+            let networkService = resolver.resolve(NetworkService.self, name: NetworkType.news.rawValue)!
+            let errorHandler = resolver.resolve(ErrorsHandler.self)!
+            let teamsLocalManager = resolver.resolve(TeamsLocalManager.self)!
+            return NewsRepositoryImpl(
                 networkService: networkService, errorHandler: errorHandler, teamsLocalManager: teamsLocalManager
             )
         }.inObjectScope(.container)

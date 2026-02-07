@@ -13,6 +13,11 @@ public class UIDateTimeFormatters {
         formatter.dateFormat = "dd.MM"
         return formatter
     }()
+    public static let fullDate: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yyyy, HH:mm"
+        return formatter
+    }()
 }
 
 

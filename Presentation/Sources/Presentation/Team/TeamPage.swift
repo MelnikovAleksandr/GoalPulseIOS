@@ -62,7 +62,7 @@ public struct TeamPage: View {
                 }
                 .tag(TabTeam.team)
             
-            TestData()
+            TeamInfo()
                 .id(TabTeam.info)
                 .tabItem {
                     Label(
@@ -104,12 +104,19 @@ public struct TeamPage: View {
                 }
             }
             ToolbarItem(placement: .principal) {
-                Text(viewModel.team?.name ?? "Empty Name")
-                    .foregroundColor(Color.theme.primary)
-                    .font(.theme.medium(22))
-                    .padding(.horizontal, 24)
-                    .padding(.vertical, 8)
-                    .modifier(ConditionalGlassModifier())
+                VStack(spacing: 0) {
+                    Text(viewModel.team?.name ?? "Empty Name")
+                        .foregroundColor(Color.theme.primary)
+                        .font(.theme.medium(22))
+                        .padding(.horizontal, 24)
+                    Text(currentTab?.localizedTitle.capitalized ?? "")
+                        .foregroundColor(Color.theme.secondary)
+                        .font(.theme.light(16))
+                        .padding(.horizontal, 24)
+                        .animation(.smooth, value: currentTab)
+                }
+                .modifier(ConditionalGlassModifier())
+                
             }
             ToolbarItem(placement: .topBarTrailing) {
                 AsyncMultiImage(
@@ -128,49 +135,35 @@ public struct TeamPage: View {
     }
     
     @ViewBuilder
-    func TestData() -> some View {
+    func TeamInfo() -> some View {
         ZStack {
             backgroundGradient
                 .animation(.easeInOut(duration: 0.5), value: imageColors)
                 .opacity(0.50)
                 .ignoresSafeArea()
-            
-            VStack {
-                Spacer()
-                AsyncMultiImage(
-                    url: viewModel.team?.crest
-                ).frame(height: 34)
-                
-                if !imageColors.isEmpty {
-                    
-                    
-                    HStack(spacing: 8) {
-                        ForEach(0..<min(imageColors.count, 3), id: \.self) { index in
-                            Circle()
-                                .fill(imageColors[index])
-                                .frame(width: 24, height: 24)
-                                .overlay(
-                                    Circle()
-                                        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-                                )
+            if viewModel.isTeamLoading && viewModel.team == nil {
+                ZStack {
+                    BallProgressView().padding(.vertical, 80)
+                }.frame(width: UIScreen.main.bounds.width)
+            } else {
+                ScrollView {
+                    LazyVStack(spacing: 0) {
+                        if let team = viewModel.team {
+                            InfoItem(team: team)
+                        }
+                        if viewModel.isNewsLoading {
+                            ZStack {
+                                BallProgressView().padding(.vertical, 80)
+                            }.frame(width: UIScreen.main.bounds.width)
+                        } else {
+                            ForEach(viewModel.articles, id: \.id) { article in
+                                ArticleItem(article: article)
+                            }
                         }
                     }
-                    .padding(.top, 4)
                 }
-                
-                Text("TeamPage")
-                Text(viewModel.team?.name ?? "empty")
-                Text("squad - \(viewModel.team?.squad.count ?? 0)")
-                Button("Go to Player") {
-                    navigationManager.toPlayerDetails()
-                }
-                Button("Go back") {
-                    navigationManager.pop()
-                }
-                Spacer()
             }
         }
-        
     }
     
     @ViewBuilder
@@ -180,25 +173,30 @@ public struct TeamPage: View {
                 .animation(.easeInOut(duration: 0.5), value: imageColors)
                 .opacity(0.50)
                 .ignoresSafeArea()
-            
-            ScrollView {
-                LazyVStack(spacing: 0, pinnedViews: .sectionHeaders) {
-                    let positionsSquad = viewModel.team?.squad ?? []
-                    if let coach = viewModel.team?.coach {
-                        CoachItem(player: coach)
-                            .transition(.opacity)
-                            .animation(.easeInOut(duration: 0.3), value: coach.id)
-                    }
-                    ForEach(positionsSquad, id: \.id) { positionSquad in
-                        Section {
-                            ForEach(positionSquad.squad, id: \.id) { player in
-                                SquadItem(player: player)
+            if viewModel.isTeamLoading && viewModel.team == nil {
+                ZStack {
+                    BallProgressView().padding(.vertical, 80)
+                }.frame(width: UIScreen.main.bounds.width)
+            } else {
+                ScrollView {
+                    LazyVStack(spacing: 0, pinnedViews: .sectionHeaders) {
+                        let positionsSquad = viewModel.team?.squad ?? []
+                        if let coach = viewModel.team?.coach {
+                            CoachItem(player: coach)
+                                .transition(.opacity)
+                                .animation(.easeInOut(duration: 0.3), value: coach.id)
+                        }
+                        ForEach(positionsSquad, id: \.id) { positionSquad in
+                            Section {
+                                ForEach(positionSquad.squad, id: \.id) { player in
+                                    SquadItem(player: player)
+                                }
+                            } header: {
+                                SquadHeader(
+                                    position: positionSquad.position,
+                                    color: imageColors.indices.contains(2) ? imageColors[2] : Color.theme.primaryContainer
+                                )
                             }
-                        } header: {
-                            SquadHeader(
-                                position: positionSquad.position,
-                                color: imageColors.indices.contains(2) ? imageColors[2] : Color.theme.primaryContainer
-                            )
                         }
                     }
                 }

@@ -25,8 +25,10 @@ class MockData {
     
     @MainActor static let teamRepository: TeamRepository = MockTeamRepository()
     
+    @MainActor static let newsRepository: NewsRepository = MockNewsRepository()
+    
     @MainActor static let teamViewModel: TeamViewModel =
-    TeamViewModel(repository: teamRepository, teamId: 11)
+    TeamViewModel(repository: teamRepository, newsRepository: newsRepository, teamId: 11)
 }
 
 @Observable
@@ -56,6 +58,12 @@ final class MockNavManager: NavigationManager {
     
     public func popToRoot() {
         path = NavigationPath()
+    }
+}
+
+final class MockNewsRepository: NewsRepository {
+    func getNews(teamName: String) async -> Resource<[Article]> {
+        return .success(MockUIData.articles)
     }
 }
 
@@ -1385,12 +1393,114 @@ class MockUIData {
             name: "FC København",
             shortName: "København",
             tla: "KOB",
-            website: "http://www.fck.dk",
+            website: URL(string: "http://www.fck.dk"),
             venue: "Telia Parken",
             area: area,
             coach: coach,
             squad: squadByPosition
         )
     }
+    
+    static let articles: [Article] = [
+        Article(
+            author: "BBC News",
+            title: "Watch: The Women's Football Show",
+            description: "Analysis and top stories from week 12 of the 2025/26 Women’s Super League season",
+            url: URL(string: "https://www.bbc.co.uk/iplayer/episode/m002pwjt/the-womens-football-show-202526-11012026"),
+            urlToImage: URL(string: "https://ichef.bbci.co.uk/images/ic/1200x675/p0mqjwdb.jpg"),
+            publishedAt: ISO8601DateFormatter().date(from: "2026-01-11T21:06:59Z")!,
+            content: "Analysis and top stories from week 12 of the 2025/26 Womens Super League season, with highlights of key fixtures featuring Arsenal v Manchester United and Manchester City v Everton."
+        ),
+        
+        Article(
+            author: "Nizaar Kinsella",
+            title: "Why Chelsea have turned to 'innovator' Rosenior",
+            description: "After Chelsea give Liam Rosenior his first Premier League managerial job, BBC Sport looks at why they have appointed him.",
+            url: URL(string: "https://www.bbc.com/sport/football/articles/c5y5gn3130lo"),
+            urlToImage: URL(string: "https://ichef.bbci.co.uk/ace/branded_sport/1200/cpsprodpb/560e/live/4024ca60-eaf7-11f0-8e8e-7f477e15473f.jpg"),
+            publishedAt: ISO8601DateFormatter().date(from: "2026-01-06T12:11:19Z")!,
+            content: "There is pressure on Chelsea to get this appointment right, with some supporters chanting the name of former owner Roman Abramovich during Sunday's draw at Manchester City."
+        ),
+        
+        Article(
+            author: "Alexis Billebault",
+            title: "Amad Diallo, talent brut devenu l’atout des Ivoiriens pour la CAN 2025",
+            description: "Auteur de trois buts dans la compétition, l’ailier de Manchester United s’est affirmé comme l’une des armes offensives majeures des Eléphants",
+            url: URL(string: "https://www.lemonde.fr/afrique/article/2026/01/10/egypte-cote-d-ivoire-amad-diallo-talent-brut-devenu-l-atout-des-ivoiriens-pour-la-can-2025_6661307_3212.html"),
+            urlToImage: URL(string: "https://img.lemde.fr/2026/01/09/0/0/3589/2392/1440/960/60/0/5563545_upload-1-ern4umkenv6v-000-89uc748.jpg"),
+            publishedAt: ISO8601DateFormatter().date(from: "2026-01-10T15:00:11Z")!,
+            content: "L'attaquant ivoirien Amad Diallo a marqué trois buts dans la compétition et s'est affirmé comme l'une des armes offensives majeures des Eléphants."
+        ),
+        
+        Article(
+            author: "Lewis Jones",
+            title: "PL Predictions: Destruction derby? City set to smash United",
+            description: "Our football betting expert Jones Knows provides his insight across the Premier League weekend",
+            url: URL(string: "https://www.skysports.com/football/news/11095/13494770/premier-league-predictions-and-best-bets-destruction-derby-manchester-city-set-to-smash-manchester-united"),
+            urlToImage: URL(string: "https://e0.365dm.com/25/12/1600x900/skysports-premier-league-pl-predictions_7115035.jpg"),
+            publishedAt: ISO8601DateFormatter().date(from: "2026-01-15T21:00:00Z")!,
+            content: "Our football betting expert Jones Knows provides his insight across the Premier League weekend and tips Manchester City to win a thrilling Manchester derby."
+        ),
+        
+        Article(
+            author: "BBC News",
+            title: "Football Daily",
+            description: "What's it like to play under Rosenior? Could Xavi fit at United? And European discussion.",
+            url: URL(string: "https://www.bbc.co.uk/sounds/play/p0msggzy"),
+            urlToImage: URL(string: "https://ichef.bbci.co.uk/images/ic/1024x576/p0msgh0v.jpg"),
+            publishedAt: ISO8601DateFormatter().date(from: "2026-01-06T23:08:00Z")!,
+            content: "As Liam Rosenior agrees to become Chelsea's next manager, Euro Leagues looks at the impact on his old club, Strasbourg, and how he'll fit in at Stamford Bridge."
+        ),
+        
+        Article(
+            author: "Kevin Lynch",
+            title: "Premier League Soccer 2026: Stream Leeds vs. Arsenal Live From Anywhere",
+            description: "Can the Peacocks help derail the Gunners' EPL title push?",
+            url: URL(string: "https://www.cnet.com/tech/services-and-software/premier-league-soccer-2026-stream-leeds-vs-arsenal/"),
+            urlToImage: URL(string: "https://www.cnet.com/a/img/resize/a8110c1f1d2220058aa050e2b89dd7352a719d6b/hub/2026/01/30/8657bf94-89e1-49f7-a0d0-8e44a5421eb2/gettyimages-2258368480.jpg"),
+            publishedAt: ISO8601DateFormatter().date(from: "2026-01-31T12:01:09Z")!,
+            content: "Leeds vs. Arsenal will air in the US on NBCSN and Peacock Premium. Arsenal travel to Leeds United in a crucial Premier League fixture."
+        ),
+        
+        Article(
+            author: "Kevin Hand",
+            title: "Real Madrid remain football’s top earners but Liverpool overtake Man Utd",
+            description: "Real Madrid remain the top earner in world football but Liverpool leap in ranking, while Manchester United slide.",
+            url: URL(string: "https://www.aljazeera.com/sports/2026/1/22/liverpool-overtake-man-utd-but-real-madrid-remain-footballs-top-earners"),
+            urlToImage: URL(string: "https://www.aljazeera.com/wp-content/uploads/2026/01/2026-01-12T214257Z_1695949828_UP1EM1C1OBKT1_RTRMADP_3_SOCCER-ENGLAND-LIV-BAR-1769095553.jpg"),
+            publishedAt: ISO8601DateFormatter().date(from: "2026-01-22T16:39:59Z")!,
+            content: "Liverpool have overtaken Manchester United for the first time as the Premier League's biggest-financial earners, but Real Madrid remained top performers in world football."
+        ),
+        
+        Article(
+            author: "Jean-Pierre Stroobants",
+            title: "Jordi Cruyff dans les pas de son père Johan à l’Ajax Amsterdam",
+            description: "Le fils de l’emblématique attaquant néerlandais, mort en 2016, prend ses fonctions comme directeur sportif du club amstellodamois",
+            url: URL(string: "https://www.lemonde.fr/sport/article/2026/02/01/jordi-cruyff-dans-les-pas-de-son-pere-johan-a-l-ajax-amsterdam_6664964_3242.html"),
+            urlToImage: URL(string: "https://img.lemde.fr/2026/01/20/0/0/5487/3658/1440/960/60/0/ec632ca_upload-1-xbpfzjtpnlgo-000-36zr4hc.jpg"),
+            publishedAt: ISO8601DateFormatter().date(from: "2026-02-01T07:30:05Z")!,
+            content: "Jordi Cruyff prend ses fonctions comme directeur sportif de l'Ajax Amsterdam, suivant les pas de son père Johan Cruyff."
+        ),
+        
+        Article(
+            author: "Kevin Hand",
+            title: "Manchester United vs Manchester City: Premier League – teams, start",
+            description: "Michael Carrick's first United game sees Pep Guardiola's Premier League hopefuls visit in the Manchester derby.",
+            url: URL(string: "https://www.aljazeera.com/sports/2026/1/16/manchester-united-vs-manchester-city-premier-league-teams-start"),
+            urlToImage: URL(string: "https://www.aljazeera.com/wp-content/uploads/2026/01/GettyImages-2255782645-1768571069.jpg"),
+            publishedAt: ISO8601DateFormatter().date(from: "2026-01-16T14:09:44Z")!,
+            content: "Michael Carrick's first Manchester United game sees Pep Guardiola's Premier League hopefuls visit in the Manchester derby at Old Trafford."
+        ),
+        
+        Article(
+            author: "BBC News",
+            title: "Football Daily",
+            description: "Oasis star Noel Gallagher joins Darren Fletcher to chat Man City and their new signings.",
+            url: URL(string: "https://www.bbc.co.uk/sounds/play/p0mvh0y9"),
+            urlToImage: URL(string: "https://ichef.bbci.co.uk/images/ic/1024x576/p0mvh0yt.jpg"),
+            publishedAt: ISO8601DateFormatter().date(from: "2026-01-16T19:48:00Z")!,
+            content: "Darren Fletcher, Don Hutchison, Kevin Nolan and Glenn Murray are joined by Oasis star Noel Gallagher to discuss Manchester City and his favourite derby memories."
+        )
+    ]
     
 }

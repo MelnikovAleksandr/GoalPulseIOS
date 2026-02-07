@@ -16,13 +16,13 @@ public struct TeamInfo: Identifiable, Sendable, Equatable {
     public let name: String
     public let shortName: String
     public let tla: String
-    public let website: String
+    public let website: URL?
     public let venue: String
     public let area: Area
     public let coach: Person
     public let squad: [SquadByPosition]
     
-    public init(id: Int, address: String, clubColors: String, crest: URL?, founded: Int, name: String, shortName: String, tla: String, website: String, venue: String, area: Area, coach: Person, squad: [SquadByPosition]) {
+    public init(id: Int, address: String, clubColors: String, crest: URL?, founded: Int, name: String, shortName: String, tla: String, website: URL?, venue: String, area: Area, coach: Person, squad: [SquadByPosition]) {
         self.id = id
         self.address = address
         self.clubColors = clubColors

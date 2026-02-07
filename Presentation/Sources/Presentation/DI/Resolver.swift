@@ -27,8 +27,10 @@ extension ResolverApp {
         
         shared.container.register(TeamViewModel.self) { (resolver, teamId: Int) in
             let teamRepository = resolver.resolve(TeamRepository.self)!
+            let newsRepository = resolver.resolve(NewsRepository.self)!
             return TeamViewModel(
                 repository: teamRepository,
+                newsRepository: newsRepository,
                 teamId: teamId
             )
         }

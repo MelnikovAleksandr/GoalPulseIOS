@@ -12,6 +12,14 @@ import Utils
 struct MatchItem: View {
     let match: Match
     let isAhead: Bool
+    let teamId: Int?
+    
+    init(match: Match, isAhead: Bool, teamId: Int? = nil) {
+        self.match = match
+        self.isAhead = isAhead
+        self.teamId = teamId
+    }
+    
     var body: some View {
         VStack(spacing: 0) {
             Spacer().frame(height: 12)
@@ -24,7 +32,7 @@ struct MatchItem: View {
                         .font(.theme.medium(24))
                         .padding(10)
                 } else {
-                    ScoreItem(homeScore: match.score.time.home, awayScore: match.score.time.away)
+                    ScoreItem(match: match, teamId: teamId)
                 }
                 Spacer().frame(width: 16)
                 AsyncMultiImage(url: match.awayTeam.crest).frame(width: 32, height: 32)

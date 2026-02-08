@@ -171,6 +171,17 @@ extension MatchesEntity {
         } ?? [])
         return entity
     }
+    
+    static func fromTeam(dto: MatchesDTO?, teamId: Int) -> MatchesEntity? {
+        guard let dto = dto else { return nil }
+        let entity = MatchesEntity()
+        entity.id = String(teamId)
+        entity.competition = CompetitionEntity.from(dto: dto.competition)
+        entity.matches.append(objectsIn: dto.matches?.compactMap { match in
+            MatchEntity.from(dto: match)
+        } ?? [])
+        return entity
+    }
 }
 
 extension MatchEntity {

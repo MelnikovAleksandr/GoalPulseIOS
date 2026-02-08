@@ -71,23 +71,29 @@ public struct TeamPage: View {
                     )
                 }.tag(TabTeam.info)
             
-            Color.red
-                .id(TabTeam.matches)
-                .tabItem {
-                    Label(
-                        TabTeam.matches.localizedTitle.capitalized,
-                        systemImage: TabTeam.matches.systemImageName
-                    )
-                }.tag(TabTeam.matches)
+            if viewModel.completedMatches?.isEmpty == false {
+                CompMatches()
+                    .id(TabTeam.matches)
+                    .tabItem {
+                        Label(
+                            TabTeam.matches.localizedTitle.capitalized,
+                            systemImage: TabTeam.matches.systemImageName
+                        )
+                    }.tag(TabTeam.matches)
+            }
             
-            Color.green
-                .id(TabTeam.ahead)
-                .tabItem {
-                    Label(
-                        TabTeam.ahead.localizedTitle.capitalized,
-                        systemImage: TabTeam.ahead.systemImageName
-                    )
-                }.tag(TabTeam.ahead)
+            
+            if viewModel.aheadMatches?.isEmpty == false {
+                AheadMatches()
+                    .id(TabTeam.ahead)
+                    .tabItem {
+                        Label(
+                            TabTeam.ahead.localizedTitle.capitalized,
+                            systemImage: TabTeam.ahead.systemImageName
+                        )
+                    }.tag(TabTeam.ahead)
+            }
+            
             
         }
         .ignoresSafeArea(.all)
@@ -204,6 +210,66 @@ public struct TeamPage: View {
         }
     }
     
+    
+    @ViewBuilder
+    func CompMatches() -> some View {
+        ZStack {
+            backgroundGradient
+                .animation(.easeInOut(duration: 0.5), value: imageColors)
+                .opacity(0.50)
+                .ignoresSafeArea()
+            if viewModel.isMatchesLoading && viewModel.completedMatches == nil {
+                ZStack {
+                    BallProgressView().padding(.vertical, 80)
+                }.frame(width: UIScreen.main.bounds.width)
+            } else {
+                ScrollView {
+                    LazyVStack(spacing: 0, pinnedViews: .sectionHeaders) {
+                        let matches = viewModel.completedMatches ?? []
+                        ForEach(matches, id: \.self) { groupMatches in
+                            Section {
+                                ForEach(groupMatches.matches, id: \.id) { match in
+                                    MatchItem(match: match, isAhead: false, teamId: viewModel.teamId)
+                                }
+                            } header: {
+                                MatchGroupHeader(matchesByTour: groupMatches)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder
+    func AheadMatches() -> some View {
+        ZStack {
+            backgroundGradient
+                .animation(.easeInOut(duration: 0.5), value: imageColors)
+                .opacity(0.50)
+                .ignoresSafeArea()
+            if viewModel.isMatchesLoading && viewModel.aheadMatches == nil {
+                ZStack {
+                    BallProgressView().padding(.vertical, 80)
+                }.frame(width: UIScreen.main.bounds.width)
+            } else {
+                ScrollView {
+                    LazyVStack(spacing: 0, pinnedViews: .sectionHeaders) {
+                        let matches = viewModel.aheadMatches ?? []
+                        ForEach(matches, id: \.self) { groupMatches in
+                            Section {
+                                ForEach(groupMatches.matches, id: \.id) { match in
+                                    MatchItem(match: match, isAhead: true)
+                                }
+                            } header: {
+                                MatchGroupHeader(matchesByTour: groupMatches)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 #Preview {

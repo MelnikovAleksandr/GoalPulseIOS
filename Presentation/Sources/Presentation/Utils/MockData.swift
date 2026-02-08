@@ -79,6 +79,23 @@ final class MockTeamRepository: TeamRepository {
         }
     }
     
+    func getMatchesFromRemoteToLocal(teamId: Int) async -> Resource<Bool> {
+        return .success(true)
+    }
+    
+    func getAheadMatchesFromLocalFlow(teamId: Int) -> AsyncStream<[MatchesByTour]> {
+        AsyncStream { continuation in
+            continuation.yield(MockUIData.getMatchesByTour())
+            continuation.finish()
+        }
+    }
+    
+    func getCompletedMatchesFromLocalFlow(teamId: Int) -> AsyncStream<[MatchesByTour]> {
+        AsyncStream { continuation in
+            continuation.yield(MockUIData.getMatchesByTour())
+            continuation.finish()
+        }
+    }
 }
 
 final class MockFootballRepository: CompetitionsRepository {

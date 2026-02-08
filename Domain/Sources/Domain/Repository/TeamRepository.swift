@@ -15,4 +15,12 @@ public protocol TeamRepository: Sendable {
     @MainActor
     func getTeamInfoFromLocalFlow(teamId: Int) -> AsyncStream<TeamInfo>
     
+    
+    func getMatchesFromRemoteToLocal(teamId: Int) async -> Resource<Bool>
+    
+    @MainActor
+    func getAheadMatchesFromLocalFlow(teamId: Int) -> AsyncStream<[MatchesByTour]>
+    
+    @MainActor
+    func getCompletedMatchesFromLocalFlow(teamId: Int) -> AsyncStream<[MatchesByTour]>
 }

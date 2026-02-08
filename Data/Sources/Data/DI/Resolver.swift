@@ -73,8 +73,9 @@ extension ResolverApp {
             let networkService = resolver.resolve(NetworkService.self, name: NetworkType.football.rawValue)!
             let errorHandler = resolver.resolve(ErrorsHandler.self)!
             let teamsLocalManager = resolver.resolve(TeamsLocalManager.self)!
+            let standingsLocalManager = resolver.resolve(StandingsLocalManager.self)!
             return TeamRepositoryImpl(
-                networkService: networkService, errorHandler: errorHandler, teamsLocalManager: teamsLocalManager
+                networkService: networkService, errorHandler: errorHandler, teamsLocalManager: teamsLocalManager, standingsLocalManager: standingsLocalManager
             )
         }.inObjectScope(.container)
         

@@ -16,7 +16,16 @@ public struct StandingsPage: View {
     @State var tabProgress: CGFloat = 0
     
     private var tabs: [Tab] {
-        viewModel.aheadMatches?.isEmpty == false ? Tab.allCases : [Tab.standings, Tab.players, Tab.matches]
+        var availableTabs: [Tab] = []
+        availableTabs.append(.standings)
+        availableTabs.append(.players)
+        if viewModel.completedMatches?.isEmpty == false {
+            availableTabs.append(.matches)
+        }
+        if viewModel.aheadMatches?.isEmpty == false {
+            availableTabs.append(.ahead)
+        }
+        return availableTabs
     }
     
     public init(
@@ -43,14 +52,17 @@ public struct StandingsPage: View {
                     StandingsList()
                         .id(Tab.standings)
                         .containerRelativeFrame(.horizontal)
+                        .animation(.spring(), value: viewModel.isStandingsLoading)
                     
                     ScorersList()
                         .id(Tab.players)
                         .containerRelativeFrame(.horizontal)
                     
-                    CompMatches()
-                        .id(Tab.matches)
-                        .containerRelativeFrame(.horizontal)
+                    if viewModel.completedMatches?.isEmpty == false {
+                        CompMatches()
+                            .id(Tab.matches)
+                            .containerRelativeFrame(.horizontal)
+                    }
                     
                     if viewModel.aheadMatches?.isEmpty == false {
                         AheadMatches()
@@ -184,6 +196,11 @@ public struct StandingsPage: View {
                     }
                 }
             }
+            .overlay(alignment: .top) {
+                if viewModel.isMatchesLoading && viewModel.completedMatches != nil {
+                    BallProgressView(width: 24,height: 24).padding(.vertical, 4)
+                }
+            }
         }
     }
     
@@ -208,6 +225,11 @@ public struct StandingsPage: View {
                     }
                 }
             }
+            .overlay(alignment: .top) {
+                if viewModel.isMatchesLoading && viewModel.aheadMatches != nil {
+                    BallProgressView(width: 24,height: 24).padding(.vertical, 4)
+                }
+            }
         }
     }
     
@@ -220,22 +242,34 @@ public struct StandingsPage: View {
         } else {
             ScrollView {
                 LazyVStack(spacing: 0, pinnedViews: .sectionHeaders) {
-                    ForEach(viewModel.standings?.standings ?? [], id: \.self) { standing in
-                        Section {
-                            ForEach(standing.table, id: \.self) { table in
-                                StandingItem(table: table, standingLastId: standing.table.last?.id)
-                                    .background(Color.theme.background)
-                                    .onTapGesture {
-                                        navigationManager.toTeamDetails(teamId: table.team?.id ?? 0)
-                                    }
+                    if viewModel.standings == nil {
+                        EmptyData()
+                    } else {
+                        ForEach(viewModel.standings?.standings ?? [], id: \.self) { standing in
+                            Section {
+                                ForEach(standing.table, id: \.self) { table in
+                                    StandingItem(table: table, standingLastId: standing.table.last?.id)
+                                        .background(Color.theme.background)
+                                        .onTapGesture {
+                                            navigationManager.toTeamDetails(teamId: table.team?.id ?? 0)
+                                        }
+                                }
+                            } header: {
+                                VStack(spacing: 0) {
+                                    TableLeagueTopBar(standing: standing, type: viewModel.standings?.competition.type ?? Type.LEAGUE)
+                                    
+                                }
+                                
                             }
-                        } header: {
-                            TableLeagueTopBar(standing: standing, type: viewModel.standings?.competition.type ?? Type.LEAGUE)
                         }
+                        StandingsBottomItem()
+                            .padding(.horizontal, 4)
+                            .frame(width: UIScreen.main.bounds.width)
                     }
-                    StandingsBottomItem()
-                        .padding(.horizontal, 4)
-                        .frame(width: UIScreen.main.bounds.width)
+                }
+            }.overlay(alignment: .top) {
+                if viewModel.isStandingsLoading && viewModel.standings != nil {
+                    BallProgressView(width: 24,height: 24).padding(.vertical, 4)
                 }
             }
         }
@@ -250,18 +284,27 @@ public struct StandingsPage: View {
         } else {
             ScrollView {
                 LazyVStack(spacing: 0, pinnedViews: .sectionHeaders) {
-                    Section {
-                        let lastId = viewModel.scorers?.scorers.last?.id
-                        ForEach(Array((viewModel.scorers?.scorers ?? []).enumerated()), id: \.element.id) { index, scorer in
-                            ScorerItem(scorer: scorer, scorersLastId: lastId, scorerIndex: index + 1)
-                                .background(Color.theme.background)
+                    if viewModel.scorers == nil {
+                        EmptyData()
+                    } else {
+                        Section {
+                            let lastId = viewModel.scorers?.scorers.last?.id
+                            ForEach(Array((viewModel.scorers?.scorers ?? []).enumerated()), id: \.element.id) { index, scorer in
+                                ScorerItem(scorer: scorer, scorersLastId: lastId, scorerIndex: index + 1)
+                                    .background(Color.theme.background)
+                            }
+                        } header: {
+                            ScorersTopBar()
                         }
-                    } header: {
-                        ScorersTopBar()
+                        ScorersBottomItem()
+                            .padding(.horizontal, 4)
+                            .frame(width: UIScreen.main.bounds.width)
                     }
-                    ScorersBottomItem()
-                        .padding(.horizontal, 4)
-                        .frame(width: UIScreen.main.bounds.width)
+                }
+            }
+            .overlay(alignment: .top) {
+                if viewModel.isScorersLoading && viewModel.scorers != nil {
+                    BallProgressView(width: 24,height: 24).padding(.vertical, 4)
                 }
             }
         }

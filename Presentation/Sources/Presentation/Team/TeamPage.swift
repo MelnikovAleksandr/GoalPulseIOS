@@ -168,6 +168,11 @@ public struct TeamPage: View {
                         }
                     }
                 }
+                .overlay(alignment: .top) {
+                    if viewModel.isTeamLoading && viewModel.team != nil {
+                        BallProgressView(width: 24,height: 24).padding(.vertical, 4)
+                    }
+                }
             }
         }
     }
@@ -186,24 +191,34 @@ public struct TeamPage: View {
             } else {
                 ScrollView {
                     LazyVStack(spacing: 0, pinnedViews: .sectionHeaders) {
-                        let positionsSquad = viewModel.team?.squad ?? []
-                        if let coach = viewModel.team?.coach {
-                            CoachItem(player: coach)
-                                .transition(.opacity)
-                                .animation(.easeInOut(duration: 0.3), value: coach.id)
-                        }
-                        ForEach(positionsSquad, id: \.id) { positionSquad in
-                            Section {
-                                ForEach(positionSquad.squad, id: \.id) { player in
-                                    SquadItem(player: player)
+                        
+                        if viewModel.team?.squad.isEmpty == true {
+                            EmptyData()
+                        } else {
+                            let positionsSquad = viewModel.team?.squad ?? []
+                            if let coach = viewModel.team?.coach {
+                                CoachItem(player: coach)
+                                    .transition(.opacity)
+                                    .animation(.easeInOut(duration: 0.3), value: coach.id)
+                            }
+                            ForEach(positionsSquad, id: \.id) { positionSquad in
+                                Section {
+                                    ForEach(positionSquad.squad, id: \.id) { player in
+                                        SquadItem(player: player)
+                                    }
+                                } header: {
+                                    SquadHeader(
+                                        position: positionSquad.position,
+                                        color: imageColors.indices.contains(2) ? imageColors[2] : Color.theme.primaryContainer
+                                    )
                                 }
-                            } header: {
-                                SquadHeader(
-                                    position: positionSquad.position,
-                                    color: imageColors.indices.contains(2) ? imageColors[2] : Color.theme.primaryContainer
-                                )
                             }
                         }
+                    }
+                }
+                .overlay(alignment: .top) {
+                    if viewModel.isTeamLoading && viewModel.team != nil {
+                        BallProgressView(width: 24,height: 24).padding(.vertical, 4)
                     }
                 }
             }
@@ -237,6 +252,11 @@ public struct TeamPage: View {
                         }
                     }
                 }
+                .overlay(alignment: .top) {
+                    if viewModel.isMatchesLoading && viewModel.completedMatches != nil {
+                        BallProgressView(width: 24,height: 24).padding(.vertical, 4)
+                    }
+                }
             }
         }
     }
@@ -265,6 +285,11 @@ public struct TeamPage: View {
                                 MatchGroupHeader(matchesByTour: groupMatches)
                             }
                         }
+                    }
+                }
+                .overlay(alignment: .top) {
+                    if viewModel.isMatchesLoading && viewModel.aheadMatches != nil {
+                        BallProgressView(width: 24,height: 24).padding(.vertical, 4)
                     }
                 }
             }

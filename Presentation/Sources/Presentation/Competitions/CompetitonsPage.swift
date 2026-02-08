@@ -35,16 +35,20 @@ public struct CompetitonsPage: View {
                 ScrollView {
                     LazyVStack(spacing: 12, pinnedViews: [.sectionHeaders]) {
                         Section {
-                            ForEach(viewModel.competitions) { competition in
-                                CompetitionItem(competition: competition)
-                                    .onTapGesture {
-                                        navigationManager.toStandlings(compCode: competition.code)
-                                    }
-                            }
-                            .scrollTransition { content, phase in
-                                content
-                                    .opacity(phase.isIdentity ? 1.0 : 0.9)
-                                    .scaleEffect(phase.isIdentity ? 1.0 : 0.9)
+                            if viewModel.competitions.isEmpty && !viewModel.isLoading {
+                                EmptyData()
+                            } else {
+                                ForEach(viewModel.competitions) { competition in
+                                    CompetitionItem(competition: competition)
+                                        .onTapGesture {
+                                            navigationManager.toStandlings(compCode: competition.code)
+                                        }
+                                }
+                                .scrollTransition { content, phase in
+                                    content
+                                        .opacity(phase.isIdentity ? 1.0 : 0.9)
+                                        .scaleEffect(phase.isIdentity ? 1.0 : 0.9)
+                                }
                             }
                         } header: {
                             if #available(iOS 26.1, *) {
@@ -63,6 +67,7 @@ public struct CompetitonsPage: View {
                     BallProgressView(width: 50, height: 50)
                 })
                 .animation(.spring(), value: viewModel.competitions)
+                .animation(.spring(), value: viewModel.isLoading)
                 .onScrollGeometryChange(for: CGFloat.self, of: { geometry in
                     geometry.contentOffset.y
                 }, action: { _, newValue in

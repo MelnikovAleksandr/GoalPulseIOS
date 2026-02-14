@@ -777,6 +777,23 @@
         }
       }
     },
+    "Position" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Position"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Позиция"
+          }
+        }
+      }
+    },
     "Right Midfield" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -824,6 +841,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Правый защитник"
+          }
+        }
+      }
+    },
+    "Shirt" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shirt Number"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Игровой номер"
           }
         }
       }

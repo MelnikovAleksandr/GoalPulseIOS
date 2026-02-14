@@ -30,6 +30,10 @@ public struct PersonInfo: Identifiable, Sendable, Equatable {
         self.shirtNumber = shirtNumber
         self.currentTeam = currentTeam
     }
+    
+    public var age: Int {
+        Calendar.current.dateComponents([.year], from: dateOfBirth, to: Date()).year ?? 0
+    }
 }
 
 public enum PlayerPosition: String, CaseIterable, Codable, Sendable {
@@ -52,6 +56,19 @@ public enum PlayerPosition: String, CaseIterable, Codable, Sendable {
     
     public var localizedTitle: String {
         Locale.get(rawValue)
+    }
+    
+    public var imageName: String {
+        switch self {
+        case .goalkeeper:
+            return "keeper"
+        case .defence, .centerBack, .leftBack, .rightBack,
+                .defensiveMidfield, .centralMidfield, .attackingMidfield,
+                .rightMidfield, .leftMidfield, .midfield:
+            return "midfield"
+        default:
+            return "offence"
+        }
     }
 }
 

@@ -11,11 +11,11 @@ public protocol NavigationManager {
     
     var path: NavigationPath { get set }
     
-    func toStandlings()
+    func toStandlings(compCode: String)
     
-    func toTeamDetails()
+    func toTeamDetails(teamId: Int)
     
-    func toPlayerDetails()
+    func toPlayerDetails(playerId: Int)
     
     func pop()
     
@@ -30,16 +30,16 @@ public class NavigationManagerImpl: NavigationManager {
     
     public var path = NavigationPath()
     
-    public func toStandlings() {
-        path.append(Routes.standlings)
+    public func toStandlings(compCode: String) {
+        path.append(Routes.standlings(compCode: compCode))
     }
     
-    public func toTeamDetails() {
-        path.append(Routes.team)
+    public func toTeamDetails(teamId: Int) {
+        path.append(Routes.team(teamId: teamId))
     }
     
-    public func toPlayerDetails() {
-        path.append(Routes.player)
+    public func toPlayerDetails(playerId: Int) {
+        path.append(Routes.player(playerId: playerId))
     }
     
     public func pop() {

@@ -6,9 +6,19 @@
 //
 
 import SwiftUI
+import Utils
+import Presentation
+import Data
 
 @main
 struct GoalPulseApp: App {
+    init() {
+        SVGHelper.setUpDependencies()
+        FontsHelper.registerFonts()
+        ResolverApp.injectUtils()
+        ResolverApp.injectDataSources()
+        ResolverApp.injectViewModels()
+    }
     var body: some Scene {
         WindowGroup {
             ContentView()

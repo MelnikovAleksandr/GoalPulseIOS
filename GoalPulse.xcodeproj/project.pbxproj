@@ -12,6 +12,7 @@
 		2CA62E102EE4B226002EC693 /* Presentation in Frameworks */ = {isa = PBXBuildFile; productRef = 2CA62E0F2EE4B226002EC693 /* Presentation */; };
 		2CA62E2D2EE4C473002EC693 /* Domain in Frameworks */ = {isa = PBXBuildFile; productRef = 2CA62E2C2EE4C473002EC693 /* Domain */; };
 		2CA62E2F2EE4C477002EC693 /* Data in Frameworks */ = {isa = PBXBuildFile; productRef = 2CA62E2E2EE4C477002EC693 /* Data */; };
+		2CCDDDA52EEF34050021C28E /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2CCDDDA42EEF34050021C28E /* RealmSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,11 +21,25 @@
 		2CA62E072EE4A6CB002EC693 /* Data */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Data; sourceTree = "<group>"; };
 		2CA62E082EE4A6D1002EC693 /* Domain */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Domain; sourceTree = "<group>"; };
 		2CA62E0E2EE4B1EC002EC693 /* Presentation */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Presentation; sourceTree = "<group>"; };
+		2CCDDDA02EEED55B0021C28E /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		2CCDDDA22EEED9E00021C28E /* Exceptions for "GoalPulse" folder in "GoalPulse" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 2CA62DCC2EE452C1002EC693 /* GoalPulse */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		2CA62DCF2EE452C1002EC693 /* GoalPulse */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				2CCDDDA22EEED9E00021C28E /* Exceptions for "GoalPulse" folder in "GoalPulse" target */,
+			);
 			path = GoalPulse;
 			sourceTree = "<group>";
 		};
@@ -35,6 +50,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CCDDDA52EEF34050021C28E /* RealmSwift in Frameworks */,
 				2CA62E0C2EE4A8CF002EC693 /* Utils in Frameworks */,
 				2CA62E102EE4B226002EC693 /* Presentation in Frameworks */,
 				2CA62E2F2EE4C477002EC693 /* Data in Frameworks */,
@@ -56,6 +72,7 @@
 				2CA62DCF2EE452C1002EC693 /* GoalPulse */,
 				2CA62E0A2EE4A8CF002EC693 /* Frameworks */,
 				2CA62DCE2EE452C1002EC693 /* Products */,
+				2CCDDDA02EEED55B0021C28E /* Secrets.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -99,6 +116,7 @@
 				2CA62E0F2EE4B226002EC693 /* Presentation */,
 				2CA62E2C2EE4C473002EC693 /* Domain */,
 				2CA62E2E2EE4C477002EC693 /* Data */,
+				2CCDDDA42EEF34050021C28E /* RealmSwift */,
 			);
 			productName = GoalPulse;
 			productReference = 2CA62DCD2EE452C1002EC693 /* GoalPulse.app */;
@@ -124,12 +142,13 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
-				Base,
+				ru,
 			);
 			mainGroup = 2CA62DC42EE452C1002EC693;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				2CA62DE22EE4631A002EC693 /* XCRemoteSwiftPackageReference "Swinject" */,
+				2CCDDDA32EEF34050021C28E /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 2CA62DCE2EE452C1002EC693 /* Products */;
@@ -164,6 +183,7 @@
 /* Begin XCBuildConfiguration section */
 		2CA62DD62EE452C2002EC693 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2CCDDDA02EEED55B0021C28E /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -221,12 +241,14 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		2CA62DD72EE452C2002EC693 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2CCDDDA02EEED55B0021C28E /* Secrets.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -277,6 +299,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -286,16 +309,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GoalPulse/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -303,6 +330,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.melnikov.GoalPulse;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
@@ -318,16 +346,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GoalPulse/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -335,6 +367,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.melnikov.GoalPulse;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
@@ -377,6 +410,14 @@
 				minimumVersion = 2.9.1;
 			};
 		};
+		2CCDDDA32EEF34050021C28E /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.54.6;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -400,6 +441,11 @@
 		2CA62E2E2EE4C477002EC693 /* Data */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Data;
+		};
+		2CCDDDA42EEF34050021C28E /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2CCDDDA32EEF34050021C28E /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

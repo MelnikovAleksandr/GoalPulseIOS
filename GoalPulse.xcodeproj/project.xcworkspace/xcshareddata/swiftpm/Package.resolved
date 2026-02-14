@@ -1,6 +1,69 @@
 {
-  "originHash" : "40a3f282203110854a7cd4be591737b7b9fb1be4aeb2861034add082fee26874",
+  "originHash" : "1ccdcbf92087d75d0403ba185e9cccdfefc32b6b0522dc715be82e99a59bf421",
   "pins" : [
+    {
+      "identity" : "alamofire",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Alamofire/Alamofire.git",
+      "state" : {
+        "revision" : "513364f870f6bfc468f9d2ff0a95caccc10044c5",
+        "version" : "5.10.2"
+      }
+    },
+    {
+      "identity" : "dominantcolors",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/DenDmitriev/DominantColors.git",
+      "state" : {
+        "revision" : "a05327d36092c47e9ddc77ce565eb35a5b4a4a6e",
+        "version" : "1.2.2"
+      }
+    },
+    {
+      "identity" : "realm-core",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/realm/realm-core.git",
+      "state" : {
+        "revision" : "cccb3ca9e26ec452a29f2f0d4050d1e38b8a3d43",
+        "version" : "14.14.0"
+      }
+    },
+    {
+      "identity" : "realm-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/realm/realm-swift.git",
+      "state" : {
+        "revision" : "1c105d34f25af7851c5a3ff146be006de247a6b4",
+        "version" : "10.54.6"
+      }
+    },
+    {
+      "identity" : "sdwebimage",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDWebImage/SDWebImage.git",
+      "state" : {
+        "revision" : "36e79ba485e9bb4d3cd4e3318908866dac5e7b51",
+        "version" : "5.21.5"
+      }
+    },
+    {
+      "identity" : "sdwebimagesvgcoder",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDWebImage/SDWebImageSVGCoder.git",
+      "state" : {
+        "revision" : "85b5d58ad02c207c496fa34426dc6560d6ae32f0",
+        "version" : "1.8.0"
+      }
+    },
+    {
+      "identity" : "sdwebimageswiftui",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDWebImage/SDWebImageSwiftUI.git",
+      "state" : {
+        "revision" : "0e331457ca9af2f0b08bcaa138a91ffb907b004f",
+        "version" : "3.1.4"
+      }
+    },
     {
       "identity" : "swinject",
       "kind" : "remoteSourceControl",

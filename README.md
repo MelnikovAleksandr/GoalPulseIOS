@@ -47,6 +47,8 @@ You can obtain free API keys by registering at the following services:
 - 🧊 Modern Liquid Glass design  
 - 📱 iOS 18 supported  
 - 🌍 Russian language supported  
+- 🖋 Custom fonts for unique typography  
+- 🎨 Light & Dark theme color sets
 
 ---
 

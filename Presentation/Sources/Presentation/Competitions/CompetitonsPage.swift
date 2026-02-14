@@ -28,7 +28,7 @@ public struct CompetitonsPage: View {
     
     public var body: some View {
         ZStack {
-            LoadingPlayerView().ignoresSafeArea(.all)
+            LoadingPlayerView(videoName: "comp_back").ignoresSafeArea(.all)
             if viewModel.isLoading && viewModel.competitions.isEmpty {
                 BallProgressView()
             } else {

@@ -21,7 +21,7 @@ struct ContentView: View {
                     switch page {
                     case .standlings(let compCode): StandingsPage(navigationManager: $navigationManager, compCode: compCode)
                     case .team(let teamId): TeamPage(navigationManager: $navigationManager, teamId: teamId)
-                    case .player: PlayerPage(navigationManager: $navigationManager)
+                    case .player(let playerId): PlayerPage(navigationManager: $navigationManager, playerId: playerId)
                     }
                 }
         }

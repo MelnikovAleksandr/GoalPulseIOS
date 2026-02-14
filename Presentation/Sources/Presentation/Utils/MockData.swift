@@ -29,6 +29,10 @@ class MockData {
     
     @MainActor static let teamViewModel: TeamViewModel =
     TeamViewModel(repository: teamRepository, newsRepository: newsRepository, teamId: 11)
+    
+    @MainActor static let playerRepository: PlayerRepository = MockPlayerRepository()
+    
+    @MainActor static let playerViewModel: PlayerViewModel = PlayerViewModel(repository: playerRepository, playerId: 11)
 }
 
 @Observable
@@ -46,8 +50,8 @@ final class MockNavManager: NavigationManager {
         path.append(Routes.team(teamId: teamId))
     }
     
-    public func toPlayerDetails() {
-        path.append(Routes.player)
+    public func toPlayerDetails(playerId: Int) {
+        path.append(Routes.player(playerId: playerId))
     }
     
     public func pop() {
@@ -58,6 +62,12 @@ final class MockNavManager: NavigationManager {
     
     public func popToRoot() {
         path = NavigationPath()
+    }
+}
+
+final class MockPlayerRepository: PlayerRepository {
+    func getPlayerInfo(playerId: Int) async -> Resource<PersonInfo> {
+        return .success(MockUIData.personInfo())
     }
 }
 
@@ -1520,4 +1530,30 @@ class MockUIData {
         )
     ]
     
+    static func personInfo() -> PersonInfo {
+        let dateFormatter = ISO8601DateFormatter()
+        return PersonInfo(
+            id: 1795,
+            name: "Alisson Becker",
+            firstName: "Alisson",
+            lastName: "Becker",
+            dateOfBirth: dateFormatter.date(from: "1991-09-03T00:00:00Z")!,
+            nationality: "Brazil",
+            position: PlayerPosition.valueOf("Goalkeeper"),
+            shirtNumber: 1,
+            currentTeam: Team(
+                address: "",
+                clubColors: "",
+                crest: URL(string: "https://crests.football-data.org/673.png"),
+                founded: 0,
+                id: 673,
+                lastUpdated: "",
+                name: "SC Heerenveen",
+                shortName: "Heerenveen",
+                tla: "HEE",
+                website: "",
+                venue: ""
+            )
+        )
+    }
 }

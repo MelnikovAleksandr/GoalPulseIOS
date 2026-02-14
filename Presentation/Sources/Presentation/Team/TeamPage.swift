@@ -53,7 +53,8 @@ public struct TeamPage: View {
         
         TabView(selection: $currentTab) {
             
-            SquadList().id(TabTeam.team)
+            SquadList()
+                .id(TabTeam.team)
                 .tabItem {
                     Label(
                         TabTeam.team.localizedTitle.capitalized,
@@ -205,6 +206,9 @@ public struct TeamPage: View {
                                 Section {
                                     ForEach(positionSquad.squad, id: \.id) { player in
                                         SquadItem(player: player)
+                                            .onTapGesture {
+                                                navigationManager.toPlayerDetails(playerId: player.id)
+                                            }
                                     }
                                 } header: {
                                     SquadHeader(

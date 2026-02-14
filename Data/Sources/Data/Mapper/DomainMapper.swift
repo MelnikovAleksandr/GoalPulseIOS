@@ -233,6 +233,47 @@ extension ContractEntity {
     }
 }
 
+extension PersonInfoDTO {
+    func toDomain() -> PersonInfo {
+        return PersonInfo(
+            id: id ?? abs(UUID().hashValue),
+            name: name ?? "",
+            firstName: firstName ?? "",
+            lastName: lastName ?? "",
+            dateOfBirth: parseDate(dateOfBirth) ?? Date(),
+            nationality: nationality ?? "",
+            position: PlayerPosition.valueOf(position),
+            shirtNumber: shirtNumber ?? 0,
+            currentTeam: currentTeam?.toDomain() ?? getEmptyTeam()
+        )
+    }
+    
+    private func parseDate(_ dateString: String?) -> Date? {
+            guard let dateString = dateString else { return nil }
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            return formatter.date(from: dateString)
+        }
+}
+
+extension TeamDTO {
+    func toDomain() -> Team {
+        return Team(
+            address: address ?? "",
+            clubColors: clubColors ?? "",
+            crest: URL(string: crest ?? ""),
+            founded: founded ?? 0,
+            id: id ?? abs(UUID().hashValue),
+            lastUpdated: "",
+            name: name ?? "",
+            shortName: shortName ?? "",
+            tla: tla ?? "",
+            website: website ?? "",
+            venue: venue ?? "",
+        )
+    }
+}
+
 extension ArticleDTO {
     func toDomain() -> Article {
         Article(

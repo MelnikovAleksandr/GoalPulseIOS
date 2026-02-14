@@ -34,5 +34,10 @@ extension ResolverApp {
                 teamId: teamId
             )
         }
+        
+        shared.container.register(PlayerViewModel.self) { (resolver, playerId: Int) in
+            let playerRepository = resolver.resolve(PlayerRepository.self)!
+            return PlayerViewModel(repository: playerRepository, playerId: playerId)
+        }
     }
 }

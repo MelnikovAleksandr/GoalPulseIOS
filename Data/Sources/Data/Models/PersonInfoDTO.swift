@@ -12,7 +12,7 @@ struct PersonInfoDTO: Codable {
     let firstName: String?
     let lastName: String?
     let name: String?
-    let dateOfBirth: Date?
+    let dateOfBirth: String?
     let nationality: String?
     let section: String?
     let position: String?

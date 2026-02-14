@@ -292,6 +292,9 @@ public struct StandingsPage: View {
                             ForEach(Array((viewModel.scorers?.scorers ?? []).enumerated()), id: \.element.id) { index, scorer in
                                 ScorerItem(scorer: scorer, scorersLastId: lastId, scorerIndex: index + 1)
                                     .background(Color.theme.background)
+                                    .onTapGesture {
+                                        navigationManager.toPlayerDetails(playerId: scorer.id)
+                                    }
                             }
                         } header: {
                             ScorersTopBar()

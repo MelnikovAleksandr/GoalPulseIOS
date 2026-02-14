@@ -52,10 +52,12 @@ class PlayerView: UIView {
 }
 
 public struct LoadingPlayerView: UIViewRepresentable {
-    private var videoURLString: String = "comp_back"
+    private var videoURLString: String
     private var videoTypeString: String = "mp4"
     
-    public init() {}
+    public init(videoName: String) {
+        self.videoURLString = videoName
+    }
     
     public func makeCoordinator() -> UIView {
         return PlayerView(videoName: videoURLString, videoType: videoTypeString)

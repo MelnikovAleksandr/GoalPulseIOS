@@ -87,5 +87,11 @@ extension ResolverApp {
                 networkService: networkService, errorHandler: errorHandler, teamsLocalManager: teamsLocalManager
             )
         }.inObjectScope(.container)
+        
+        shared.container.register(PlayerRepository.self) { resolver in
+            let networkService = resolver.resolve(NetworkService.self, name: NetworkType.football.rawValue)!
+            let errorHandler = resolver.resolve(ErrorsHandler.self)!
+            return PlayerRepositoryImpl(networkService: networkService, errorHandler: errorHandler)
+        }.inObjectScope(.container)
     }
 }

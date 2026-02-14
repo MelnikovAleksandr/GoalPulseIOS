@@ -15,7 +15,7 @@ public protocol NavigationManager {
     
     func toTeamDetails(teamId: Int)
     
-    func toPlayerDetails()
+    func toPlayerDetails(playerId: Int)
     
     func pop()
     
@@ -38,8 +38,8 @@ public class NavigationManagerImpl: NavigationManager {
         path.append(Routes.team(teamId: teamId))
     }
     
-    public func toPlayerDetails() {
-        path.append(Routes.player)
+    public func toPlayerDetails(playerId: Int) {
+        path.append(Routes.player(playerId: playerId))
     }
     
     public func pop() {
